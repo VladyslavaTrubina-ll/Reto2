@@ -7,7 +7,6 @@ import controlador.ControladorDB;
 
 public class prueba {
 
-	public class login {
 		private static Scanner sc = new Scanner(System.in);
 
 		public static void main(String args[]) {
@@ -15,6 +14,7 @@ public class prueba {
 			boolean conexionConExito = controlador.iniciarConexion();
 			if (conexionConExito) {
 				System.out.println("Se realizó la conexion con exito");
+			
 			} else {
 				System.out.println("No hubo suerte");
 			}
@@ -24,16 +24,14 @@ public class prueba {
 		}
 
 		public static void login(ControladorDB controlador) {
-			ArrayList<ClienteAcesso> cliente;
-			controlador = new ControladorDB("cine_daw");
 
-			boolean encontrado = false;
-			int contador = 0;
 			System.out.println("inserire email");
 			String email = sc.nextLine();
 			System.out.println("digitare password");
 			String contraseña = sc.nextLine();
-			cliente = controlador.obtenercliente(email, contraseña);
+			ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
+			boolean encontrado = false;
+			int contador = 0;
 			while (contador < cliente.size() && !encontrado) {
 				ClienteAcesso c = cliente.get(contador);
 				if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
@@ -52,4 +50,4 @@ public class prueba {
 		}
 
 	}
-}
+
