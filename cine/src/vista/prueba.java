@@ -9,6 +9,7 @@ import modelo.Pelicula;
 public class prueba {
 
 	private static Scanner sc = new Scanner(System.in);
+	
 
 	public static void main(String args[]) {
 		ControladorDB controlador = new ControladorDB("cine_daw");
@@ -42,11 +43,9 @@ public class prueba {
 			if (encontrado) {
 				System.out.println("login effettuato");
 				mostrarpeliculas(controlador);
-			} else {
-				System.out.println("error");
+				elegirpelicula(controlador);
 			}
 		}
-
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
@@ -56,5 +55,23 @@ public class prueba {
 		for (int i = 0; i < peliculas.size(); i++) {
 			System.out.println(peliculas.toString());
 		}
+	}
+
+	public static void elegirpelicula(ControladorDB controlador) {
+		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
+		System.out.println("selecionar la pelicula que se quiere vivir");
+		String pelicula = sc.nextLine();
+		boolean encontrado = false;
+		int contador = 0;
+		while (contador < peliculas.size() && !encontrado) {
+			Pelicula p = peliculas.get(contador);
+			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
+				encontrado = true;
+				System.out.println("Pelicula selecionada con suceso");
+			} else {
+				contador++;
+			}
+		}
+
 	}
 }
