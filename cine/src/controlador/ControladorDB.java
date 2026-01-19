@@ -1,0 +1,79 @@
+package controlador;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import modelo.ClienteAcesso;
+
+public class ControladorDB {
+	private Connection conexion;
+	private String nombreBD;
+
+	// Constructores
+	public ControladorDB(String nombreBD) {
+		this.nombreBD = nombreBD;
+	}
+
+	public ControladorDB() {
+		// TODO Auto-generated constructor stub
+	}
+
+	// Iniciar conexion
+	public boolean iniciarConexion() {
+		boolean conexionRealizada = false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			// Parametros para la conexion --> URL, user, pass puede hacer falta el puerto
+			// localhost:puerto/
+			conexion = DriverManager.getConnection("jdbc:mysql://localhost/" + this.nombreBD, "root", "");
+			conexionRealizada = true;
+		} catch (ClassNotFoundException e) {
+			System.out.println("No se encontró la librería de sqlconnection.jar");
+		} catch (SQLException e) {
+			System.out.println("no se encontró la BD " + this.nombreBD);
+		}
+
+		return conexionRealizada;
+	}
+
+	// Cerrar conexion
+	public boolean cerrarConexion() {
+		boolean Conexioncerrada = false;
+
+		try {
+			if (conexion != null && !conexion.isClosed()) {
+				conexion.close();
+				Conexioncerrada = true;
+			}
+		} catch (SQLException e) {
+			System.out.println("No hay conexion con la BD");
+		}
+
+		return Conexioncerrada;
+	}
+
+	public  ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
+		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
+		String query = "SELECT email,contraseña FROM cliente";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2));
+				cliente.add(nuevoCliente);
+			}
+			consulta.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return cliente;
+	}
+
+}
