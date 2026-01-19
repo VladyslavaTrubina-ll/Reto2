@@ -15,7 +15,7 @@ public class Pelicula {
 
 	@Override
 	public String toString() {
-		return "Pelicula [titulo=" + titulo + ", duracion=" + duracion + "]";
+		return "Pelicula [titulo=" + titulo + ", duracion=" + duracion + "min]";
 	}
 
 	public String getTitulo() {

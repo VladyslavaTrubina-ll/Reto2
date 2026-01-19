@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
+import modelo.Pelicula;
 import modelo.ClienteAcesso;
 
 public class ControladorDB {
@@ -56,7 +56,7 @@ public class ControladorDB {
 		return Conexioncerrada;
 	}
 
-	public  ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
+	public ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
 		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
 		String query = "SELECT email,contraseña FROM cliente";
 		try {
@@ -76,4 +76,23 @@ public class ControladorDB {
 		return cliente;
 	}
 
+	public ArrayList<Pelicula> obtenerpelis() {
+		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
+		String query = "Select Titulo, duracion FROM pelicula";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2));
+				pelis.add(nuevaPeli);
+			}
+			consulta.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return pelis;
+	}
 }
