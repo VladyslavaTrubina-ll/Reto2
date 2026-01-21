@@ -58,7 +58,7 @@ public class ControladorDB {
 
 	public ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
 		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
-		String query = "SELECT email,contraseña FROM cliente";
+		String query = "SELECT email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -78,7 +78,7 @@ public class ControladorDB {
 
 	public ArrayList<Pelicula> obtenerpelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		String query = "Select Titulo, duracion FROM pelicula";
+		String query = "Select Titulo, duracion FROM Pelicula";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
