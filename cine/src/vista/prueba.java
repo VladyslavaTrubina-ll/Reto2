@@ -2,6 +2,8 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
+import modelo.FechaSesion;
+
 import java.util.ArrayList;
 import controlador.ControladorDB;
 import modelo.Pelicula;
@@ -53,6 +55,7 @@ public class prueba {
 		System.out.println("---------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
+			Pelicula p = peliculas.get(i);
 			System.out.println(peliculas.toString());
 		}
 	}
@@ -68,10 +71,20 @@ public class prueba {
 			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
 				encontrado = true;
 				System.out.println("Pelicula selecionada con suceso");
+				mostarfecha(controlador, pelicula);
 			} else {
 				contador++;
 			}
 		}
 
 	}
+public static void mostarfecha(ControladorDB controlador, String titulo) {
+	ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+	for (int i = 0; i< fechas.size(); i++ ) {
+		FechaSesion fecha = fechas.get(i);
+		System.out.println(fecha.toString());
+	}
+	
+	}
 }
+

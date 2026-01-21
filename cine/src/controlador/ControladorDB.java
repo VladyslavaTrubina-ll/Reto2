@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import modelo.Pelicula;
 import modelo.ClienteAcesso;
+import modelo.FechaSesion;
 
 public class ControladorDB {
 	private Connection conexion;
@@ -94,5 +95,25 @@ public class ControladorDB {
 		}
 
 		return pelis;
+	}
+
+	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) {
+		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
+		String query = "SELECT  DISTINCT fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
+				+ titulo + "'";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				FechaSesion nuevafechasesion = new FechaSesion(resultado.getString(1));
+				fechapeli.add(nuevafechasesion);
+
+			}
+			consulta.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return fechapeli;
 	}
 }
