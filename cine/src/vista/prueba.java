@@ -3,6 +3,7 @@ package vista;
 import java.util.Scanner;
 import modelo.ClienteAcesso;
 import modelo.FechaSesion;
+import modelo.OrarioPrecioSalaSesion;
 
 import java.util.ArrayList;
 import controlador.ControladorDB;
@@ -83,19 +84,33 @@ public class prueba {
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
 		}
-		elegirfecha(fechas);
+		FechaSesion fechaelegida = elegirfecha(controlador, fechas);
+
+		if (fechaelegida != null) {
+			mostrarorariopreciosala(controlador, fechaelegida);
+		}
 	}
 
-	public static FechaSesion elegirfecha(ArrayList<FechaSesion> fechas2) {
+	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
 		System.out.println("Elegir una fecha");
 		int opcion = sc.nextInt();
-		if (fechas2.isEmpty()) {
+		if (fechas.isEmpty()) {
 			System.out.println("error");
+			return null;
 
-		} else {
-			System.out.println("bene");
 		}
 
-		return fechas2.get(opcion - 1);
+		FechaSesion fechaelegida = fechas.get(opcion - 1);
+		return fechaelegida;
 	}
+
+	public static void mostrarorariopreciosala(ControladorDB controlador, FechaSesion fecha) {
+		ArrayList<FechaSesion> unafecha = new ArrayList<>();
+		unafecha.add(fecha);
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = controlador.obtenerhorariopreciosala(unafecha);
+		for (int i = 0; i < orariopreciosala.size(); i++) {
+			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
+		}
+	}
+
 }

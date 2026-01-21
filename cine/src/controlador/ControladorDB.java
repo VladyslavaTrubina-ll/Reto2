@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import modelo.Pelicula;
 import modelo.ClienteAcesso;
 import modelo.FechaSesion;
+import modelo.OrarioPrecioSalaSesion;
 
 public class ControladorDB {
 	private Connection conexion;
@@ -99,7 +100,7 @@ public class ControladorDB {
 
 	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) {
 		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
-		String query = "SELECT  DISTINCT fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
+		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
 				+ titulo + "'";
 		try {
 			Statement consulta = conexion.createStatement();
@@ -114,6 +115,29 @@ public class ControladorDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	return fechapeli;
+		return fechapeli;
 	}
+
+	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas) {
+		if (fechas.isEmpty()) return new ArrayList<>();
+		String fechaString = fechas.get(0).getFecha();
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = new ArrayList<OrarioPrecioSalaSesion>();
+		String query = "SELECT hora_inicio, precio_sesion, SA.nombre FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
+				+ fechaString + "'";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				OrarioPrecioSalaSesion neworariopreciosesion = new OrarioPrecioSalaSesion(resultado.getString(1),
+						resultado.getDouble(2), resultado.getString(3));
+				orariopreciosala.add(neworariopreciosesion);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orariopreciosala;
+	}
+
 }
