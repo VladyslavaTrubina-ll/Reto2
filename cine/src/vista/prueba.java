@@ -11,7 +11,6 @@ import modelo.Pelicula;
 public class prueba {
 
 	private static Scanner sc = new Scanner(System.in);
-	
 
 	public static void main(String args[]) {
 		ControladorDB controlador = new ControladorDB("cine_daw");
@@ -78,13 +77,25 @@ public class prueba {
 		}
 
 	}
-public static void mostarfecha(ControladorDB controlador, String titulo) {
-	ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
-	for (int i = 0; i< fechas.size(); i++ ) {
-		FechaSesion fecha = fechas.get(i);
-		System.out.println(fecha.toString());
+
+	public static void mostarfecha(ControladorDB controlador, String titulo) {
+		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+		for (int i = 0; i < fechas.size(); i++) {
+			System.out.println((1 + i) + ". " + (fechas.get(i)));
+		}
+		elegirfecha(fechas);
 	}
-	
+
+	public static FechaSesion elegirfecha(ArrayList<FechaSesion> fechas2) {
+		System.out.println("Elegir una fecha");
+		int opcion = sc.nextInt();
+		if (fechas2.isEmpty()) {
+			System.out.println("error");
+
+		} else {
+			System.out.println("bene");
+		}
+
+		return fechas2.get(opcion - 1);
 	}
 }
-
