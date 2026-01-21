@@ -84,16 +84,13 @@ public class prueba {
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
 		}
-		FechaSesion fechaelegida = elegirfecha(controlador, fechas);
-
-		if (fechaelegida != null) {
-			mostrarorariopreciosala(controlador, fechaelegida);
-		}
+      elegirfecha(controlador, fechas);
 	}
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
 		System.out.println("Elegir una fecha");
 		int opcion = sc.nextInt();
+		sc.nextLine();
 		if (fechas.isEmpty()) {
 			System.out.println("error");
 			return null;
@@ -101,6 +98,7 @@ public class prueba {
 		}
 
 		FechaSesion fechaelegida = fechas.get(opcion - 1);
+		mostrarorariopreciosala(controlador, fechaelegida);
 		return fechaelegida;
 	}
 
