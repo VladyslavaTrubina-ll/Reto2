@@ -11,10 +11,10 @@ import modelo.Pelicula;
 
 public class prueba {
 
-	private static Scanner sc = new Scanner(System.in);
+	public static Scanner sc = new Scanner(System.in);
 
 	public static void main(String args[]) {
-		Scanner sc = new Scanner(System.in);
+	
 		ControladorDB controlador = new ControladorDB("cine_daw");
 		boolean conexionConExito = controlador.iniciarConexion();
 		if (conexionConExito) {
@@ -27,6 +27,19 @@ public class prueba {
 		String peliculaElegida = elegirpelicula(controlador);
 		ArrayList<FechaSesion> fecha = mostarfecha(controlador, peliculaElegida);
 		elegirfecha(controlador, fecha);
+		FechaSesion fechaelegida = elegirfecha(controlador, fecha);
+
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+		System.out.println("Quieres volver a la selecion de pelicula?");
+		String respuesta = sc.nextLine();
+		if (respuesta.contentEquals("si")) {
+			mostrarpeliculas(controlador);
+
+		} else {
+			elegirorario(controlador, orariopreciosala);
+
+		}
+
 	}
 
 	public static void login(ControladorDB controlador) {
@@ -66,7 +79,6 @@ public class prueba {
 	}
 
 	public static String elegirpelicula(ControladorDB controlador) {
-		Scanner sc = new Scanner(System.in);
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		System.out.print("Elige la pelicula que te interesa: ");
 		String pelicula = sc.nextLine();
@@ -95,30 +107,21 @@ public class prueba {
 		if (fechas.isEmpty()) {
 			System.out.println("error");
 			return null;
-
 		}
 
 		FechaSesion fechaelegida = fechas.get(opcion - 1);
-		mostrarorariopreciosala(controlador, fechaelegida);
 		return fechaelegida;
 	}
 
-	public static void mostrarorariopreciosala(ControladorDB controlador, FechaSesion fecha) {
+	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(ControladorDB controlador,
+			FechaSesion fecha) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = controlador.obtenerhorariopreciosala(unafecha);
 		for (int i = 0; i < orariopreciosala.size(); i++) {
 			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
 		}
-		System.out.println("Quieres volver a la selecion de pelicula?");
-		String respuesta = sc.nextLine();
-		if (respuesta.contentEquals("si")) {
-			elegirorario(controlador, orariopreciosala);
-
-		} else {
-			mostrarpeliculas(controlador);
-		}
-
+		return orariopreciosala;
 	}
 
 	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
