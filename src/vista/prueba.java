@@ -68,7 +68,7 @@ public class prueba {
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
 		System.out.println("\n-------------------------------------");
-		System.out.println("		Pelicuals disponibles");
+		System.out.println("      Pelicuals disponibles");
 		System.out.println("-------------------------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
@@ -80,16 +80,24 @@ public class prueba {
 
 	public static String elegirpelicula(ControladorDB controlador) {
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		System.out.print("Elige la pelicula que te interesa: ");
-		String pelicula = sc.nextLine();
-		for (Pelicula p : peliculas) {
-			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-				System.out.println("Has elegido " + pelicula);
-				return p.getTitulo();
+		String peliculaElegida = null;
+		while (peliculaElegida == null) {
+			System.out.println("\n-------------------------------------");
+			System.out.print("Elige la pelicula que te interesa: ");
+			String pelicula = sc.nextLine();
+			for (Pelicula p : peliculas) {
+				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
+					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
+					System.out.println("\nHas elegido " + capitalizado);
+					peliculaElegida = capitalizado;
+					break;
+				}
+			}
+			if (peliculaElegida == null) {
+				System.out.println("Lo siento pelicula no encontrada!");
 			}
 		}
-		System.out.println("Pelicula no encontrado");
-		return null;
+		return peliculaElegida;
 	}
 
 	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
@@ -101,7 +109,7 @@ public class prueba {
 	}
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
-		System.out.println("Elege la fecha");
+		System.out.print("Elege la fecha: ");
 		int opcion = sc.nextInt();
 		sc.nextLine();
 		if (fechas.isEmpty()) {
