@@ -80,7 +80,9 @@ public class ControladorDB {
 
 	public ArrayList<Pelicula> obtenerpelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		String query = "Select Titulo, duracion FROM Pelicula";
+		String query = "Select Titulo, duracion FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula\r\n"
+				+ "				WHERE Fecha >= CURDATE() && hora_inicio >= now()\r\n"
+				+ "              ORDER BY fecha, hora_inicio";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -101,7 +103,7 @@ public class ControladorDB {
 	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) {
 		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
 		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
-				+ titulo + "'";
+				+ titulo + "' && fecha >= CURDATE()";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
