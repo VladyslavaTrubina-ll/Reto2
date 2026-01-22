@@ -56,7 +56,7 @@ public class prueba {
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
-			System.out.println(peliculas.toString());
+			System.out.println(p.toString());
 		}
 	}
 
