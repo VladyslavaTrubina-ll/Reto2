@@ -13,7 +13,7 @@ public class EspectadoresSesion {
 
 	@Override
 	public String toString() {
-		return "EspectadoresSesion [espectadores=" + espectadores + "]";
+		return "EspectadoresSesion Sillas ocupadas [espectadores=" + espectadores + "]";
 	}
 
 	public int getEspectadores() {
