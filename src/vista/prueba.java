@@ -2,6 +2,7 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
+import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
 import modelo.OrarioPrecioSalaSesion;
 
@@ -14,7 +15,9 @@ public class prueba {
 	public static Scanner sc = new Scanner(System.in);
 
 	public static void main(String args[]) {
-	
+		ArrayList<FechaSesion> fecha;
+		String respuesta;
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
 		ControladorDB controlador = new ControladorDB("cine_daw");
 		boolean conexionConExito = controlador.iniciarConexion();
 		if (conexionConExito) {
@@ -23,22 +26,18 @@ public class prueba {
 		} else {
 			System.out.println("No hubo suerte");
 		}
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
-		String respuesta;
-		do { mostrarpeliculas(controlador);
-		String peliculaElegida = elegirpelicula(controlador);
-		ArrayList<FechaSesion> fecha = mostarfecha(controlador, peliculaElegida);
-		FechaSesion fechaelegida = elegirfecha(controlador, fecha);
-
-		 orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
-		System.out.println("Quieres volver a la selecion de pelicula?");
-	     respuesta = sc.nextLine();
 		
-		}while (respuesta.contentEquals("si"));
-		elegirorario(controlador, orariopreciosala);	
-		}
+			mostrarpeliculas(controlador);
+			String peliculaElegida = elegirpelicula(controlador);
+			 fecha = mostarfecha(controlador, peliculaElegida);
+			FechaSesion fechaelegida = elegirfecha(controlador, fecha);
 
-	
+			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+		
+		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
+		mostrarespectadores(controlador, fechaelegida, orarioelegido);
+		
+	}
 
 	public static void login(ControladorDB controlador) {
 
@@ -140,9 +139,24 @@ public class prueba {
 			return null;
 		}
 		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
-		return orarioelegido;
+		
+		return orarioelegido; 
 	}
-public static  selecionarnumentradas() {
-	
-}
+
+	public static ArrayList<EspectadoresSesion> mostrarespectadores(ControladorDB controlador, FechaSesion fecha,
+	OrarioPrecioSalaSesion orarioelegido) {
+		ArrayList<FechaSesion> unafecha = new ArrayList<>();
+		unafecha.add(fecha);
+		ArrayList<OrarioPrecioSalaSesion> unorario = new ArrayList<>();
+		unorario.add(orarioelegido);
+		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
+		if (numespectadores.isEmpty()) {
+	        System.out.println("No hay espectadores para esta sesión.");
+	    } else {
+	        for (EspectadoresSesion e : numespectadores) {
+	            System.out.println(e);
+	        }
+	    }
+	    return numespectadores;
+	}
 }
