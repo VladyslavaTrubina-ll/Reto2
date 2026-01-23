@@ -14,7 +14,8 @@ public class prueba {
 	public static Scanner sc = new Scanner(System.in);
 
 	public static void main(String args[]) {
-	
+		String respuesta;
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
 		ControladorDB controlador = new ControladorDB("cine_daw");
 		boolean conexionConExito = controlador.iniciarConexion();
 		if (conexionConExito) {
@@ -23,23 +24,18 @@ public class prueba {
 		} else {
 			System.out.println("No hubo suerte");
 		}
-		mostrarpeliculas(controlador);
-		String peliculaElegida = elegirpelicula(controlador);
-		ArrayList<FechaSesion> fecha = mostarfecha(controlador, peliculaElegida);
-		elegirfecha(controlador, fecha);
-		FechaSesion fechaelegida = elegirfecha(controlador, fecha);
-
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
-		System.out.println("Quieres volver a la selecion de pelicula?");
-		String respuesta = sc.nextLine();
-		if (respuesta.contentEquals("si")) {
+		do {
 			mostrarpeliculas(controlador);
+			String peliculaElegida = elegirpelicula(controlador);
+			ArrayList<FechaSesion> fecha = mostarfecha(controlador, peliculaElegida);
+			FechaSesion fechaelegida = elegirfecha(controlador, fecha);
 
-		} else {
-			elegirorario(controlador, orariopreciosala);
+			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+			System.out.println("Quieres volver a la selecion de pelicula?");
+			respuesta = sc.nextLine();
 
-		}
-
+		} while (respuesta.contentEquals("si"));
+		elegirorario(controlador, orariopreciosala);
 	}
 
 	public static void login(ControladorDB controlador) {
