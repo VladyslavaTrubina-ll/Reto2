@@ -1,13 +1,14 @@
 package modelo;
 
 public class OrarioPrecioSalaSesion {
-	private String orario, sala, precio;
+	private String orario, sala;
+	private double precio;
 
 	public OrarioPrecioSalaSesion() {
 
 	}
 
-	public OrarioPrecioSalaSesion(String orario, String precio, String sala) {
+	public OrarioPrecioSalaSesion(String orario, Double precio, String sala) {
 		this.orario = orario;
 		this.precio = precio;
 		this.sala = sala;
@@ -34,20 +35,11 @@ public class OrarioPrecioSalaSesion {
 		this.sala = sala;
 	}
 
-	public String getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(String precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-
-	public OrarioPrecioSalaSesion(String orario, Double precio, String sala) {
-		this.orario = orario;
-		this.precio = String.valueOf(precio);
-		this.sala = sala;
-	}
-	 public void setPrecio(double precio) {
-	        this.precio = String.valueOf(precio);
-	    }
 }

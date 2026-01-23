@@ -153,6 +153,7 @@ public class ControladorDB {
 			return numespectadores;
 		}
 
+		
 
 	String	hora = orarioelegido.get(0).getOrario();
 	String	Sala = orarioelegido.get(0).getSala();
