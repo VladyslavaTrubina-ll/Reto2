@@ -41,9 +41,9 @@ public class prueba {
 
 	public static void login(ControladorDB controlador) {
 
-		System.out.println("inserire email");
+		System.out.print("Escribe su email: ");
 		String email = sc.nextLine();
-		System.out.println("digitare password");
+		System.out.print("Escribe su password: ");
 		String contraseña = sc.nextLine();
 		ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
 		boolean encontrado = false;
@@ -57,15 +57,16 @@ public class prueba {
 				contador++;
 			}
 			if (encontrado) {
-				System.out.println("login effettuato");
+				System.out.println("\nlogin correcto\n Bien venido!");
 
 			}
 		}
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
-		System.out.println("pelicuals disponibles");
-		System.out.println("---------------------");
+		System.out.println("\n-------------------------------------");
+		System.out.println("      Pelicuals disponibles");
+		System.out.println("-------------------------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
@@ -76,16 +77,24 @@ public class prueba {
 
 	public static String elegirpelicula(ControladorDB controlador) {
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		System.out.println("selecionar la pelicula que se quiere vivir");
-		String pelicula = sc.nextLine();
-		for (Pelicula p : peliculas) {
-			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-				System.out.println("Pelicula selecionada con suceso");
-				return p.getTitulo();
+		String peliculaElegida = null;
+		while (peliculaElegida == null) {
+			System.out.println("\n-------------------------------------");
+			System.out.print("Elige la pelicula que te interesa: ");
+			String pelicula = sc.nextLine();
+			for (Pelicula p : peliculas) {
+				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
+					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
+					System.out.println("\nHas elegido " + capitalizado);
+					peliculaElegida = capitalizado;
+					break;
+				}
+			}
+			if (peliculaElegida == null) {
+				System.out.println("Lo siento pelicula no encontrada!");
 			}
 		}
-		System.out.println("no peli");
-		return null;
+		return peliculaElegida;
 	}
 
 	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
@@ -97,7 +106,7 @@ public class prueba {
 	}
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
-		System.out.println("Elegir una fecha");
+		System.out.print("Elege la fecha: ");
 		int opcion = sc.nextInt();
 		sc.nextLine();
 		if (fechas.isEmpty()) {
@@ -122,11 +131,11 @@ public class prueba {
 
 	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
 			ArrayList<OrarioPrecioSalaSesion> orario) {
-		
+		System.out.println("Elege el horario");
 		int opcion = sc.nextInt();
 		sc.nextLine();
 		if (orario.isEmpty()) {
-			System.out.println("error");
+			System.out.println("Error");
 			return null;
 		}
 		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
