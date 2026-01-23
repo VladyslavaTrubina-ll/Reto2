@@ -23,24 +23,22 @@ public class prueba {
 		} else {
 			System.out.println("No hubo suerte");
 		}
-		mostrarpeliculas(controlador);
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
+		String respuesta;
+		do { mostrarpeliculas(controlador);
 		String peliculaElegida = elegirpelicula(controlador);
 		ArrayList<FechaSesion> fecha = mostarfecha(controlador, peliculaElegida);
-		elegirfecha(controlador, fecha);
 		FechaSesion fechaelegida = elegirfecha(controlador, fecha);
 
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+		 orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
 		System.out.println("Quieres volver a la selecion de pelicula?");
-		String respuesta = sc.nextLine();
-		if (respuesta.contentEquals("si")) {
-			mostrarpeliculas(controlador);
-
-		} else {
-			elegirorario(controlador, orariopreciosala);
-
+	     respuesta = sc.nextLine();
+		
+		}while (respuesta.contentEquals("si"));
+		elegirorario(controlador, orariopreciosala);	
 		}
 
-	}
+	
 
 	public static void login(ControladorDB controlador) {
 
@@ -144,5 +142,7 @@ public class prueba {
 		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
 		return orarioelegido;
 	}
-
+public static  selecionarnumentradas() {
+	
+}
 }
