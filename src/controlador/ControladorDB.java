@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import modelo.Pelicula;
 import modelo.ClienteAcesso;
+import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
 import modelo.OrarioPrecioSalaSesion;
 
@@ -80,7 +81,9 @@ public class ControladorDB {
 
 	public ArrayList<Pelicula> obtenerpelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		String query = "Select Titulo, duracion FROM Pelicula";
+		String query = "Select Titulo, duracion FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula\r\n"
+				+ "				WHERE Fecha >= CURDATE() && hora_inicio >= now()\r\n"
+				+ "              ORDER BY fecha, hora_inicio";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -101,7 +104,7 @@ public class ControladorDB {
 	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) {
 		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
 		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
-				+ titulo + "'";
+				+ titulo + "' && fecha >= CURDATE()";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -119,7 +122,9 @@ public class ControladorDB {
 	}
 
 	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas) {
-		if (fechas.isEmpty()) return new ArrayList<>();
+		if (fechas.isEmpty()) {
+			return new ArrayList<>();
+		}
 		String fechaString = fechas.get(0).getFecha();
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = new ArrayList<OrarioPrecioSalaSesion>();
 		String query = "SELECT hora_inicio, precio_sesion, SA.nombre FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
@@ -138,6 +143,36 @@ public class ControladorDB {
 			e.printStackTrace();
 		}
 		return orariopreciosala;
+
 	}
 
+	public ArrayList<EspectadoresSesion> obtenerespectadoresporsesion(ArrayList<FechaSesion> fecha, ArrayList<OrarioPrecioSalaSesion> orarioelegido) {
+		String fechaElegida;
+		ArrayList<EspectadoresSesion> numespectadores = new ArrayList<EspectadoresSesion>();
+		if (fecha.isEmpty() || orarioelegido.isEmpty()) {
+			return numespectadores;
+		}
+
+		
+
+	String	hora = orarioelegido.get(0).getOrario();
+	String	Sala = orarioelegido.get(0).getSala();
+    fechaElegida = fecha.get(0).getFecha();
+		
+    String query = "SELECT espectadores FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE SE.hora_inicio = '"
+				+ hora + "' AND SA.nombre = '" + Sala + "' AND SE.fecha = '" + fechaElegida + "'";
+
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				EspectadoresSesion newnumespectadores = new EspectadoresSesion(resultado.getInt("espectadores"));
+				numespectadores.add(newnumespectadores);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return numespectadores;
+	}
 }

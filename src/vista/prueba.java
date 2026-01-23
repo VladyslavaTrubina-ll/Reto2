@@ -2,6 +2,7 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
+import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
 import modelo.OrarioPrecioSalaSesion;
 
@@ -11,9 +12,12 @@ import modelo.Pelicula;
 
 public class prueba {
 
-	private static Scanner sc = new Scanner(System.in);
+	public static Scanner sc = new Scanner(System.in);
 
 	public static void main(String args[]) {
+		ArrayList<FechaSesion> fecha;
+		String respuesta;
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
 		ControladorDB controlador = new ControladorDB("cine_daw");
 		boolean conexionConExito = controlador.iniciarConexion();
 		if (conexionConExito) {
@@ -22,14 +26,24 @@ public class prueba {
 		} else {
 			System.out.println("No hubo suerte");
 		}
+		
+			mostrarpeliculas(controlador);
+			String peliculaElegida = elegirpelicula(controlador);
+			 fecha = mostarfecha(controlador, peliculaElegida);
+			FechaSesion fechaelegida = elegirfecha(controlador, fecha);
 
+			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+		
+		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
+		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
+		
 	}
 
 	public static void login(ControladorDB controlador) {
 
-		System.out.println("inserire email");
+		System.out.print("Escribe su email: ");
 		String email = sc.nextLine();
-		System.out.println("digitare password");
+		System.out.print("Escribe su password: ");
 		String contraseña = sc.nextLine();
 		ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
 		boolean encontrado = false;
@@ -43,72 +57,106 @@ public class prueba {
 				contador++;
 			}
 			if (encontrado) {
-				System.out.println("login effettuato");
-				mostrarpeliculas(controlador);
-				elegirpelicula(controlador);
+				System.out.println("\nlogin correcto\n Bien venido!");
+
 			}
 		}
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
-		System.out.println("pelicuals disponibles");
-		System.out.println("---------------------");
+		System.out.println("\n-------------------------------------");
+		System.out.println("      Pelicuals disponibles");
+		System.out.println("-------------------------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
-			System.out.println(peliculas.toString());
+			System.out.println(p.toString());
 		}
+
 	}
 
-	public static void elegirpelicula(ControladorDB controlador) {
+	public static String elegirpelicula(ControladorDB controlador) {
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		System.out.println("selecionar la pelicula que se quiere vivir");
-		String pelicula = sc.nextLine();
-		boolean encontrado = false;
-		int contador = 0;
-		while (contador < peliculas.size() && !encontrado) {
-			Pelicula p = peliculas.get(contador);
-			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-				encontrado = true;
-				System.out.println("Pelicula selecionada con suceso");
-				mostarfecha(controlador, pelicula);
-			} else {
-				contador++;
+		String peliculaElegida = null;
+		while (peliculaElegida == null) {
+			System.out.println("\n-------------------------------------");
+			System.out.print("Elige la pelicula que te interesa: ");
+			String pelicula = sc.nextLine();
+			for (Pelicula p : peliculas) {
+				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
+					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
+					System.out.println("\nHas elegido " + capitalizado);
+					peliculaElegida = capitalizado;
+					break;
+				}
+			}
+			if (peliculaElegida == null) {
+				System.out.println("Lo siento pelicula no encontrada!");
 			}
 		}
-
+		return peliculaElegida;
 	}
 
-	public static void mostarfecha(ControladorDB controlador, String titulo) {
+	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
 		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
 		}
-      elegirfecha(controlador, fechas);
+		return fechas;
 	}
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
-		System.out.println("Elegir una fecha");
+		System.out.print("Elege la fecha: ");
 		int opcion = sc.nextInt();
 		sc.nextLine();
 		if (fechas.isEmpty()) {
 			System.out.println("error");
 			return null;
-
 		}
 
 		FechaSesion fechaelegida = fechas.get(opcion - 1);
-		mostrarorariopreciosala(controlador, fechaelegida);
 		return fechaelegida;
 	}
 
-	public static void mostrarorariopreciosala(ControladorDB controlador, FechaSesion fecha) {
+	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(ControladorDB controlador,
+			FechaSesion fecha) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = controlador.obtenerhorariopreciosala(unafecha);
 		for (int i = 0; i < orariopreciosala.size(); i++) {
 			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
 		}
+		return orariopreciosala;
 	}
 
+	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
+			ArrayList<OrarioPrecioSalaSesion> orario) {
+		System.out.println("Elege el horario");
+		int opcion = sc.nextInt();
+		sc.nextLine();
+		if (orario.isEmpty()) {
+			System.out.println("Error");
+			return null;
+		}
+		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
+		
+		return orarioelegido; 
+	}
+
+	public static ArrayList<EspectadoresSesion> mostrarespectadores(ControladorDB controlador, FechaSesion fecha,
+	OrarioPrecioSalaSesion orarioelegido) {
+		ArrayList<FechaSesion> unafecha = new ArrayList<>();
+		unafecha.add(fecha);
+		ArrayList<OrarioPrecioSalaSesion> unorario = new ArrayList<>();
+		unorario.add(orarioelegido);
+		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
+		if (numespectadores.isEmpty()) {
+	        System.out.println("No hay espectadores para esta sesión.");
+	    } else {
+	        for (EspectadoresSesion e : numespectadores) {
+	            System.out.println(e);
+	        }
+	    }
+	    return numespectadores;
+	}
 }
