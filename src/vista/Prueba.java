@@ -8,9 +8,10 @@ import modelo.OrarioPrecioSalaSesion;
 
 import java.util.ArrayList;
 import controlador.ControladorDB;
+import controlador.ControlEntrada;
 import modelo.Pelicula;
 
-public class prueba {
+public class Prueba {
 
 	public static Scanner sc = new Scanner(System.in);
 
@@ -20,19 +21,31 @@ public class prueba {
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
 		ControladorDB controlador = new ControladorDB("cine_daw");
 		boolean conexionConExito = controlador.iniciarConexion();
+		
+		//TODO Tienes cuenta? login o registrarse
 		if (conexionConExito) {
 			System.out.println("Se realizó la conexion con exito");
 			login(controlador);
 		} else {
 			System.out.println("No hubo suerte");
 		}
-		
-			mostrarpeliculas(controlador);
-			String peliculaElegida = elegirpelicula(controlador);
-			 fecha = mostarfecha(controlador, peliculaElegida);
-			FechaSesion fechaelegida = elegirfecha(controlador, fecha);
+		mostrarpeliculas(controlador);
+		//TODO Qieres elegir pelicula? (si/no)
+		String respuesta = ControlEntrada.oncionSiNo();
+		if (respuesta.equalsIgnoreCase("no")) {
+			//TODO timar si hay algo en carrito
+		} else {
+			//elegir pelicula
+			String peliculaElegida = elegirPelicula(controlador);
+			//mostrarán las fechas en las que se puede ver esa película
 
-			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+			//Elegir fecha
+		}
+		
+		fecha = mostarfecha(controlador, peliculaElegida);
+		FechaSesion fechaelegida = elegirfecha(controlador, fecha);
+
+		orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
 		
 		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
 		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
@@ -57,7 +70,7 @@ public class prueba {
 				contador++;
 			}
 			if (encontrado) {
-				System.out.println("\n    login correcto\n   Bien venido!");
+				System.out.println("\n    login correcto\n     Bien venido!");
 
 			}
 		}
@@ -75,18 +88,35 @@ public class prueba {
 
 	}
 
-	public static String elegirpelicula(ControladorDB controlador) {
+	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
+		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+		for (int i = 0; i < fechas.size(); i++) {
+			System.out.println((1 + i) + ". " + (fechas.get(i)));
+		}
+		return fechas;
+	}
+
+	public static String elegirPelicula(ControladorDB controlador) {
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		String peliculaElegida = null;
-		while (peliculaElegida == null) {
+		while (peliculaElegida == null)
+			{
 			System.out.println("\n-------------------------------------");
 			System.out.print("Elige la pelicula que te interesa: ");
 			String pelicula = sc.nextLine();
+
+			if (pelicula == null || pelicula.trim().isEmpty()) {
+				System.out.println("Debes escribir un titulo.");
+				continue;
+			}
+			String busquedaNormalizada = ControlEntrada.textoIgnorCase(pelicula);
+
 			for (Pelicula p : peliculas) {
-				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
-					System.out.println("\nHas elegido: " + capitalizado);
-					peliculaElegida = capitalizado;
+				String tituloNormalizado = ControlEntrada.textoIgnorCase(p.getTitulo());
+				if (busquedaNormalizada.equals(tituloNormalizado) || tituloNormalizado.contains(busquedaNormalizada)) {
+					String tituloOriginal = p.getTitulo().trim();
+					System.out.println("\nHas elegido: " + tituloOriginal);
+					peliculaElegida = tituloOriginal;
 					break;
 				}
 			}
@@ -95,14 +125,6 @@ public class prueba {
 			}
 		}
 		return peliculaElegida;
-	}
-
-	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
-		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
-		for (int i = 0; i < fechas.size(); i++) {
-			System.out.println((1 + i) + ". " + (fechas.get(i)));
-		}
-		return fechas;
 	}
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
