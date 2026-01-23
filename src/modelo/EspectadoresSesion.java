@@ -13,7 +13,7 @@ public class EspectadoresSesion {
 
 	@Override
 	public String toString() {
-		return "EspectadoresSesion [espectadores=" + espectadores + "]";
+		return "EspectadoresSesion Sillas ocupadas [espectadores=" + espectadores + "]";
 	}
 
 	public int getEspectadores() {
@@ -22,5 +22,9 @@ public class EspectadoresSesion {
 
 	public void setEspectadores(int espectadores) {
 		this.espectadores = espectadores;
+	}
+
+	public void anadirespectadores(int nuevoespectadores) {
+		this.espectadores = espectadores + nuevoespectadores;
 	}
 }

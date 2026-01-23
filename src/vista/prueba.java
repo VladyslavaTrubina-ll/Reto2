@@ -13,11 +13,11 @@ import modelo.Sala;
 
 public class prueba {
 	public static Scanner sc = new Scanner(System.in);
-	static Sala S1 = new Sala("SAL01", 70);
-	static Sala S2 = new Sala("SAL02", 55);
-	static Sala S3 = new Sala("SAL03", 50);
-	static Sala S4 = new Sala("SAL04", 50);
-	static Sala S5 = new Sala("SAL05", 80);
+	private Sala S1 = new Sala("SAL01", 70);
+	private Sala S2 = new Sala("SAL02", 55);
+	private Sala S3 = new Sala("SAL03", 50);
+	private Sala S4 = new Sala("SAL04", 50);
+	private Sala S5 = new Sala("SAL05", 80);
 
 	public static void main(String args[]) {
 		ArrayList<FechaSesion> fecha;
@@ -149,13 +149,17 @@ public class prueba {
 		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
 		if (numespectadores.isEmpty()) {
 			System.out.println("No hay espectadores para esta sesión.");
-		} 
-		
+		}
 		return numespectadores;
 	}
 
 	public static void sitiosdisponibles(ArrayList<EspectadoresSesion> espectadores) {
-               if (espectadores.size() == S1.getSitios() || espectadores.size() == S2.getSitios()
+		Sala S1 = new Sala("SAL01", 70);
+		Sala S2 = new Sala("SAL02", 55);
+		Sala S3 = new Sala("SAL03", 50);
+		Sala S4 = new Sala("SAL04", 50);
+		Sala S5 = new Sala("SAL05", 80);
+		if (espectadores.size() == S1.getSitios() || espectadores.size() == S2.getSitios()
 				|| espectadores.size() == S3.getSitios() || espectadores.size() == S4.getSitios()
 				|| espectadores.size() == S5.getSitios()) {
 			System.out.println("no hay sitios disponibles");
