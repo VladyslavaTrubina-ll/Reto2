@@ -57,7 +57,7 @@ public class prueba {
 				contador++;
 			}
 			if (encontrado) {
-				System.out.println("\nlogin correcto\n Bien venido!");
+				System.out.println("\n    login correcto\n   Bien venido!");
 
 			}
 		}
@@ -85,7 +85,7 @@ public class prueba {
 			for (Pelicula p : peliculas) {
 				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
 					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
-					System.out.println("\nHas elegido " + capitalizado);
+					System.out.println("\nHas elegido: " + capitalizado);
 					peliculaElegida = capitalizado;
 					break;
 				}
@@ -107,6 +107,7 @@ public class prueba {
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
 		System.out.print("Elege la fecha: ");
+		System.out.print("");
 		int opcion = sc.nextInt();
 		sc.nextLine();
 		if (fechas.isEmpty()) {
@@ -131,7 +132,8 @@ public class prueba {
 
 	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
 			ArrayList<OrarioPrecioSalaSesion> orario) {
-		System.out.println("Elege el horario");
+		System.out.print("Elege el sesion: ");
+		System.out.print("");
 		int opcion = sc.nextInt();
 		sc.nextLine();
 		if (orario.isEmpty()) {
