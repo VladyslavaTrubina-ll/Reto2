@@ -13,11 +13,11 @@ import modelo.Sala;
 
 public class prueba {
 	public static Scanner sc = new Scanner(System.in);
-	private Sala S1 = new Sala("SAL01", 70);
-	private Sala S2 = new Sala("SAL02", 55);
-	private Sala S3 = new Sala("SAL03", 50);
-	private Sala S4 = new Sala("SAL04", 50);
-	private Sala S5 = new Sala("SAL05", 80);
+	static Sala S1 = new Sala("SAL01", 70);
+	static Sala S2 = new Sala("SAL02", 55);
+	static Sala S3 = new Sala("SAL03", 50);
+	static Sala S4 = new Sala("SAL04", 50);
+	static Sala S5 = new Sala("SAL05", 80);
 
 	public static void main(String args[]) {
 		ArrayList<FechaSesion> fecha;
@@ -27,9 +27,12 @@ public class prueba {
 		boolean conexionConExito = controlador.iniciarConexion();
 		if (conexionConExito) {
 			System.out.println("Se realizó la conexion con exito");
-			login(controlador);
+			if (!login(controlador)) {
+				return;
+			}
 		} else {
 			System.out.println("No hubo suerte");
+			return;
 		}
 
 		mostrarpeliculas(controlador);
@@ -42,10 +45,11 @@ public class prueba {
 		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
 		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
 		sitiosdisponibles(printespectadores);
+		selecionarnumerositios(printespectadores);
 
 	}
 
-	public static void login(ControladorDB controlador) {
+	public static boolean login(ControladorDB controlador) {
 
 		System.out.println("inserire email");
 		String email = sc.nextLine();
@@ -58,15 +62,16 @@ public class prueba {
 			ClienteAcesso c = cliente.get(contador);
 			if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
 				encontrado = true;
-
-			} else {
-				contador++;
-			}
-			if (encontrado) {
 				System.out.println("login effettuato");
-
+				return true;
 			}
+			contador++;
 		}
+		if (!encontrado) {
+			System.out.println("error");
+
+		}
+		return encontrado;
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
@@ -153,19 +158,30 @@ public class prueba {
 		return numespectadores;
 	}
 
-	public static void sitiosdisponibles(ArrayList<EspectadoresSesion> espectadores) {
-		Sala S1 = new Sala("SAL01", 70);
-		Sala S2 = new Sala("SAL02", 55);
-		Sala S3 = new Sala("SAL03", 50);
-		Sala S4 = new Sala("SAL04", 50);
-		Sala S5 = new Sala("SAL05", 80);
-		if (espectadores.size() == S1.getSitios() || espectadores.size() == S2.getSitios()
-				|| espectadores.size() == S3.getSitios() || espectadores.size() == S4.getSitios()
-				|| espectadores.size() == S5.getSitios()) {
+	public static int sitiosdisponibles(ArrayList<EspectadoresSesion> espectadores) {
+		int postidisponibili = espectadores.get(0).getEspectadores();
+		if (postidisponibili == S1.getSitios() || postidisponibili == S2.getSitios()
+				||postidisponibili == S3.getSitios() ||postidisponibili == S4.getSitios()
+				|| postidisponibili == S5.getSitios()) {
 			System.out.println("no hay sitios disponibles");
-		} else {
-			System.out.println("Elegir un numero de personas");
 		}
+		return postidisponibili;
 	}
 
+	public static void selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores) {
+		System.out.println("Elegir el numero de partecipantes");
+		int partecipantes = sc.nextInt();
+		if (partecipantes >= (S1.getSitios() - sitiosdisponibles(espectadores))
+				|| partecipantes >= (S2.getSitios() - sitiosdisponibles(espectadores))
+				|| partecipantes >= (S3.getSitios() - sitiosdisponibles(espectadores))
+				|| partecipantes >= (S4.getSitios() - sitiosdisponibles(espectadores))
+				|| partecipantes >= (S5.getSitios() - sitiosdisponibles(espectadores))) {
+			System.out.println("no hay sitios");
+
+		} else {
+			espectadores.get(0).anadirespectadores(partecipantes);
+			espectadores.toString();
+		}
+
+	}
 }
