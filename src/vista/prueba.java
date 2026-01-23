@@ -35,7 +35,7 @@ public class prueba {
 			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
 		
 		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
-		mostrarespectadores(controlador, fechaelegida, orarioelegido);
+		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
 		
 	}
 
