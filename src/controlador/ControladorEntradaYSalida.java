@@ -1,0 +1,48 @@
+package controlador;
+
+import java.util.*;
+
+public class ControladorEntradaYSalida {
+	private Scanner sc;
+
+	public ControladorEntradaYSalida() {
+		this.sc = new Scanner(System.in);
+	}
+
+	public int esValorMenuValido(int minimo, int maximo) {
+		while (true) {
+			System.out.print("Seleccione una opción (" + minimo + "-" + maximo + "): ");
+
+			if (!sc.hasNextLine()) {
+				return -1;
+			}
+
+			String entrada = sc.nextLine().trim();
+
+			// Salir con 0 si el usuario quiere cancelar (opcional)
+			if (entrada.equalsIgnoreCase("salir") || entrada.equals("0")) {
+				return -1;
+			}
+
+			try {
+				int opcion = Integer.parseInt(entrada);
+
+				if (opcion >= minimo && opcion <= maximo) {
+					return opcion;
+				} else {
+					System.out.println("Error: La opción debe estar entre " + minimo + " y " + maximo);
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Error: Debe ingresar un número válido");
+			}
+		}
+	}
+
+	public String leerCadena() {
+		return sc.nextLine();
+	}
+
+	public int leerEntero() {
+		return sc.nextInt();
+	}
+}

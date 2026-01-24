@@ -5,19 +5,20 @@ import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
 import modelo.OrarioPrecioSalaSesion;
-
+import controlador.ControladorEntradaYSalida;
 import java.util.ArrayList;
 import controlador.ControladorDB;
 import modelo.Pelicula;
 import modelo.Sala;
 
 public class prueba {
-	public static Scanner sc = new Scanner(System.in);
+	
 	static Sala S1 = new Sala("SAL01", 70);
 	static Sala S2 = new Sala("SAL02", 55);
 	static Sala S3 = new Sala("SAL03", 50);
 	static Sala S4 = new Sala("SAL04", 50);
 	static Sala S5 = new Sala("SAL05", 80);
+	static ControladorEntradaYSalida controladorentrada = new ControladorEntradaYSalida(); 
 
 	public static void main(String args[]) {
 		ArrayList<FechaSesion> fecha;
@@ -52,9 +53,9 @@ public class prueba {
 	public static boolean login(ControladorDB controlador) {
 
 		System.out.println("inserire email");
-		String email = sc.nextLine();
+		String email = controladorentrada.leerCadena();
 		System.out.println("digitare password");
-		String contraseña = sc.nextLine();
+		String contraseña = controladorentrada.leerCadena();
 		ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
 		boolean encontrado = false;
 		int contador = 0;
@@ -87,8 +88,8 @@ public class prueba {
 
 	public static String elegirpelicula(ControladorDB controlador) {
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		System.out.println("selecionar la pelicula que se quiere vivir");
-		String pelicula = sc.nextLine();
+		System.out.println("selecionar la pelicula que se quiere ver");
+		String pelicula = controladorentrada.leerCadena();
 		for (Pelicula p : peliculas) {
 			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
 				System.out.println("Pelicula selecionada con suceso");
@@ -109,15 +110,13 @@ public class prueba {
 
 	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
 		System.out.println("Elegir una fecha");
-		int opcion = sc.nextInt();
-		sc.nextLine();
 		if (fechas.isEmpty()) {
 			System.out.println("error");
 			return null;
 		}
 
-		FechaSesion fechaelegida = fechas.get(opcion - 1);
-		return fechaelegida;
+		int opcion = controladorentrada.esValorMenuValido(1, fechas.size());
+		return fechas.get(opcion - 1);
 	}
 
 	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(ControladorDB controlador,
@@ -134,8 +133,8 @@ public class prueba {
 	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
 			ArrayList<OrarioPrecioSalaSesion> orario) {
 
-		int opcion = sc.nextInt();
-		sc.nextLine();
+		int opcion = controladorentrada.esValorMenuValido(1, orario.size());
+		
 		if (orario.isEmpty()) {
 			System.out.println("error");
 			return null;
@@ -159,18 +158,18 @@ public class prueba {
 	}
 
 	public static int sitiosdisponibles(ArrayList<EspectadoresSesion> espectadores) {
-		int postidisponibili = espectadores.get(0).getEspectadores();
-		if (postidisponibili == S1.getSitios() || postidisponibili == S2.getSitios()
-				||postidisponibili == S3.getSitios() ||postidisponibili == S4.getSitios()
-				|| postidisponibili == S5.getSitios()) {
+		int sitiosdisponibles = espectadores.get(0).getEspectadores();
+		if (sitiosdisponibles == S1.getSitios() || sitiosdisponibles == S2.getSitios()
+				|| sitiosdisponibles == S3.getSitios() || sitiosdisponibles == S4.getSitios()
+				|| sitiosdisponibles == S5.getSitios()) {
 			System.out.println("no hay sitios disponibles");
 		}
-		return postidisponibili;
+		return sitiosdisponibles;
 	}
 
 	public static void selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores) {
 		System.out.println("Elegir el numero de partecipantes");
-		int partecipantes = sc.nextInt();
+		int partecipantes = controladorentrada.leerEntero();
 		if (partecipantes >= (S1.getSitios() - sitiosdisponibles(espectadores))
 				|| partecipantes >= (S2.getSitios() - sitiosdisponibles(espectadores))
 				|| partecipantes >= (S3.getSitios() - sitiosdisponibles(espectadores))
