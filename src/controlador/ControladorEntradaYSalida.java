@@ -10,6 +10,7 @@ public class ControladorEntradaYSalida {
 	}
 
 	public int esValorMenuValido(int minimo, int maximo) {
+		 
 		while (true) {
 			System.out.print("Seleccione una opción (" + minimo + "-" + maximo + "): ");
 
@@ -45,4 +46,24 @@ public class ControladorEntradaYSalida {
 	public int leerEntero() {
 		return sc.nextInt();
 	}
+	  public int pedirParticipantes(int asientosDisponibles) {
+	        while (true) {
+	            System.out.print("Numero de participantes (max " + asientosDisponibles + "): ");
+	            
+	            try {
+	                String entrada = sc.nextLine().trim();
+	                int participantes = Integer.parseInt(entrada);
+	                
+	                if (participantes <= 0) {
+	                    System.out.println("Error: Debe ser un número positivo");
+	                } else if (participantes > asientosDisponibles) {
+	                    System.out.println("Error: Solo hay " + asientosDisponibles + " asientos");
+	                } else {
+	                    return participantes; // numero valido //
+	                }
+	            } catch (NumberFormatException e) {
+	                System.out.println("Error: Ingrese un número válido");
+	            }
+	        }
+	    }
 }

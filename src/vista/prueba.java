@@ -12,13 +12,13 @@ import modelo.Pelicula;
 import modelo.Sala;
 
 public class prueba {
-	
-	static Sala S1 = new Sala("SAL01", 70);
-	static Sala S2 = new Sala("SAL02", 55);
-	static Sala S3 = new Sala("SAL03", 50);
-	static Sala S4 = new Sala("SAL04", 50);
-	static Sala S5 = new Sala("SAL05", 80);
-	static ControladorEntradaYSalida controladorentrada = new ControladorEntradaYSalida(); 
+
+	static Sala S1 = new Sala("Sala Principal", 70);
+	static Sala S2 = new Sala("Sala Premium", 55);
+	static Sala S3 = new Sala("Sala 3D", 56);
+	static Sala S4 = new Sala("Sala VIP", 50);
+	static Sala S5 = new Sala("Sala Familiar", 80);
+	static ControladorEntradaYSalida controladorentrada = new ControladorEntradaYSalida();
 
 	public static void main(String args[]) {
 		ArrayList<FechaSesion> fecha;
@@ -45,8 +45,8 @@ public class prueba {
 
 		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
 		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
-		sitiosdisponibles(printespectadores);
-		selecionarnumerositios(printespectadores);
+		espectadoresactuales(printespectadores);
+		selecionarnumerositios(printespectadores, orarioelegido);
 
 	}
 
@@ -134,7 +134,7 @@ public class prueba {
 			ArrayList<OrarioPrecioSalaSesion> orario) {
 
 		int opcion = controladorentrada.esValorMenuValido(1, orario.size());
-		
+
 		if (orario.isEmpty()) {
 			System.out.println("error");
 			return null;
@@ -157,7 +157,7 @@ public class prueba {
 		return numespectadores;
 	}
 
-	public static int sitiosdisponibles(ArrayList<EspectadoresSesion> espectadores) {
+	public static int espectadoresactuales(ArrayList<EspectadoresSesion> espectadores) {
 		int sitiosdisponibles = espectadores.get(0).getEspectadores();
 		if (sitiosdisponibles == S1.getSitios() || sitiosdisponibles == S2.getSitios()
 				|| sitiosdisponibles == S3.getSitios() || sitiosdisponibles == S4.getSitios()
@@ -167,20 +167,30 @@ public class prueba {
 		return sitiosdisponibles;
 	}
 
-	public static void selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores) {
-		System.out.println("Elegir el numero de partecipantes");
-		int partecipantes = controladorentrada.leerEntero();
-		if (partecipantes >= (S1.getSitios() - sitiosdisponibles(espectadores))
-				|| partecipantes >= (S2.getSitios() - sitiosdisponibles(espectadores))
-				|| partecipantes >= (S3.getSitios() - sitiosdisponibles(espectadores))
-				|| partecipantes >= (S4.getSitios() - sitiosdisponibles(espectadores))
-				|| partecipantes >= (S5.getSitios() - sitiosdisponibles(espectadores))) {
-			System.out.println("no hay sitios");
+	public static void selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores,
+			OrarioPrecioSalaSesion obtenersala) {
+		int capacidad = 0;
+		String salanombre = obtenersala.getSala();
 
-		} else {
-			espectadores.get(0).anadirespectadores(partecipantes);
-			espectadores.toString();
-		}
+		if (salanombre.contains("Principal"))
+			capacidad = 70;
+		else if (salanombre.contains("Premium"))
+			capacidad = 55;
+		else if (salanombre.contains("3D"))
+			capacidad = 56;
+		else if (salanombre.contains("VIP"))
+			capacidad = 50;
+		else if (salanombre.contains("Familiar"))
+			capacidad = 80;
+		int ocupados = espectadores.get(0).getEspectadores();
+		int disponibles = capacidad - ocupados;
+		System.out.print("selecionar numero de asientos");
+		int participantes = controladorentrada.pedirParticipantes(disponibles);
+		espectadores.get(0).anadirespectadores(participantes);
+
+		System.out.println("Reservados " + participantes + " asientos");
+		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores());
 
 	}
+
 }
