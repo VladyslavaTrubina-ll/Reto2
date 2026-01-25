@@ -2,14 +2,17 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
+import modelo.Entrada;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
+import modelo.GestorCine;
 import modelo.OrarioPrecioSalaSesion;
 import controlador.ControladorEntradaYSalida;
 import java.util.ArrayList;
 import controlador.ControladorDB;
 import modelo.Pelicula;
 import modelo.Sala;
+import modelo.Carrito;
 
 public class prueba {
 
@@ -18,61 +21,47 @@ public class prueba {
 	static Sala S3 = new Sala("Sala 3D", 56);
 	static Sala S4 = new Sala("Sala VIP", 50);
 	static Sala S5 = new Sala("Sala Familiar", 80);
-	static ControladorEntradaYSalida controladorentrada = new ControladorEntradaYSalida();
+	static GestorCine gestorCine = new GestorCine();
 
 	public static void main(String args[]) {
-		ArrayList<FechaSesion> fecha;
-		String respuesta;
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
-		ControladorDB controlador = new ControladorDB("cine_daw");
-		boolean conexionConExito = controlador.iniciarConexion();
-		if (conexionConExito) {
-			System.out.println("Se realizó la conexion con exito");
-			if (!login(controlador)) {
-				return;
-			}
-		} else {
-			System.out.println("No hubo suerte");
+		// 1. Conexión + Login
+		if (!gestorCine.conexionrealizada()) {
 			return;
 		}
 
-		mostrarpeliculas(controlador);
-		String peliculaElegida = elegirpelicula(controlador);
-		fecha = mostarfecha(controlador, peliculaElegida);
-		FechaSesion fechaelegida = elegirfecha(controlador, fecha);
+		String respuesta;
+		do {
+			//metodos de  visualizacion aquí
+			mostrarpeliculas(gestorCine.controlador);
 
-		orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
+			// logica en GestorCine
+			String peliculaElegida = gestorCine.elegirpelicula(gestorCine.controlador);
 
-		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
-		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
-		espectadoresactuales(printespectadores);
-		selecionarnumerositios(printespectadores, orarioelegido);
+			// visualización
+			ArrayList<FechaSesion> fechas = mostarfecha(peliculaElegida);
 
-	}
+			// Logica en GestorCine
+			FechaSesion fechaelegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
+			ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(fechaelegida);
+			OrarioPrecioSalaSesion orarioelegido = gestorCine.elegirorario(gestorCine.controlador, orariopreciosala);
+			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(
+		            gestorCine.controlador, fechaelegida, orarioelegido);
+			
 
-	public static boolean login(ControladorDB controlador) {
+			
 
-		System.out.println("inserire email");
-		String email = controladorentrada.leerCadena();
-		System.out.println("digitare password");
-		String contraseña = controladorentrada.leerCadena();
-		ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
-		boolean encontrado = false;
-		int contador = 0;
-		while (contador < cliente.size() && !encontrado) {
-			ClienteAcesso c = cliente.get(contador);
-			if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
-				encontrado = true;
-				System.out.println("login effettuato");
-				return true;
-			}
-			contador++;
-		}
-		if (!encontrado) {
-			System.out.println("error");
+			System.out.println("Selecionar mas peliculas?");
+			respuesta = gestorCine.controladorentrada.leerCadena();
+			int espectadoresActuales = cinepieno(printespectadores);
+	        
+	        //  Seleccionar numero de asientos
+	        gestorCine.selecionarnumerositios(printespectadores, orarioelegido);
+	        
+	        // Preguntar si quiere anadir mas películas
+	        System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
+	        respuesta = gestorCine.controladorentrada.leerCadena();
 
-		}
-		return encontrado;
+		} while (respuesta.contains("si"));
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
@@ -86,62 +75,22 @@ public class prueba {
 
 	}
 
-	public static String elegirpelicula(ControladorDB controlador) {
-		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		System.out.println("selecionar la pelicula que se quiere ver");
-		String pelicula = controladorentrada.leerCadena();
-		for (Pelicula p : peliculas) {
-			if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-				System.out.println("Pelicula selecionada con suceso");
-				return p.getTitulo();
-			}
-		}
-		System.out.println("no peli");
-		return null;
-	}
-
-	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
-		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+	public static ArrayList<FechaSesion> mostarfecha(String titulo) {
+		ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(titulo);
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
 		}
 		return fechas;
 	}
 
-	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
-		System.out.println("Elegir una fecha");
-		if (fechas.isEmpty()) {
-			System.out.println("error");
-			return null;
-		}
-
-		int opcion = controladorentrada.esValorMenuValido(1, fechas.size());
-		return fechas.get(opcion - 1);
-	}
-
-	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(ControladorDB controlador,
-			FechaSesion fecha) {
+	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(FechaSesion fecha) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = controlador.obtenerhorariopreciosala(unafecha);
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = gestorCine.controlador.obtenerhorariopreciosala(unafecha);
 		for (int i = 0; i < orariopreciosala.size(); i++) {
 			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
 		}
 		return orariopreciosala;
-	}
-
-	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
-			ArrayList<OrarioPrecioSalaSesion> orario) {
-
-		int opcion = controladorentrada.esValorMenuValido(1, orario.size());
-
-		if (orario.isEmpty()) {
-			System.out.println("error");
-			return null;
-		}
-		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
-
-		return orarioelegido;
 	}
 
 	public static ArrayList<EspectadoresSesion> mostrarespectadores(ControladorDB controlador, FechaSesion fecha,
@@ -157,40 +106,15 @@ public class prueba {
 		return numespectadores;
 	}
 
-	public static int espectadoresactuales(ArrayList<EspectadoresSesion> espectadores) {
+	public static int cinepieno(ArrayList<EspectadoresSesion> espectadores) {
 		int sitiosdisponibles = espectadores.get(0).getEspectadores();
 		if (sitiosdisponibles == S1.getSitios() || sitiosdisponibles == S2.getSitios()
 				|| sitiosdisponibles == S3.getSitios() || sitiosdisponibles == S4.getSitios()
 				|| sitiosdisponibles == S5.getSitios()) {
 			System.out.println("no hay sitios disponibles");
+
 		}
 		return sitiosdisponibles;
-	}
-
-	public static void selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores,
-			OrarioPrecioSalaSesion obtenersala) {
-		int capacidad = 0;
-		String salanombre = obtenersala.getSala();
-
-		if (salanombre.contains("Principal"))
-			capacidad = 70;
-		else if (salanombre.contains("Premium"))
-			capacidad = 55;
-		else if (salanombre.contains("3D"))
-			capacidad = 56;
-		else if (salanombre.contains("VIP"))
-			capacidad = 50;
-		else if (salanombre.contains("Familiar"))
-			capacidad = 80;
-		int ocupados = espectadores.get(0).getEspectadores();
-		int disponibles = capacidad - ocupados;
-		System.out.print("selecionar numero de asientos");
-		int participantes = controladorentrada.pedirParticipantes(disponibles);
-		espectadores.get(0).anadirespectadores(participantes);
-
-		System.out.println("Reservados " + participantes + " asientos");
-		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores());
-
 	}
 
 }
