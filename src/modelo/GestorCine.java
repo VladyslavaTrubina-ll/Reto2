@@ -64,9 +64,10 @@ public class GestorCine {
 		return false;
 	}
 
-	public String elegirpelicula(ControladorDB controlador) {      // elegir pelicula, con ciclo hasta que no se escriba la pelicula, implementado 
-		                                                            //  en el if manera de no contar acentos//
-		                                                             
+	public String elegirpelicula(ControladorDB controlador) { // elegir pelicula, con ciclo hasta que no se escriba la
+																// pelicula, implementado
+																// en el if manera de no contar acentos//
+
 		boolean peliencontrada = false;
 
 		while (!peliencontrada) {
@@ -74,12 +75,10 @@ public class GestorCine {
 			System.out.println("selecionar la pelicula que se quiere ver");
 			String pelicula = controladorentrada.leerCadena();
 			for (Pelicula p : peliculas) {
-				if (pelicula.equalsIgnoreCase(p.getTitulo()) ||
-				        pelicula.replace('á', 'a').replace('é', 'e').replace('í', 'i')
-		                .replace('ó', 'o').replace('ú', 'u')
-		                .equalsIgnoreCase(p.getTitulo().replace('á', 'a')
-		                .replace('é', 'e').replace('í', 'i').replace('ó', 'o')
-		                .replace('ú', 'u'))) {
+				if (pelicula.equalsIgnoreCase(p.getTitulo())
+						|| pelicula.replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o')
+								.replace('ú', 'u').equalsIgnoreCase(p.getTitulo().replace('á', 'a').replace('é', 'e')
+										.replace('í', 'i').replace('ó', 'o').replace('ú', 'u'))) {
 					System.out.println("Pelicula selecionada con suceso");
 					peliencontrada = true;
 					return p.getTitulo();
@@ -91,7 +90,9 @@ public class GestorCine {
 		return null;
 	}
 
-	public FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) { //elegir fecha de pelicula selecionada//
+	public FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) { // elegir fecha de
+																								// pelicula
+																								// selecionada//
 		System.out.println("Elegir una fecha");
 		if (fechas.isEmpty()) {
 			System.out.println("error");
@@ -102,7 +103,17 @@ public class GestorCine {
 		return fechas.get(opcion - 1);
 	}
 
-	public OrarioPrecioSalaSesion elegirorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> orario) { // elegir orario sala y precio en la fecha elegida//
+	public OrarioPrecioSalaSesion elegirorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> orario) { // elegir
+																														// orario
+																														// sala
+																														// y
+																														// precio
+																														// en
+																														// //
+																														// l
+																														// //
+																														// fecha
+																														// elegida//
 
 		int opcion = controladorentrada.esValorMenuValido(1, orario.size());
 
@@ -115,8 +126,17 @@ public class GestorCine {
 		return orarioelegido;
 	}
 
-	public void selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores, OrarioPrecioSalaSesion obtenersala) { //selecionar asientos con controlador 
-		int capacidad = 0;                                                                                                // para que no se puedan selecionar mas asietnso de los dispoibles en la sesion selecionada//
+	public int selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores, OrarioPrecioSalaSesion obtenersala) { // selecionar
+																															// asientos
+																															// con
+		  // Controllo se la lista è vuota - DEVI FERMARE L'ESECUZIONE qui
+	    if (espectadores == null || espectadores.isEmpty()) {
+	        System.out.println("Error: No hay espectadores para esta sesión");
+	        return 0; // AGGIUNGI QUESTO RETURN!
+	    }
+	    
+	    int capacidad = 0;
+	
 		String salanombre = obtenersala.getSala();
 
 		if (salanombre.contains("Principal"))
@@ -136,7 +156,11 @@ public class GestorCine {
 		espectadores.get(0).anadirespectadores(participantes);
 
 		System.out.println("Reservados " + participantes + " asientos");
-		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores());
+		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores()); 
+		return participantes;
+	}
 
+	public void generarEntrada(String titulo, int numeropersonas, double precio, double descuento) {
+		Entrada nuevaentrada = new Entrada();
 	}
 }

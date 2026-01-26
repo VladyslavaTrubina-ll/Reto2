@@ -1,7 +1,7 @@
 package modelo;
 
 public class Entrada {
-	private String pelicula;
+	private String pelicula, orario;
 	private int numeropersonas;
 	private double precio;
 	private double descuento;
@@ -10,18 +10,33 @@ public class Entrada {
 
 	}
 
-	public Entrada(String pelicula, int numeropersonas, double precio, double descuento) {
+	public Entrada(String pelicula, String orario, int numeropersonas, double precio, double descuento) {
 		this.pelicula = pelicula;
 		this.numeropersonas = numeropersonas;
 		this.precio = precio;
 		this.descuento = descuento;
+		this.orario = orario;
 
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Entrada [pelicula=" + pelicula + ", numeropersonas=" + numeropersonas + ", precio=" + precio
-				+ ", descuento=" + descuento + "]";
+		return "Entrada [pelicula=" + pelicula + ", orario=" + orario + ", numeropersonas=" + numeropersonas
+				+ ", precio=" + precio + ", descuento=" + descuento + "]";
+	}
+
+	public String getOrario() {
+		return orario;
+	}
+
+	public void setOrario(String orario) {
+		this.orario = orario;
+	}
+
+	public void setPelicula(String pelicula) {
+		this.pelicula = pelicula;
 	}
 
 	public String getPelicula() {
@@ -54,5 +69,10 @@ public class Entrada {
 
 	public void setDescuento(double descuento) {
 		this.descuento = descuento;
+	}
+
+	public double calcolarpreciototal(double precio, int numeropersonas) {
+		double preciototal = precio * numeropersonas;
+		return preciototal;
 	}
 }

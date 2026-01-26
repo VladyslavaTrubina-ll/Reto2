@@ -9,7 +9,7 @@ public class GestorCarrito {
 	private Carrito carrito;
 
 	public GestorCarrito() {
-
+		this.carrito = new Carrito();
 	}
 
 	public GestorCarrito(Carrito carrito) {
@@ -21,8 +21,8 @@ public class GestorCarrito {
 
 	}
 
-	public double preciototal(double d, double sumatotal) {
-		sumatotal = 0.0;
+	public double preciototal(Entrada entrada) {
+		double sumatotal = 0.0;
 		for (int i = 0; i < carrito.getEntrada().size(); i++) {
 			Entrada entradaActual = carrito.getEntrada().get(i);
 			double precioentrada = entradaActual.getPrecio() * entradaActual.getNumeropersonas();
@@ -46,12 +46,14 @@ public class GestorCarrito {
 		}
 	}
 
-	public void resumencarrito() {
-		double sumatotal = 0.0;
+	public void resumencarrito(Entrada entrada) {
+		
 		System.out.println("*****RESUMEN COMPRA*****");
 		for (int i = 0; i < carrito.getEntrada().size(); i++) {
 			carrito.getEntrada().get(i).getPelicula().toString();
-			preciototal(carrito.getEntrada().get(i).getPrecio(), carrito.getEntrada().get(i).getNumeropersonas());
+			carrito.getPreciototal();
+			carrito.getDescuentoaplicato();
+			entrada.getOrario();
 
 		}
 	}

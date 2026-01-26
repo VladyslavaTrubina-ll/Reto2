@@ -14,6 +14,7 @@ import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Carrito;
 import modelo.GestorCarrito;
+
 public class prueba {
 
 	static Sala S1 = new Sala("Sala Principal", 70);
@@ -32,35 +33,44 @@ public class prueba {
 
 		String respuesta;
 		do {
-			//metodos de  visualizacion aquí
+			// metodos de visualizacion aquí
 			mostrarpeliculas(gestorCine.controlador);
 
-		
 			String peliculaElegida = gestorCine.elegirpelicula(gestorCine.controlador);
 
-		
 			ArrayList<FechaSesion> fechas = mostarfecha(peliculaElegida);
 
 			// Logica en GestorCine
 			FechaSesion fechaelegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
 			ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(fechaelegida);
 			OrarioPrecioSalaSesion orarioelegido = gestorCine.elegirorario(gestorCine.controlador, orariopreciosala);
-			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(
-		            gestorCine.controlador, fechaelegida, orarioelegido);
-			
-
-			
+			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(gestorCine.controlador, fechaelegida,
+					orarioelegido);
 
 			System.out.println("Selecionar mas peliculas?");
 			respuesta = gestorCine.controladorentrada.leerCadena();
-			int espectadoresActuales = cinepieno(printespectadores);
-	        
-	        //  Seleccionar numero de asientos
-	        gestorCine.selecionarnumerositios(printespectadores, orarioelegido);
-	        
-	        // Preguntar si quiere anadir mas películas
-	        System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
-	        respuesta = gestorCine.controladorentrada.leerCadena();
+			//int espectadoresActuales = cinepieno(printespectadores);//
+
+			// Seleccionar numero de asientos
+
+			int posti = gestorCine.selecionarnumerositios(printespectadores, orarioelegido);
+
+			// Preguntar si quiere anadir mas películas
+			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
+			respuesta = gestorCine.controladorentrada.leerCadena();
+
+			double precioentrada = orariopreciosala.get(0).getPrecio();
+			Entrada nuevaentrada = new Entrada();
+			nuevaentrada.setId_sesion(peliculaElegida);
+			nuevaentrada.setNumeropersonas(posti);
+			String orarioentrada = orarioelegido.getOrario();
+			double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
+			nuevaentrada.setOrario(orarioentrada);
+		
+			//gestorcarrito.calculardescuento(nuevaentrada);//
+			gestorcarrito.preciototal(nuevaentrada);
+			gestorcarrito.calculardescuento(nuevaentrada);
+			gestorcarrito.resumencarrito(nuevaentrada);
 
 		} while (respuesta.contains("si"));
 	}
