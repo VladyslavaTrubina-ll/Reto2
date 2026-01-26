@@ -13,7 +13,7 @@ import controlador.ControladorDB;
 import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Carrito;
-
+import modelo.GestorCarrito;
 public class prueba {
 
 	static Sala S1 = new Sala("Sala Principal", 70);
@@ -22,9 +22,10 @@ public class prueba {
 	static Sala S4 = new Sala("Sala VIP", 50);
 	static Sala S5 = new Sala("Sala Familiar", 80);
 	static GestorCine gestorCine = new GestorCine();
+	static GestorCarrito gestorcarrito = new GestorCarrito();
 
 	public static void main(String args[]) {
-		// 1. Conexión + Login
+		// 1. Conexion + Login
 		if (!gestorCine.conexionrealizada()) {
 			return;
 		}
@@ -34,10 +35,10 @@ public class prueba {
 			//metodos de  visualizacion aquí
 			mostrarpeliculas(gestorCine.controlador);
 
-			// logica en GestorCine
+		
 			String peliculaElegida = gestorCine.elegirpelicula(gestorCine.controlador);
 
-			// visualización
+		
 			ArrayList<FechaSesion> fechas = mostarfecha(peliculaElegida);
 
 			// Logica en GestorCine
