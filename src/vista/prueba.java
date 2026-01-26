@@ -2,71 +2,72 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
+import modelo.Entrada;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
+import modelo.GestorCine;
 import modelo.OrarioPrecioSalaSesion;
-
+import controlador.ControladorEntradaYSalida;
 import java.util.ArrayList;
 import controlador.ControladorDB;
 import modelo.Pelicula;
-
+import modelo.Sala;
+import modelo.Carrito;
+import modelo.GestorCarrito;
 public class prueba {
 
-	public static Scanner sc = new Scanner(System.in);
+	static Sala S1 = new Sala("Sala Principal", 70);
+	static Sala S2 = new Sala("Sala Premium", 55);
+	static Sala S3 = new Sala("Sala 3D", 56);
+	static Sala S4 = new Sala("Sala VIP", 50);
+	static Sala S5 = new Sala("Sala Familiar", 80);
+	static GestorCine gestorCine = new GestorCine();
+	static GestorCarrito gestorcarrito = new GestorCarrito();
 
 	public static void main(String args[]) {
-		ArrayList<FechaSesion> fecha;
+		// 1. Conexion + Login
+		if (!gestorCine.conexionrealizada()) {
+			return;
+		}
+
 		String respuesta;
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
-		ControladorDB controlador = new ControladorDB("cine_daw");
-		boolean conexionConExito = controlador.iniciarConexion();
-		if (conexionConExito) {
-			System.out.println("Se realizó la conexion con exito");
-			login(controlador);
-		} else {
-			System.out.println("No hubo suerte");
-		}
+		do {
+			//metodos de  visualizacion aquí
+			mostrarpeliculas(gestorCine.controlador);
+
 		
-			mostrarpeliculas(controlador);
-			String peliculaElegida = elegirpelicula(controlador);
-			 fecha = mostarfecha(controlador, peliculaElegida);
-			FechaSesion fechaelegida = elegirfecha(controlador, fecha);
+			String peliculaElegida = gestorCine.elegirpelicula(gestorCine.controlador);
 
-			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
 		
-		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
-		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
-		
-	}
+			ArrayList<FechaSesion> fechas = mostarfecha(peliculaElegida);
 
-	public static void login(ControladorDB controlador) {
+			// Logica en GestorCine
+			FechaSesion fechaelegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
+			ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(fechaelegida);
+			OrarioPrecioSalaSesion orarioelegido = gestorCine.elegirorario(gestorCine.controlador, orariopreciosala);
+			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(
+		            gestorCine.controlador, fechaelegida, orarioelegido);
+			
 
-		System.out.print("Escribe su email: ");
-		String email = sc.nextLine();
-		System.out.print("Escribe su password: ");
-		String contraseña = sc.nextLine();
-		ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
-		boolean encontrado = false;
-		int contador = 0;
-		while (contador < cliente.size() && !encontrado) {
-			ClienteAcesso c = cliente.get(contador);
-			if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
-				encontrado = true;
+			
 
-			} else {
-				contador++;
-			}
-			if (encontrado) {
-				System.out.println("\n    login correcto\n   Bien venido!");
+			System.out.println("Selecionar mas peliculas?");
+			respuesta = gestorCine.controladorentrada.leerCadena();
+			int espectadoresActuales = cinepieno(printespectadores);
+	        
+	        //  Seleccionar numero de asientos
+	        gestorCine.selecionarnumerositios(printespectadores, orarioelegido);
+	        
+	        // Preguntar si quiere anadir mas películas
+	        System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
+	        respuesta = gestorCine.controladorentrada.leerCadena();
 
-			}
-		}
+		} while (respuesta.contains("si"));
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
-		System.out.println("\n-------------------------------------");
-		System.out.println("      Pelicuals disponibles");
-		System.out.println("-------------------------------------");
+		System.out.println("pelicuals disponibles");
+		System.out.println("---------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
@@ -75,90 +76,46 @@ public class prueba {
 
 	}
 
-	public static String elegirpelicula(ControladorDB controlador) {
-		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		String peliculaElegida = null;
-		while (peliculaElegida == null) {
-			System.out.println("\n-------------------------------------");
-			System.out.print("Elige la pelicula que te interesa: ");
-			String pelicula = sc.nextLine();
-			for (Pelicula p : peliculas) {
-				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
-					System.out.println("\nHas elegido: " + capitalizado);
-					peliculaElegida = capitalizado;
-					break;
-				}
-			}
-			if (peliculaElegida == null) {
-				System.out.println("Lo siento pelicula no encontrada!");
-			}
-		}
-		return peliculaElegida;
-	}
-
-	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
-		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+	public static ArrayList<FechaSesion> mostarfecha(String titulo) {
+		ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(titulo);
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
 		}
 		return fechas;
 	}
 
-	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
-		System.out.print("Elege la fecha: ");
-		System.out.print("");
-		int opcion = sc.nextInt();
-		sc.nextLine();
-		if (fechas.isEmpty()) {
-			System.out.println("error");
-			return null;
-		}
-
-		FechaSesion fechaelegida = fechas.get(opcion - 1);
-		return fechaelegida;
-	}
-
-	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(ControladorDB controlador,
-			FechaSesion fecha) {
+	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(FechaSesion fecha) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = controlador.obtenerhorariopreciosala(unafecha);
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = gestorCine.controlador.obtenerhorariopreciosala(unafecha);
 		for (int i = 0; i < orariopreciosala.size(); i++) {
 			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
 		}
 		return orariopreciosala;
 	}
 
-	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
-			ArrayList<OrarioPrecioSalaSesion> orario) {
-		System.out.print("Elege el sesion: ");
-		System.out.print("");
-		int opcion = sc.nextInt();
-		sc.nextLine();
-		if (orario.isEmpty()) {
-			System.out.println("Error");
-			return null;
-		}
-		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
-		
-		return orarioelegido; 
-	}
-
 	public static ArrayList<EspectadoresSesion> mostrarespectadores(ControladorDB controlador, FechaSesion fecha,
-	OrarioPrecioSalaSesion orarioelegido) {
+			OrarioPrecioSalaSesion orarioelegido) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
 		ArrayList<OrarioPrecioSalaSesion> unorario = new ArrayList<>();
 		unorario.add(orarioelegido);
 		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
 		if (numespectadores.isEmpty()) {
-	        System.out.println("No hay espectadores para esta sesión.");
-	    } else {
-	        for (EspectadoresSesion e : numespectadores) {
-	            System.out.println(e);
-	        }
-	    }
-	    return numespectadores;
+			System.out.println("No hay espectadores para esta sesión.");
+		}
+		return numespectadores;
 	}
+
+	public static int cinepieno(ArrayList<EspectadoresSesion> espectadores) {
+		int sitiosdisponibles = espectadores.get(0).getEspectadores();
+		if (sitiosdisponibles == S1.getSitios() || sitiosdisponibles == S2.getSitios()
+				|| sitiosdisponibles == S3.getSitios() || sitiosdisponibles == S4.getSitios()
+				|| sitiosdisponibles == S5.getSitios()) {
+			System.out.println("no hay sitios disponibles");
+
+		}
+		return sitiosdisponibles;
+	}
+
 }

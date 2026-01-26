@@ -23,4 +23,8 @@ public class EspectadoresSesion {
 	public void setEspectadores(int espectadores) {
 		this.espectadores = espectadores;
 	}
+
+	public void anadirespectadores(int nuevoespectadores) {
+		this.espectadores = espectadores + nuevoespectadores;
+	}
 }
