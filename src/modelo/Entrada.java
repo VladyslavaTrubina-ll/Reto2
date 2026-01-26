@@ -1,7 +1,7 @@
 package modelo;
 
 public class Entrada {
-	private String id_sesion;
+	private String pelicula;
 	private int numeropersonas;
 	private double precio;
 	private double descuento;
@@ -10,8 +10,8 @@ public class Entrada {
 
 	}
 
-	public Entrada(String id_sesion, int numeropersonas, double precio, double descuento) {
-		this.id_sesion = id_sesion;
+	public Entrada(String pelicula, int numeropersonas, double precio, double descuento) {
+		this.pelicula = pelicula;
 		this.numeropersonas = numeropersonas;
 		this.precio = precio;
 		this.descuento = descuento;
@@ -20,16 +20,16 @@ public class Entrada {
 
 	@Override
 	public String toString() {
-		return "Entrada [id_sesion=" + id_sesion + ", numeropersonas=" + numeropersonas + ", precio=" + precio
+		return "Entrada [pelicula=" + pelicula + ", numeropersonas=" + numeropersonas + ", precio=" + precio
 				+ ", descuento=" + descuento + "]";
 	}
 
-	public String getId_sesion() {
-		return id_sesion;
+	public String getPelicula() {
+		return pelicula;
 	}
 
-	public void setId_sesion(String id_sesion) {
-		this.id_sesion = id_sesion;
+	public void setId_sesion(String pelicula) {
+		this.pelicula = pelicula;
 	}
 
 	public int getNumeropersonas() {
