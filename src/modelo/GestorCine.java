@@ -160,7 +160,14 @@ public class GestorCine {
 		return participantes;
 	}
 
-	public void generarEntrada(String titulo, int numeropersonas, double precio, double descuento) {
+	public Entrada generarEntrada(String titulo, String orario,int numeropersonas, double precio, double descuento) {
 		Entrada nuevaentrada = new Entrada();
+		nuevaentrada.setPelicula(titulo);
+		nuevaentrada.setOrario(orario);
+		nuevaentrada.setNumeropersonas(numeropersonas);
+		nuevaentrada.setPrecio(precio);
+		nuevaentrada.setDescuento(descuento);
+		return nuevaentrada;
+
 	}
 }

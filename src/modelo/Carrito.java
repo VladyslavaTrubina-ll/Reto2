@@ -9,6 +9,9 @@ public class Carrito {
 
 	public Carrito() {
 
+		 this.entrada = new ArrayList<>();
+	        this.preciototal = 0.0;
+	        this.descuentoaplicato = 0.0;
 	}
 
 	public Carrito(ArrayList<Entrada> entrada, double preciototal, double descuentoaplicado) {

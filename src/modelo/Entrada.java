@@ -7,6 +7,8 @@ public class Entrada {
 	private double descuento;
 
 	public Entrada() {
+		double precio = 0.0;
+		double descuento = 0.0;
 
 	}
 
@@ -18,8 +20,6 @@ public class Entrada {
 		this.orario = orario;
 
 	}
-
-
 
 	@Override
 	public String toString() {

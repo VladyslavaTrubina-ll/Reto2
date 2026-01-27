@@ -3,6 +3,8 @@ package modelo;
 import modelo.Carrito;
 import modelo.Entrada;
 import modelo.Ticket;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GestorCarrito {
@@ -49,12 +51,16 @@ public class GestorCarrito {
 	public void resumencarrito(Entrada entrada) {
 		
 		System.out.println("*****RESUMEN COMPRA*****");
+		ArrayList<Entrada> entradas = carrito.getEntrada();
 		for (int i = 0; i < carrito.getEntrada().size(); i++) {
-			carrito.getEntrada().get(i).getPelicula().toString();
-			carrito.getPreciototal();
-			carrito.getDescuentoaplicato();
-			entrada.getOrario();
-
+			 Entrada entradaActual = entradas.get(i);
+			 System.out.println("\nEntrada " + (i + 1) + ":");
+		        System.out.println("Película: " + entradaActual.getPelicula());
+		        System.out.println("Horario: " + entradaActual.getOrario());
+		        System.out.println("Número de personas: " + entradaActual.getNumeropersonas());
+		        System.out.println("Precio unitario: " + entradaActual.getPrecio() + "€");
+		        System.out.println("Descuento aplicado: " + entradaActual.getDescuento() + "€");
+		        System.out.println("Subtotal: " + (entradaActual.getPrecio() * entradaActual.getNumeropersonas()) + "€");
 		}
 	}
 

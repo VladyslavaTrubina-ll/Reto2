@@ -22,7 +22,7 @@ public class prueba {
 	static Sala S3 = new Sala("Sala 3D", 56);
 	static Sala S4 = new Sala("Sala VIP", 50);
 	static Sala S5 = new Sala("Sala Familiar", 80);
-	static GestorCine gestorCine = new GestorCine();
+	private static GestorCine gestorCine = new GestorCine();
 	static GestorCarrito gestorcarrito = new GestorCarrito();
 
 	public static void main(String args[]) {
@@ -49,7 +49,7 @@ public class prueba {
 
 			System.out.println("Selecionar mas peliculas?");
 			respuesta = gestorCine.controladorentrada.leerCadena();
-			//int espectadoresActuales = cinepieno(printespectadores);//
+			// int espectadoresActuales = cinepieno(printespectadores);//
 
 			// Seleccionar numero de asientos
 
@@ -58,16 +58,16 @@ public class prueba {
 			// Preguntar si quiere anadir mas películas
 			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
 			respuesta = gestorCine.controladorentrada.leerCadena();
-
+//genero un entrada con los varios datos//
+			double descuento = 0.0;
 			double precioentrada = orariopreciosala.get(0).getPrecio();
-			Entrada nuevaentrada = new Entrada();
-			nuevaentrada.setId_sesion(peliculaElegida);
-			nuevaentrada.setNumeropersonas(posti);
 			String orarioentrada = orarioelegido.getOrario();
-			double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
-			nuevaentrada.setOrario(orarioentrada);
-		
-			//gestorcarrito.calculardescuento(nuevaentrada);//
+			
+			
+ Entrada nuevaentrada =	gestorCine.generarEntrada(peliculaElegida, orarioentrada, posti, precioentrada,descuento);
+ double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
+			gestorcarrito.anadirentrada(nuevaentrada);
+			gestorcarrito.calculardescuento(nuevaentrada);
 			gestorcarrito.preciototal(nuevaentrada);
 			gestorcarrito.calculardescuento(nuevaentrada);
 			gestorcarrito.resumencarrito(nuevaentrada);
