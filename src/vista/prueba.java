@@ -42,13 +42,18 @@ public class prueba {
 
 			// Logica en GestorCine
 			FechaSesion fechaelegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
+		
 			ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(fechaelegida);
+	
+			System.out.println("Volver a la selecion de peliculas?");
+			
+			respuesta = gestorCine.controladorentrada.leerCadena();
+			 
 			OrarioPrecioSalaSesion orarioelegido = gestorCine.elegirorario(gestorCine.controlador, orariopreciosala);
+			
 			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(gestorCine.controlador, fechaelegida,
 					orarioelegido);
 
-			System.out.println("Selecionar mas peliculas?");
-			respuesta = gestorCine.controladorentrada.leerCadena();
 			// int espectadoresActuales = cinepieno(printespectadores);//
 
 			// Seleccionar numero de asientos
@@ -67,9 +72,8 @@ public class prueba {
  Entrada nuevaentrada =	gestorCine.generarEntrada(peliculaElegida, orarioentrada, posti, precioentrada,descuento);
  double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
 			gestorcarrito.anadirentrada(nuevaentrada);
-			gestorcarrito.calculardescuento(nuevaentrada);
 			gestorcarrito.preciototal(nuevaentrada);
-			gestorcarrito.calculardescuento(nuevaentrada);
+			gestorcarrito.calculoscarrito(nuevaentrada);
 			gestorcarrito.resumencarrito(nuevaentrada);
 
 		} while (respuesta.contains("si"));
