@@ -166,4 +166,18 @@ public class GestorCine {
 		return nuevaentrada;
 
 	}
+
+	public boolean confirmarcompra(Carrito carrito) {
+		boolean exito = false;
+		if (exito) {
+			System.out.println(" compra confirmada");
+			carrito.vaciar();
+			return true;
+		}else {
+			System.out.println("compra annullada");
+			return false;
+			
+		}
+
+	}
 }

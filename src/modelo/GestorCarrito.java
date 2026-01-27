@@ -95,16 +95,17 @@ public class GestorCarrito {
 	}
 
 	public void resumencarrito(Entrada entrada) {
-cliente.getNombre();
+		cliente.getNombre();
 		ArrayList<Entrada> entradas = carrito.getEntrada();
 		System.out.println("\n=== RESUMEN COMPRA ===");
-		
+
 		for (int i = 0; i < entradas.size(); i++) {
 			Entrada e = entradas.get(i);
 			double precioEntrada = e.getPrecio() * e.getNumeropersonas();
 			double descuento = e.getDescuento();
-            System.out.println("\n Identificador" + ": " + cliente.getNombre() + cliente.getApellidos());
+
 			System.out.println("\nEntrada " + (i + 1) + ": " + e.getPelicula());
+			System.out.println("  Identificador" + ": " + cliente.getNombre() + cliente.getApellidos());
 			System.out.println("  Horario: " + e.getOrario());
 			System.out.println("  Personas: " + e.getNumeropersonas());
 			System.out.println("  Precio/u: " + e.getPrecio() + "€");
@@ -119,4 +120,7 @@ cliente.getNombre();
 		System.out.println("TOTAL: " + carrito.getPreciototal() + "€");
 	}
 
+	public void vaciarCarrito() {
+		this.carrito.vaciar();
+	}
 }

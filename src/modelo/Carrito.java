@@ -50,5 +50,9 @@ public class Carrito {
 	public void setDescuentoaplicato(double descuentoaplicato) {
 		this.descuentoaplicato = descuentoaplicato;
 	}
-
+	public void vaciar() {
+	    this.entrada.clear();  
+	    this.preciototal = 0.0;
+	    
+	}
 }

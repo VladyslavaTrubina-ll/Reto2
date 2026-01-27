@@ -71,7 +71,15 @@ public class prueba {
 			gestorcarrito.preciototal(nuevaentrada);
 			gestorcarrito.calculoscarrito(nuevaentrada);
 			gestorcarrito.resumencarrito(nuevaentrada);
-
+			System.out.println("confirmar compra?");
+			String confirmar = gestorCine.controladorentrada.leerCadena();
+			if (confirmar.equalsIgnoreCase("si")) {
+				boolean compraOK = gestorCine.confirmarcompra(gestorcarrito.getCarrito());
+			
+			if (!compraOK){
+				
+			}
+			}
 		} while (respuesta.contains("si"));
 	}
 
