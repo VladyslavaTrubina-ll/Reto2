@@ -77,7 +77,6 @@ public class GestorCarrito {
 
 	public void resumencarrito(Entrada entrada) {
 
-		System.out.println("*****RESUMEN COMPRA*****");
 		ArrayList<Entrada> entradas = carrito.getEntrada();
 		System.out.println("\n=== RESUMEN COMPRA ===");
 

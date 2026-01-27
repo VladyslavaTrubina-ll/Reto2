@@ -19,6 +19,11 @@ import java.util.ArrayList;
 public class GestorCine {
 	public ControladorEntradaYSalida controladorentrada;
 	public ControladorDB controlador;
+	public Sala S1 = new Sala("Sala Principal", 70);
+	public Sala S2 = new Sala("Sala Premium", 55);
+	public Sala S3 = new Sala("Sala 3D", 56);
+	public Sala S4 = new Sala("Sala VIP", 50);
+	public Sala S5 = new Sala("Sala Familiar", 80);
 
 	public GestorCine() {
 		this.controlador = new ControladorDB("cine_daw");
@@ -103,17 +108,7 @@ public class GestorCine {
 		return fechas.get(opcion - 1);
 	}
 
-	public OrarioPrecioSalaSesion elegirorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> orario) { // elegir
-																														// orario
-																														// sala
-																														// y
-																														// precio
-																														// en
-																														// //
-																														// l
-																														// //
-																														// fecha
-																														// elegida//
+	public OrarioPrecioSalaSesion elegirorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> orario) {
 
 		int opcion = controladorentrada.esValorMenuValido(1, orario.size());
 
@@ -127,28 +122,28 @@ public class GestorCine {
 	}
 
 	public int selecionarnumerositios(ArrayList<EspectadoresSesion> espectadores, OrarioPrecioSalaSesion obtenersala) { // selecionar
-																															// asientos
-																															// con
-		  // Controllo se la lista è vuota - DEVI FERMARE L'ESECUZIONE qui
-	    if (espectadores == null || espectadores.isEmpty()) {
-	        System.out.println("Error: No hay espectadores para esta sesión");
-	        return 0; // AGGIUNGI QUESTO RETURN!
-	    }
-	    
-	    int capacidad = 0;
-	
+																														// asientos
+																														// con
+
+		if (espectadores == null || espectadores.isEmpty()) {
+			System.out.println("Error: No hay espectadores para esta sesión");
+			return 0; // AGGIUNGI QUESTO RETURN!
+		}
+
+		int capacidad = 0;
+
 		String salanombre = obtenersala.getSala();
 
 		if (salanombre.contains("Principal"))
-			capacidad = 70;
+			capacidad = S1.getSitios();
 		else if (salanombre.contains("Premium"))
-			capacidad = 55;
+			capacidad = S2.getSitios();
 		else if (salanombre.contains("3D"))
-			capacidad = 56;
+			capacidad = S3.getSitios();
 		else if (salanombre.contains("VIP"))
-			capacidad = 50;
+			capacidad = S4.getSitios();
 		else if (salanombre.contains("Familiar"))
-			capacidad = 80;
+			capacidad = S5.getSitios();
 		int ocupados = espectadores.get(0).getEspectadores();
 		int disponibles = capacidad - ocupados;
 		System.out.print("selecionar numero de asientos");
@@ -156,11 +151,11 @@ public class GestorCine {
 		espectadores.get(0).anadirespectadores(participantes);
 
 		System.out.println("Reservados " + participantes + " asientos");
-		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores()); 
+		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores());
 		return participantes;
 	}
 
-	public Entrada generarEntrada(String titulo, String orario,int numeropersonas, double precio, double descuento) {
+	public Entrada generarEntrada(String titulo, String orario, int numeropersonas, double precio, double descuento) {
 		Entrada nuevaentrada = new Entrada();
 		nuevaentrada.setPelicula(titulo);
 		nuevaentrada.setOrario(orario);

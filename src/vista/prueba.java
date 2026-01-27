@@ -17,11 +17,6 @@ import modelo.GestorCarrito;
 
 public class prueba {
 
-	static Sala S1 = new Sala("Sala Principal", 70);
-	static Sala S2 = new Sala("Sala Premium", 55);
-	static Sala S3 = new Sala("Sala 3D", 56);
-	static Sala S4 = new Sala("Sala VIP", 50);
-	static Sala S5 = new Sala("Sala Familiar", 80);
 	private static GestorCine gestorCine = new GestorCine();
 	static GestorCarrito gestorcarrito = new GestorCarrito();
 
@@ -54,7 +49,7 @@ public class prueba {
 			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(gestorCine.controlador, fechaelegida,
 					orarioelegido);
 
-			// int espectadoresActuales = cinepieno(printespectadores);//
+			 int espectadoresActuales = cinepieno(printespectadores);
 
 			// Seleccionar numero de asientos
 
@@ -123,9 +118,9 @@ public class prueba {
 
 	public static int cinepieno(ArrayList<EspectadoresSesion> espectadores) {
 		int sitiosdisponibles = espectadores.get(0).getEspectadores();
-		if (sitiosdisponibles == S1.getSitios() || sitiosdisponibles == S2.getSitios()
-				|| sitiosdisponibles == S3.getSitios() || sitiosdisponibles == S4.getSitios()
-				|| sitiosdisponibles == S5.getSitios()) {
+		if (sitiosdisponibles == gestorCine.S1.getSitios() || sitiosdisponibles == gestorCine.S2.getSitios()
+				|| sitiosdisponibles == gestorCine.S3.getSitios() || sitiosdisponibles == gestorCine.S4.getSitios()
+				|| sitiosdisponibles == gestorCine.S5.getSitios()) {
 			System.out.println("no hay sitios disponibles");
 
 		}

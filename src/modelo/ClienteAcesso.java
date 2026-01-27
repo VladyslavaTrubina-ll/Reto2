@@ -1,16 +1,25 @@
 package modelo;
 
 public class ClienteAcesso {
-	private String email, contraseña;
+	private String dni, email, contraseña;
 
 	public ClienteAcesso() {
 
 	}
 
-	public ClienteAcesso(String email, String contraseña) {
+	public ClienteAcesso(String dni,String email, String contraseña) {
+		this.dni = dni;
 		this.email = email;
 		this.contraseña = contraseña;
 
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	public String getEmail() {
