@@ -25,7 +25,8 @@ public class prueba {
 		if (!gestorCine.conexionrealizada()) {
 			return;
 		}
-
+		ClienteAcesso cliente = gestorCine.login();
+		gestorcarrito.setCliente(cliente);
 		String respuesta;
 		do {
 			// metodos de visualizacion aquí

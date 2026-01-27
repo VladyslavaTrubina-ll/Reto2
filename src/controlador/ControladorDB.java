@@ -61,13 +61,14 @@ public class ControladorDB {
 
 	public ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
 		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
-		String query = "SELECT dni,email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente";
+		String query = "SELECT dni, nombre, apellidos,email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " 
+				+ "WHERE email = '" + email + "'";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),resultado.getString(3));
+				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
 				cliente.add(nuevoCliente);
 			}
 			consulta.close();

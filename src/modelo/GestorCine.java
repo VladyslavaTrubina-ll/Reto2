@@ -3,7 +3,6 @@ package modelo;
 import modelo.Carrito;
 import modelo.Entrada;
 import modelo.OrarioPrecioSalaSesion;
-import modelo.Cliente;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
@@ -24,17 +23,19 @@ public class GestorCine {
 	public Sala S3 = new Sala("Sala 3D", 56);
 	public Sala S4 = new Sala("Sala VIP", 50);
 	public Sala S5 = new Sala("Sala Familiar", 80);
+	public ClienteAcesso clienteLogueado;
 
 	public GestorCine() {
 		this.controlador = new ControladorDB("cine_daw");
 		this.controladorentrada = new ControladorEntradaYSalida(); // inicializo controladores
+		this.clienteLogueado = null;
 	}
 
 	public boolean conexionrealizada() {
 		boolean conexionConExito = controlador.iniciarConexion();
 		if (conexionConExito) {
 			System.out.println("Se realizó la conexion con exito");
-			return login();
+			return true;
 		} else {
 			System.out.println("No hubo suerte");
 			return false;
@@ -42,10 +43,10 @@ public class GestorCine {
 
 	}
 
-	public boolean login() {
-		ArrayList<Pelicula> peliculas = this.controlador.obtenerpelis(); // metodo de login en buquel hasta que no se
-																			// acede
+	public ClienteAcesso login() {
+		ArrayList<Pelicula> peliculas = this.controlador.obtenerpelis();
 		boolean encontrado = false;
+		ClienteAcesso clienteLogueado = null;
 
 		while (!encontrado) {
 			System.out.println("inserire email");
@@ -59,14 +60,14 @@ public class GestorCine {
 				if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
 					encontrado = true;
 					System.out.println("login effettuato");
-					return true;
+					clienteLogueado = c;
 				}
 				contador++;
 			}
 			System.out.println("error");
-			;
+
 		}
-		return false;
+		return clienteLogueado;
 	}
 
 	public String elegirpelicula(ControladorDB controlador) { // elegir pelicula, con ciclo hasta que no se escriba la

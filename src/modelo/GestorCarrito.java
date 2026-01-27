@@ -3,19 +3,38 @@ package modelo;
 import modelo.Carrito;
 import modelo.Entrada;
 import modelo.Ticket;
-
+import modelo.ClienteAcesso;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GestorCarrito {
 	private Carrito carrito;
+	private ClienteAcesso cliente;
 
 	public GestorCarrito() {
 		this.carrito = new Carrito();
+		this.cliente = new ClienteAcesso();
 	}
 
-	public GestorCarrito(Carrito carrito) {
+	public GestorCarrito(Carrito carrito, ClienteAcesso cliente) {
+		this.cliente = cliente;
 		this.carrito = carrito;
+	}
+
+	public Carrito getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(Carrito carrito) {
+		this.carrito = carrito;
+	}
+
+	public ClienteAcesso getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(ClienteAcesso cliente) {
+		this.cliente = cliente;
 	}
 
 	public void anadirentrada(Entrada entrada) {
@@ -76,15 +95,15 @@ public class GestorCarrito {
 	}
 
 	public void resumencarrito(Entrada entrada) {
-
+cliente.getNombre();
 		ArrayList<Entrada> entradas = carrito.getEntrada();
 		System.out.println("\n=== RESUMEN COMPRA ===");
-
+		
 		for (int i = 0; i < entradas.size(); i++) {
 			Entrada e = entradas.get(i);
 			double precioEntrada = e.getPrecio() * e.getNumeropersonas();
 			double descuento = e.getDescuento();
-
+            System.out.println("\n Identificador" + ": " + cliente.getNombre() + cliente.getApellidos());
 			System.out.println("\nEntrada " + (i + 1) + ": " + e.getPelicula());
 			System.out.println("  Horario: " + e.getOrario());
 			System.out.println("  Personas: " + e.getNumeropersonas());
