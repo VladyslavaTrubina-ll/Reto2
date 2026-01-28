@@ -156,9 +156,10 @@ public class GestorCine {
 		return participantes;
 	}
 
-	public Entrada generarEntrada(String titulo, String orario, int numeropersonas, double precio, double descuento) {
+	public Entrada generarEntrada(String titulo,String fecha, String orario, int numeropersonas, double precio, double descuento) {
 		Entrada nuevaentrada = new Entrada();
 		nuevaentrada.setPelicula(titulo);
+		nuevaentrada.setFecha(fecha);
 		nuevaentrada.setOrario(orario);
 		nuevaentrada.setNumeropersonas(numeropersonas);
 		nuevaentrada.setPrecio(precio);
@@ -172,11 +173,12 @@ public class GestorCine {
 		String confirma = controladorentrada.leerCadena();
 		if (confirma.equalsIgnoreCase("si")) {
 			System.out.println(" compra confirmada");
-			carrito.vaciar();
 
 			return true;
 		} else {
 			return false;
 		}
 	}
+
 }
+
