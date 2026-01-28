@@ -2,71 +2,102 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
+import modelo.Entrada;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
+import modelo.GestorCine;
 import modelo.OrarioPrecioSalaSesion;
-
+import controlador.ControladorEntradaYSalida;
 import java.util.ArrayList;
 import controlador.ControladorDB;
 import modelo.Pelicula;
+import modelo.Sala;
+import modelo.Carrito;
+import modelo.GestorCarrito;
 
 public class prueba {
 
-	public static Scanner sc = new Scanner(System.in);
+	private static GestorCine gestorCine = new GestorCine();
+	static GestorCarrito gestorcarrito = new GestorCarrito();
 
 	public static void main(String args[]) {
-		ArrayList<FechaSesion> fecha;
-		String respuesta;
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala;
-		ControladorDB controlador = new ControladorDB("cine_daw");
-		boolean conexionConExito = controlador.iniciarConexion();
-		if (conexionConExito) {
-			System.out.println("Se realizó la conexion con exito");
-			login(controlador);
-		} else {
-			System.out.println("No hubo suerte");
+		// 1. Conexion + Login
+		if (!gestorCine.conexionrealizada()) {
+			return;
 		}
-		
-			mostrarpeliculas(controlador);
-			String peliculaElegida = elegirpelicula(controlador);
-			 fecha = mostarfecha(controlador, peliculaElegida);
-			FechaSesion fechaelegida = elegirfecha(controlador, fecha);
+		ClienteAcesso cliente = gestorCine.login();
+		gestorcarrito.setCliente(cliente);
+		int espectadoresActuales = 0;
+		boolean comprando = true;
+		while (comprando) {
+			// metodos de visualizacion aquí
+			mostrarpeliculas(gestorCine.controlador);
 
-			orariopreciosala = mostrarorariopreciosala(controlador, fechaelegida);
-		
-		OrarioPrecioSalaSesion orarioelegido = elegirorario(controlador, orariopreciosala);
-		ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(controlador, fechaelegida, orarioelegido);
-		
-	}
+			String peliculaElegida = gestorCine.elegirpelicula(gestorCine.controlador);
 
-	public static void login(ControladorDB controlador) {
+			ArrayList<FechaSesion> fechas = mostarfecha(peliculaElegida);
 
-		System.out.print("Escribe su email: ");
-		String email = sc.nextLine();
-		System.out.print("Escribe su password: ");
-		String contraseña = sc.nextLine();
-		ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
-		boolean encontrado = false;
-		int contador = 0;
-		while (contador < cliente.size() && !encontrado) {
-			ClienteAcesso c = cliente.get(contador);
-			if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
-				encontrado = true;
+			// Logica en GestorCine
+			FechaSesion fechaelegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
+
+			ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(fechaelegida);
+
+			System.out.println("Volver a la selecion de peliculas?");
+
+			String respuesta = gestorCine.controladorentrada.leerCadena();
+			if (respuesta.equalsIgnoreCase("si")) {
+				continue; // ← Se dice SI, salta tutto il resto e ricomincia
+			}
+			OrarioPrecioSalaSesion orarioelegido = gestorCine.elegirorario(gestorCine.controlador, orariopreciosala);
+
+			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(gestorCine.controlador, fechaelegida,
+					orarioelegido);
+
+			if (espectadoresActuales == cinepieno(printespectadores)) {
+				mostrarpeliculas(gestorCine.controlador);
+			}
+
+			// Seleccionar numero de asientos
+
+			int posti = gestorCine.selecionarnumerositios(printespectadores, orarioelegido);
+			printespectadores.get(0).setEspectadores(posti);
+
+			// Preguntar si quiere anadir mas películas
+			
+			// genero un entrada con los varios datos//
+			double descuento = 0.0;
+			double precioentrada = orariopreciosala.get(0).getPrecio();
+			String orarioentrada = orarioelegido.getOrario();
+
+			Entrada nuevaentrada = gestorCine.generarEntrada(peliculaElegida, orarioentrada, posti, precioentrada,
+					descuento);
+			double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
+			gestorcarrito.anadirentrada(nuevaentrada);
+			gestorcarrito.preciototal(nuevaentrada);
+			gestorcarrito.calculoscarrito(nuevaentrada);
+			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
+			String maspeli = gestorCine.controladorentrada.leerCadena();
+			if (maspeli.equalsIgnoreCase("si")) {
+				continue;
+			}
+			gestorcarrito.resumencarrito(nuevaentrada);
+			boolean compraconfirmada = gestorCine.confirmarcompra(gestorcarrito.getCarrito());
+			if (!compraconfirmada) {
+				System.out.println("Compra anulada");
+				gestorcarrito.getCarrito().vaciar();
+				mostrarpeliculas(gestorCine.controlador);
 
 			} else {
-				contador++;
-			}
-			if (encontrado) {
-				System.out.println("\n    login correcto\n   Bien venido!");
-
+				System.out.println("quieres imprimir el ticket mamon?");
+				mostrarpeliculas(gestorCine.controlador);
 			}
 		}
+
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
-		System.out.println("\n-------------------------------------");
-		System.out.println("      Pelicuals disponibles");
-		System.out.println("-------------------------------------");
+		System.out.println("pelicuals disponibles");
+		System.out.println("---------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
@@ -75,90 +106,46 @@ public class prueba {
 
 	}
 
-	public static String elegirpelicula(ControladorDB controlador) {
-		ArrayList<Pelicula> peliculas = controlador.obtenerpelis();
-		String peliculaElegida = null;
-		while (peliculaElegida == null) {
-			System.out.println("\n-------------------------------------");
-			System.out.print("Elige la pelicula que te interesa: ");
-			String pelicula = sc.nextLine();
-			for (Pelicula p : peliculas) {
-				if (pelicula.equalsIgnoreCase(p.getTitulo())) {
-					String capitalizado = pelicula.substring(0, 1).toUpperCase() + pelicula.substring(1);
-					System.out.println("\nHas elegido: " + capitalizado);
-					peliculaElegida = capitalizado;
-					break;
-				}
-			}
-			if (peliculaElegida == null) {
-				System.out.println("Lo siento pelicula no encontrada!");
-			}
-		}
-		return peliculaElegida;
-	}
-
-	public static ArrayList<FechaSesion> mostarfecha(ControladorDB controlador, String titulo) {
-		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+	public static ArrayList<FechaSesion> mostarfecha(String titulo) {
+		ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(titulo);
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
 		}
 		return fechas;
 	}
 
-	public static FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) {
-		System.out.print("Elege la fecha: ");
-		System.out.print("");
-		int opcion = sc.nextInt();
-		sc.nextLine();
-		if (fechas.isEmpty()) {
-			System.out.println("error");
-			return null;
-		}
-
-		FechaSesion fechaelegida = fechas.get(opcion - 1);
-		return fechaelegida;
-	}
-
-	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(ControladorDB controlador,
-			FechaSesion fecha) {
+	public static ArrayList<OrarioPrecioSalaSesion> mostrarorariopreciosala(FechaSesion fecha) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = controlador.obtenerhorariopreciosala(unafecha);
+		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = gestorCine.controlador.obtenerhorariopreciosala(unafecha);
 		for (int i = 0; i < orariopreciosala.size(); i++) {
 			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
 		}
 		return orariopreciosala;
 	}
 
-	public static OrarioPrecioSalaSesion elegirorario(ControladorDB controlador,
-			ArrayList<OrarioPrecioSalaSesion> orario) {
-		System.out.print("Elege el sesion: ");
-		System.out.print("");
-		int opcion = sc.nextInt();
-		sc.nextLine();
-		if (orario.isEmpty()) {
-			System.out.println("Error");
-			return null;
-		}
-		OrarioPrecioSalaSesion orarioelegido = orario.get(opcion - 1);
-		
-		return orarioelegido; 
-	}
-
 	public static ArrayList<EspectadoresSesion> mostrarespectadores(ControladorDB controlador, FechaSesion fecha,
-	OrarioPrecioSalaSesion orarioelegido) {
+			OrarioPrecioSalaSesion orarioelegido) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
 		ArrayList<OrarioPrecioSalaSesion> unorario = new ArrayList<>();
 		unorario.add(orarioelegido);
 		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
 		if (numespectadores.isEmpty()) {
-	        System.out.println("No hay espectadores para esta sesión.");
-	    } else {
-	        for (EspectadoresSesion e : numespectadores) {
-	            System.out.println(e);
-	        }
-	    }
-	    return numespectadores;
+			System.out.println("No hay espectadores para esta sesión.");
+		}
+		return numespectadores;
 	}
+
+	public static int cinepieno(ArrayList<EspectadoresSesion> espectadores) {
+		int sitiosdisponibles = espectadores.get(0).getEspectadores();
+		if (sitiosdisponibles == gestorCine.S1.getSitios() || sitiosdisponibles == gestorCine.S2.getSitios()
+				|| sitiosdisponibles == gestorCine.S3.getSitios() || sitiosdisponibles == gestorCine.S4.getSitios()
+				|| sitiosdisponibles == gestorCine.S5.getSitios()) {
+			System.out.println("no hay sitios disponibles");
+
+		}
+		return sitiosdisponibles;
+	}
+
 }

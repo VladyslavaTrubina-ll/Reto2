@@ -61,13 +61,14 @@ public class ControladorDB {
 
 	public ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
 		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
-		String query = "SELECT email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente";
+		String query = "SELECT dni, nombre, apellidos,email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " 
+				+ "WHERE email = '" + email + "'";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2));
+				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
 				cliente.add(nuevoCliente);
 			}
 			consulta.close();
@@ -81,9 +82,10 @@ public class ControladorDB {
 
 	public ArrayList<Pelicula> obtenerpelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		String query = "Select Titulo, duracion FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula\r\n"
-				+ "				WHERE Fecha >= CURDATE() && hora_inicio >= now()\r\n"
-				+ "              ORDER BY fecha, hora_inicio";
+		String query = "Select  Titulo, duracion,min(fecha), min(hora_inicio) FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula          \r\n"
+				+ " WHERE fecha >= CURDATE() AND hora_inicio > current_time" + " group by titulo,duracion\r\n"
+				+ "having  min(fecha) > CURDATE() or (min(fecha) = CURDATE() and min(hora_inicio) > current_time)\r\n"
+				+ "order by min(fecha), min(hora_inicio)";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -104,7 +106,7 @@ public class ControladorDB {
 	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) {
 		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
 		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
-				+ titulo + "' && fecha >= CURDATE()";
+				+ titulo + "' && fecha >= CURDATE()" + "ORDER BY fecha";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -146,20 +148,19 @@ public class ControladorDB {
 
 	}
 
-	public ArrayList<EspectadoresSesion> obtenerespectadoresporsesion(ArrayList<FechaSesion> fecha, ArrayList<OrarioPrecioSalaSesion> orarioelegido) {
+	public ArrayList<EspectadoresSesion> obtenerespectadoresporsesion(ArrayList<FechaSesion> fecha,
+			ArrayList<OrarioPrecioSalaSesion> orarioelegido) {
 		String fechaElegida;
 		ArrayList<EspectadoresSesion> numespectadores = new ArrayList<EspectadoresSesion>();
 		if (fecha.isEmpty() || orarioelegido.isEmpty()) {
 			return numespectadores;
 		}
 
-		
+		String hora = orarioelegido.get(0).getOrario();
+		String Sala = orarioelegido.get(0).getSala();
+		fechaElegida = fecha.get(0).getFecha();
 
-	String	hora = orarioelegido.get(0).getOrario();
-	String	Sala = orarioelegido.get(0).getSala();
-    fechaElegida = fecha.get(0).getFecha();
-		
-    String query = "SELECT espectadores FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE SE.hora_inicio = '"
+		String query = "SELECT espectadores FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE SE.hora_inicio = '"
 				+ hora + "' AND SA.nombre = '" + Sala + "' AND SE.fecha = '" + fechaElegida + "'";
 
 		try {
@@ -173,6 +174,6 @@ public class ControladorDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	return numespectadores;
+		return numespectadores;
 	}
 }
