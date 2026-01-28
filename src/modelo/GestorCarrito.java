@@ -42,15 +42,7 @@ public class GestorCarrito {
 
 	}
 
-	public double preciototal(Entrada entrada) {
-		double sumatotal = 0.0;
-		for (int i = 0; i < carrito.getEntrada().size(); i++) {
-			Entrada entradaActual = carrito.getEntrada().get(i);
-			double precioentrada = entradaActual.getPrecio() * entradaActual.getNumeropersonas();
-			sumatotal = sumatotal + precioentrada;
-		}
-		return sumatotal;
-	}
+
 
 	public void calculoscarrito(Entrada entrada) {
 		ArrayList<Entrada> entradas = carrito.getEntrada();
@@ -78,11 +70,12 @@ public class GestorCarrito {
 		double descuentoTotal = 0.0;
 
 		for (Entrada e : entradas) {
-			double precioEntrada = e.getPrecio() * e.getNumeropersonas();
-			subtotal += precioEntrada;
+			double precioentrada = e.getPrecio() * e.getNumeropersonas();
+			subtotal += precioentrada;
 
-			double descuentoEntrada = precioEntrada * porcentaje;
+			double descuentoEntrada = precioentrada * porcentaje;
 			descuentoTotal += descuentoEntrada;
+			e.setSubtotal(precioentrada);
 
 			e.setDescuento(descuentoEntrada);
 		}
@@ -101,11 +94,13 @@ public class GestorCarrito {
 
 		for (int i = 0; i < entradas.size(); i++) {
 			Entrada e = entradas.get(i);
-			double precioEntrada = e.getPrecio() * e.getNumeropersonas();
+			double precioEntrada = e.getSubtotal();
 			double descuento = e.getDescuento();
 
 			System.out.println("\nEntrada " + (i + 1) + ": " + e.getPelicula());
 			System.out.println("  Identificador" + ": " + cliente.getNombre() + cliente.getApellidos());
+			System.out.println("  Fecha: " + e.getFecha());
+			System.out.println("  Sala: " + e.getSala());
 			System.out.println("  Horario: " + e.getOrario());
 			System.out.println("  Personas: " + e.getNumeropersonas());
 			System.out.println("  Precio/u: " + e.getPrecio() + "€");
