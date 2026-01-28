@@ -1,7 +1,7 @@
 package modelo;
 
 public class Entrada {
-	private String pelicula, orario,fecha;
+	private String pelicula, orario,fecha,sala;
 	private int numeropersonas;
 	private double precio;
 	private double descuento,subtotal;
@@ -12,7 +12,7 @@ public class Entrada {
 
 	}
 
-	public Entrada(String pelicula,String fecha, String orario, int numeropersonas, double precio, double descuento,double subtotal) {
+	public Entrada(String pelicula,String fecha,String sala, String orario, int numeropersonas, double precio, double descuento,double subtotal) {
 		this.pelicula = pelicula;
 		this.numeropersonas = numeropersonas;
 		this.precio = precio;
@@ -20,7 +20,16 @@ public class Entrada {
 		this.orario = orario;
 		this.fecha = fecha;
 		this.subtotal = subtotal;
+		this.sala = sala;
 
+	}
+
+	public String getSala() {
+		return sala;
+	}
+
+	public void setSala(String sala) {
+		this.sala = sala;
 	}
 
 	public double getSubtotal() {

@@ -25,6 +25,7 @@ package modelo;
 		            for (Entrada e : carrito.getEntrada()) {
 		                pw.println("  - " + e.getPelicula() + 
 		                		" | " + e.getFecha() +
+		                		" | " + e.getSala() + 
 		                		" | " + e.getOrario() + 
 		                          " | " + e.getNumeropersonas() + "p | " + 
 		                          e.getPrecio() + "€/p | " +

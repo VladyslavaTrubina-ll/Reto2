@@ -100,6 +100,7 @@ public class GestorCarrito {
 			System.out.println("\nEntrada " + (i + 1) + ": " + e.getPelicula());
 			System.out.println("  Identificador" + ": " + cliente.getNombre() + cliente.getApellidos());
 			System.out.println("  Fecha: " + e.getFecha());
+			System.out.println("  Sala: " + e.getSala());
 			System.out.println("  Horario: " + e.getOrario());
 			System.out.println("  Personas: " + e.getNumeropersonas());
 			System.out.println("  Precio/u: " + e.getPrecio() + "€");

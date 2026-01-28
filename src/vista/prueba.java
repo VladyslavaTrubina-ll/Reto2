@@ -73,7 +73,7 @@ public class prueba {
 			String orarioentrada = orarioelegido.getOrario();
 		
 
-			Entrada nuevaentrada = gestorCine.generarEntrada(peliculaElegida,fechaelegida.getFecha(), orarioentrada, posti, precioentrada,
+			Entrada nuevaentrada = gestorCine.generarEntrada(peliculaElegida,fechaelegida.getFecha(), orariopreciosala.get(0).getSala(),orarioentrada, posti, precioentrada,
 					descuento);
 			double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
 			gestorcarrito.anadirentrada(nuevaentrada);
@@ -92,6 +92,8 @@ public class prueba {
 
 			} else {
 				System.out.println("impression de ticket...");
+				gestorCine.controlador.insertarCompra(gestorcarrito.getCliente().getDni(), gestorcarrito.getCarrito().getEntrada().size(), 
+						gestorcarrito.getCarrito().getPreciototal(), gestorcarrito.getCarrito().getDescuentoaplicato());
 			}
 			System.out.println("Quieres guardar el ticket?");
 			String guardarticket = gestorCine.controladorentrada.leerCadena();

@@ -2,10 +2,13 @@ package controlador;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+
 import modelo.Pelicula;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
@@ -176,4 +179,56 @@ public class ControladorDB {
 		}
 		return numespectadores;
 	}
+	public void insertarUsuario(String dni,String nombre,String apellidos,String email, String contrasena ) {
+        String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
+        String user = "root";
+        String password = "";
+
+        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña)VALUES(?,?,?,?,?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Asignamos el parámetro String
+            ps.setString(1, dni);
+            ps.setString(2, nombre);
+            ps.setString(3, apellidos);
+            ps.setString(4, email);
+            ps.setString(5, contrasena);
+
+            // Ejecutamos el INSERT
+            ps.executeUpdate();
+
+            System.out.println("Usuario insertado correctamente");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+	public void insertarCompra(String dni,int numentradas, double preciototal,double descuentoaplicado) {
+        String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
+        String user = "root";
+        String password = "";
+
+        String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+        	java.sql.Timestamp fechaHora = new java.sql.Timestamp(System.currentTimeMillis());
+            // Asignamos el parámetro String
+            ps.setString(1, dni);
+            ps.setTimestamp(2, fechaHora);
+            ps.setInt(3, numentradas );
+            ps.setDouble(4, preciototal);
+            ps.setDouble(5, descuentoaplicado);
+
+            // Ejecutamos el INSERT
+            ps.executeUpdate();
+
+            System.out.println("Compra insertada correctamente");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
