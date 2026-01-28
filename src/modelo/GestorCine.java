@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class GestorCine {
 	public ControladorEntradaYSalida controladorentrada;
 	public ControladorDB controlador;
-	public Sala S1 = new Sala("Sala Principal", 70);
+	public Sala S1 = new Sala("Sala Principal", 100);
 	public Sala S2 = new Sala("Sala Premium", 55);
 	public Sala S3 = new Sala("Sala 3D", 56);
 	public Sala S4 = new Sala("Sala VIP", 50);
@@ -168,16 +168,15 @@ public class GestorCine {
 	}
 
 	public boolean confirmarcompra(Carrito carrito) {
-		boolean exito = false;
-		if (exito) {
+		System.out.println("Confirmar compra?");
+		String confirma = controladorentrada.leerCadena();
+		if (confirma.equalsIgnoreCase("si")) {
 			System.out.println(" compra confirmada");
 			carrito.vaciar();
-			return true;
-		}else {
-			System.out.println("compra annullada");
-			return false;
-			
-		}
 
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

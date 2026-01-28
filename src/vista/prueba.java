@@ -27,8 +27,9 @@ public class prueba {
 		}
 		ClienteAcesso cliente = gestorCine.login();
 		gestorcarrito.setCliente(cliente);
-		String respuesta;
-		do {
+		int espectadoresActuales = 0;
+		boolean comprando = true;
+		while (comprando) {
 			// metodos de visualizacion aquí
 			mostrarpeliculas(gestorCine.controlador);
 
@@ -38,49 +39,60 @@ public class prueba {
 
 			// Logica en GestorCine
 			FechaSesion fechaelegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
-		
+
 			ArrayList<OrarioPrecioSalaSesion> orariopreciosala = mostrarorariopreciosala(fechaelegida);
-	
+
 			System.out.println("Volver a la selecion de peliculas?");
-			
-			respuesta = gestorCine.controladorentrada.leerCadena();
-			 
+
+			String respuesta = gestorCine.controladorentrada.leerCadena();
+			if (respuesta.equalsIgnoreCase("si")) {
+				continue; // ← Se dice SI, salta tutto il resto e ricomincia
+			}
 			OrarioPrecioSalaSesion orarioelegido = gestorCine.elegirorario(gestorCine.controlador, orariopreciosala);
-			
+
 			ArrayList<EspectadoresSesion> printespectadores = mostrarespectadores(gestorCine.controlador, fechaelegida,
 					orarioelegido);
 
-			 int espectadoresActuales = cinepieno(printespectadores);
+			if (espectadoresActuales == cinepieno(printespectadores)) {
+				mostrarpeliculas(gestorCine.controlador);
+			}
 
 			// Seleccionar numero de asientos
 
 			int posti = gestorCine.selecionarnumerositios(printespectadores, orarioelegido);
+			printespectadores.get(0).setEspectadores(posti);
 
 			// Preguntar si quiere anadir mas películas
-			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
-			respuesta = gestorCine.controladorentrada.leerCadena();
-//genero un entrada con los varios datos//
+			
+			// genero un entrada con los varios datos//
 			double descuento = 0.0;
 			double precioentrada = orariopreciosala.get(0).getPrecio();
 			String orarioentrada = orarioelegido.getOrario();
-			
-			
- Entrada nuevaentrada =	gestorCine.generarEntrada(peliculaElegida, orarioentrada, posti, precioentrada,descuento);
- double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
+
+			Entrada nuevaentrada = gestorCine.generarEntrada(peliculaElegida, orarioentrada, posti, precioentrada,
+					descuento);
+			double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
 			gestorcarrito.anadirentrada(nuevaentrada);
 			gestorcarrito.preciototal(nuevaentrada);
 			gestorcarrito.calculoscarrito(nuevaentrada);
+			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
+			String maspeli = gestorCine.controladorentrada.leerCadena();
+			if (maspeli.equalsIgnoreCase("si")) {
+				continue;
+			}
 			gestorcarrito.resumencarrito(nuevaentrada);
-			System.out.println("confirmar compra?");
-			String confirmar = gestorCine.controladorentrada.leerCadena();
-			if (confirmar.equalsIgnoreCase("si")) {
-				boolean compraOK = gestorCine.confirmarcompra(gestorcarrito.getCarrito());
-			
-			if (!compraOK){
-				
+			boolean compraconfirmada = gestorCine.confirmarcompra(gestorcarrito.getCarrito());
+			if (!compraconfirmada) {
+				System.out.println("Compra anulada");
+				gestorcarrito.getCarrito().vaciar();
+				mostrarpeliculas(gestorCine.controlador);
+
+			} else {
+				System.out.println("quieres imprimir el ticket mamon?");
+				mostrarpeliculas(gestorCine.controlador);
 			}
-			}
-		} while (respuesta.contains("si"));
+		}
+
 	}
 
 	public static void mostrarpeliculas(ControladorDB controlador) {
