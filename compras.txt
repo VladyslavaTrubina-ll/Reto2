@@ -59,3 +59,42 @@ Entradas:
   - Joker | 2026-02-09 | 23:00:00 | 20p | 11.0€/p | Desc: 44.0€
 Total: 268.0€
 Descuento: 67.0€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 2p | 11.5€/p | Desc: 0.3€
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 2p | 11.5€/p | Desc: 0.3€
+  - Pelicula
+titulo: Joker
+duracion: 122min | 2026-02-02 | Sala 3D | 17:00:00 | 3p | 11.0€/p | Desc: 0.3€
+Total: 55.3€
+Descuento: 0.3€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 1p | 11.5€/p | Desc: 4.6000000000000005€
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 1p | 11.5€/p | Desc: 4.6000000000000005€
+Total: 18.4€
+Descuento: 4.6000000000000005€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Pelicula
+titulo: Interstellar
+duracion: 169min | 2026-02-02 | Sala 3D | 17:00:00 | 1p | 11.0€/p | Desc: 0.0€
+Total: 11.0€
+Descuento: 0.0€

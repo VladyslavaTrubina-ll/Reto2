@@ -22,19 +22,19 @@ package modelo;
 		            
 		            // Entradas (usa i tuoi getter)
 		            pw.println("Entradas:");
-		            for (Sesion e : carrito.getEntrada()) {
+		            for (Sesion e : carrito.getSesiones()) {
 		                pw.println("  - " + e.getPelicula() + 
 		                		" | " + e.getFecha() +
 		                		" | " + e.getSala() + 
-		                		" | " + e.getOrario() + 
-		                          " | " + e.getNumeropersonas() + "p | " + 
+		                		" | " + e.getHorario() + 
+		                          " | " + e.getNumEspectadores() + "p | " + 
 		                          e.getPrecio() + "€/p | " +
-		                          "Desc: " + e.getDescuento() + "€");
+		                          "Desc: " + carrito.getDescuentoAplicado() + "€");
 		            }
 		            
 		            // Totali (usa i tuoi getter del Carrito)
-		            pw.println("Total: " + carrito.getPreciototal() + "€");
-		            pw.println("Descuento: " + carrito.getDescuentoaplicato() + "€");
+		            pw.println("Total: " + carrito.getPrecioTotal() + "€");
+		            pw.println("Descuento: " + carrito.getDescuento() + "€");
 		            
 		        } catch (IOException e) {
 		            System.out.println("Error: " + e.getMessage());
