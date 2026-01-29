@@ -22,7 +22,7 @@ package modelo;
 		            
 		            // Entradas (usa i tuoi getter)
 		            pw.println("Entradas:");
-		            for (Entrada e : carrito.getEntrada()) {
+		            for (Sesion e : carrito.getEntrada()) {
 		                pw.println("  - " + e.getPelicula() + 
 		                		" | " + e.getFecha() +
 		                		" | " + e.getSala() + 
