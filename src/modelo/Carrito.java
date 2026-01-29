@@ -121,9 +121,9 @@ public class Carrito {
 			Sesion e = sesiones.get(i);
 			int numEntradas = cantidadesEntradas.get(i);
 
-			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getTitulo());
+			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getNombre());
 			System.out.println("  Fecha: " + e.getFecha());
-			System.out.println("  Sala: " + e.getSala().getNombre());
+			//System.out.println("  Sala: " + e.getSala().getNombre());
 			System.out.println("  Horario: " + e.getHorario());
 			System.out.println("  Personas: " + numEntradas);
 			System.out.println("  Precio de sesion: " + e.getPrecio() + "€");

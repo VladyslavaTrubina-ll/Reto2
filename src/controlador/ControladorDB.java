@@ -62,7 +62,7 @@ public class ControladorDB {
 		return Conexioncerrada;
 	}
 
-	public ArrayList<ClienteAcesso> obtenercliente(String email, String contraseña) {
+	public ArrayList<ClienteAcesso> obtenerCliente(String email, String contraseña) {
 		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
 		String query = "SELECT dni, nombre, apellidos,email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " 
 				+ "WHERE email = '" + email + "'";
@@ -83,7 +83,7 @@ public class ControladorDB {
 		return cliente;
 	}
 
-	public ArrayList<Pelicula> obtenerpelis() {
+	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
 		String query = "Select  Titulo, duracion,min(fecha), min(hora_inicio) FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula          \r\n"
 				+ " WHERE fecha >= CURDATE() AND hora_inicio > current_time" + " group by titulo,duracion\r\n"
@@ -233,7 +233,7 @@ public class ControladorDB {
 	
 	
 	
-	public String obtenersesion(FechaSesion fecha,OrarioPrecioSalaSesion orariosala) {
+	public String obtenerSesion(FechaSesion fecha,OrarioPrecioSalaSesion orariosala) {
 		String sesion = "";
 		String hora = orariosala.getOrario();
 		String sala = orariosala.getSala();
