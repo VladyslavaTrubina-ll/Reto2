@@ -1,0 +1,108 @@
+package modelo;
+
+public class Sesion {
+	private Pelicula pelicula;
+	private String fecha, horario;
+	private Sala sala;
+	private int numEspectadores;
+	private double precio;
+
+	public Sesion(Pelicula pelicula, String fecha, String horario, Sala sala, int numEspectadores, double precio) {
+		this.pelicula = pelicula;
+		this.fecha = fecha;
+		this.horario = horario;
+		// TODO !!!!!
+//		this.horarioinicio = horarioinicio;
+//		this.horariofin = horariofin;
+		this.sala = sala;
+		this.precio = precio;
+		this.numEspectadores = numEspectadores;
+	}
+	
+	public void setPelicula(Pelicula pelicula) {
+		this.pelicula = pelicula;
+	}
+
+	public Pelicula getPelicula() {
+		return pelicula;
+	}
+	
+	public String getFecha() {
+		return fecha;
+	}
+	
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
+	}
+	
+	public String getHorario() {
+		return horario;
+	}
+
+	public void setHorario(String horario) {
+		this.horario = horario;
+	}
+
+	public Sala getSala() {
+		return sala;
+	}
+
+	public void setSala(Sala sala) {
+		this.sala = sala;
+	}
+	
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+	
+	public int getNumEspectadores() {
+		return numEspectadores;
+	}
+
+	public void setNumEspectadores(int numEspectadores) {
+		this.numEspectadores = numEspectadores;
+	}
+	
+	@Override
+	public String toString() {
+		return "Sesion [pelicula=" + pelicula.getTitulo() 
+		+ ", fecha=" + fecha + ", horario=" + horario  + ", sala="+ sala.getNombre() 
+		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
+	}
+	
+	public void actualizarEspectadores(int numEntradas) {
+		this.numEspectadores += numEntradas;
+	}
+	
+	public static Sesion sample(String peliculaNombre, String fecha) {
+		
+		Pelicula pTest = new Pelicula(peliculaNombre, 90);
+		Sala salaTest = new Sala("Sala Test", 20);
+		
+		Sesion sTest = new Sesion(pTest, fecha, "12:00", salaTest, 5, 10.0);
+		
+		return sTest;
+	}
+	
+	public static void test(int n) {
+		System.out.println("test initializacion de Sesion y +" + n + " espectadores");
+		
+		Sesion sTest = sample("Avatar", "01-01-1970");
+		
+		System.out.println(sTest);
+		
+		sTest.actualizarEspectadores(n);
+		
+		System.out.println(sTest);
+		
+	}
+	
+//	public static void main(String args[]) {
+//		test(1);
+//	}
+
+}
