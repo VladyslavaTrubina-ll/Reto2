@@ -1,7 +1,7 @@
 package modelo;
 
 import modelo.Carrito;
-import modelo.Entrada;
+import modelo.Sesion;
 import modelo.OrarioPrecioSalaSesion;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
@@ -49,9 +49,9 @@ public class GestorCine {
 		ClienteAcesso clienteLogueado = null;
 
 		while (!encontrado) {
-			System.out.println("inserire email");
+			System.out.print("Escribe su email: ");
 			String email = controladorentrada.leerCadena();
-			System.out.println("digitare password");
+			System.out.print("Escribe su contraseña: ");
 			String contraseña = controladorentrada.leerCadena();
 			ArrayList<ClienteAcesso> cliente = controlador.obtenercliente(email, contraseña);
 			int contador = 0;
@@ -59,12 +59,15 @@ public class GestorCine {
 				ClienteAcesso c = cliente.get(contador);
 				if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
 					encontrado = true;
-					System.out.println("login effettuato");
+					System.out.println("login realizado con suceso");
 					clienteLogueado = c;
 				}
 				contador++;
 			}
-			System.out.println("error");
+
+			if (!encontrado) {
+				System.out.println("datos incorrectos, intentalo de nuevo");
+			}
 
 		}
 		return clienteLogueado;
@@ -156,8 +159,8 @@ public class GestorCine {
 		return participantes;
 	}
 
-	public Entrada generarEntrada(String titulo,String fecha, String sala,String orario, int numeropersonas, double precio, double descuento) {
-		Entrada nuevaentrada = new Entrada();
+	public Sesion generarEntrada(String titulo,String fecha, String sala,String orario, int numeropersonas, double precio, double descuento) {
+		Sesion nuevaentrada = new Sesion();
 		nuevaentrada.setPelicula(titulo);
 		nuevaentrada.setFecha(fecha);
 		nuevaentrada.setSala(sala);

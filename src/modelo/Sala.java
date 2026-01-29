@@ -2,37 +2,33 @@ package modelo;
 
 public class Sala {
 	private String nombre;
-	private int Sitios;
+	private int sitios;
 
-	public Sala() {
-
-	}
-
-	public Sala(String nombre, int Sitios) {
+	public Sala(String nombre, int sitios) {
 		this.nombre = nombre;
-		this.Sitios = Sitios;
+		this.sitios = sitios;
 	}
 
 	@Override
 	public String toString() {
-		return "Sala [nombre=" + nombre + ", Sitios=" + Sitios + "]";
+		return "Sala [nombre=" + nombre + ", sitios=" + sitios + "]";
 	}
 
 	public String getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+//	public void setNombre(String nombre) {
+//		this.nombre = nombre;
+//	}
 
 	public int getSitios() {
-		return Sitios;
+		return sitios;
 	}
 
-	public void setSitios(int sitios) {
-		Sitios = sitios;
-	}
+//	public void setSitios(int sitios) {
+//		this.sitios = sitios;
+//	}
 
 	
 }

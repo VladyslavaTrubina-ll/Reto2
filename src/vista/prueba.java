@@ -2,7 +2,7 @@ package vista;
 
 import java.util.Scanner;
 import modelo.ClienteAcesso;
-import modelo.Entrada;
+import modelo.Sesion;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
 import modelo.GestorCine;
@@ -73,7 +73,7 @@ public class prueba {
 			String orarioentrada = orarioelegido.getOrario();
 		
 
-			Entrada nuevaentrada = gestorCine.generarEntrada(peliculaElegida,fechaelegida.getFecha(), orariopreciosala.get(0).getSala(),orarioentrada, posti, precioentrada,
+			Sesion nuevaentrada = gestorCine.generarEntrada(peliculaElegida,fechaelegida.getFecha(), orariopreciosala.get(0).getSala(),orarioentrada, posti, precioentrada,
 					descuento);
 			double preciototentrada = nuevaentrada.calcolarpreciototal(precioentrada, posti);
 			gestorcarrito.anadirentrada(nuevaentrada);
