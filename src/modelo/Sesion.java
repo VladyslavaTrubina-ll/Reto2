@@ -1,24 +1,26 @@
 package modelo;
 
 public class Sesion {
-	private Pelicula pelicula;
+	Pelicula pelicula;
 	private String fecha, horario;
-	private Sala sala;
+	private String sala;
 	private int numEspectadores;
 	private double precio;
 
-	public Sesion(Pelicula pelicula, String fecha, String horario, Sala sala, int numEspectadores, double precio) {
+	public Sesion(Pelicula pelicula, String fecha, String horario, String sala, int numEspectadores, double precio) {
 		this.pelicula = pelicula;
 		this.fecha = fecha;
 		this.horario = horario;
-		// TODO !!!!!
-//		this.horarioinicio = horarioinicio;
-//		this.horariofin = horariofin;
+		// a nadie le sale el horario de fin en una app de cine.
 		this.sala = sala;
 		this.precio = precio;
 		this.numEspectadores = numEspectadores;
 	}
 	
+	public Sesion() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void setPelicula(Pelicula pelicula) {
 		this.pelicula = pelicula;
 	}
@@ -43,11 +45,11 @@ public class Sesion {
 		this.horario = horario;
 	}
 
-	public Sala getSala() {
+	public String getSala() {
 		return sala;
 	}
 
-	public void setSala(Sala sala) {
+	public void setSala(String sala) {
 		this.sala = sala;
 	}
 	
@@ -70,7 +72,7 @@ public class Sesion {
 	@Override
 	public String toString() {
 		return "Sesion [pelicula=" + pelicula.getTitulo() 
-		+ ", fecha=" + fecha + ", horario=" + horario  + ", sala="+ sala.getNombre() 
+		+ ", fecha=" + fecha + ", horario=" + horario  + ", sala="+ sala 
 		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
 	}
 	
@@ -83,7 +85,7 @@ public class Sesion {
 		Pelicula pTest = new Pelicula(peliculaNombre, 90);
 		Sala salaTest = new Sala("Sala Test", 20);
 		
-		Sesion sTest = new Sesion(pTest, fecha, "12:00", salaTest, 5, 10.0);
+		Sesion sTest = new Sesion(pTest, fecha, "12:00", "", 5, 10.0);
 		
 		return sTest;
 	}

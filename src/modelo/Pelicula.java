@@ -18,15 +18,7 @@ public class Pelicula {
 		return titulo;
 	}
 
-//	public void setTitulo(String titulo) {
-//		this.titulo = titulo;
-//	}
-
 	public int getDuracion() {
 		return duracion;
 	}
-
-//	public void setDuracion(int duracion) {
-//		this.duracion = duracion;
-//	}
 }

@@ -1,7 +1,8 @@
 package modelo;
 
 public class OrarioPrecioSalaSesion {
-	private String orario, sala;
+	private String sala;
+	private String orario;
 	private double precio;
 
 	public OrarioPrecioSalaSesion() {
@@ -27,16 +28,16 @@ public class OrarioPrecioSalaSesion {
 		this.orario = orario;
 	}
 
+	public double getPrecio() {
+		return precio;
+	}
+
 	public String getSala() {
 		return sala;
 	}
 
 	public void setSala(String sala) {
 		this.sala = sala;
-	}
-
-	public double getPrecio() {
-		return precio;
 	}
 
 	public void setPrecio(double precio) {

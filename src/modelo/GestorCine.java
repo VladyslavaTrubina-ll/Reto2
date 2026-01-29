@@ -6,9 +6,9 @@ import modelo.OrarioPrecioSalaSesion;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
-import modelo.GestorCarrito;
+import modelo.Sala;
 import modelo.Pelicula;
-import modelo.Sesión;
+
 import modelo.Sala;
 import modelo.Ticket;
 import controlador.ControladorEntradaYSalida;
@@ -73,7 +73,7 @@ public class GestorCine {
 		return clienteLogueado;
 	}
 
-	public String elegirpelicula(ControladorDB controlador) { // elegir pelicula, con ciclo hasta que no se escriba la
+	public Pelicula elegirpelicula(ControladorDB controlador) { // elegir pelicula, con ciclo hasta que no se escriba la
 																// pelicula, implementado
 																// en el if manera de no contar acentos//
 
@@ -90,7 +90,7 @@ public class GestorCine {
 										.replace('í', 'i').replace('ó', 'o').replace('ú', 'u'))) {
 					System.out.println("Pelicula selecionada con suceso");
 					peliencontrada = true;
-					return p.getTitulo();
+					return p;
 				}
 			}
 			System.out.println("no peli");
@@ -159,15 +159,15 @@ public class GestorCine {
 		return participantes;
 	}
 
-	public Sesion generarEntrada(String titulo,String fecha, String sala,String orario, int numeropersonas, double precio, double descuento) {
+	public Sesion generarEntrada(Pelicula titulo, String fecha, String sala, String orario, int numeropersonas,
+			double precio) {
 		Sesion nuevaentrada = new Sesion();
 		nuevaentrada.setPelicula(titulo);
 		nuevaentrada.setFecha(fecha);
 		nuevaentrada.setSala(sala);
-		nuevaentrada.setOrario(orario);
-		nuevaentrada.setNumeropersonas(numeropersonas);
+		nuevaentrada.setHorario(orario);
+		nuevaentrada.setNumEspectadores(numeropersonas);
 		nuevaentrada.setPrecio(precio);
-		nuevaentrada.setDescuento(descuento);
 		return nuevaentrada;
 
 	}
@@ -185,4 +185,3 @@ public class GestorCine {
 	}
 
 }
-
