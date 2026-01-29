@@ -90,7 +90,7 @@ public class GestorCine {
 										.replace('í', 'i').replace('ó', 'o').replace('ú', 'u'))) {
 					System.out.println("Pelicula selecionada con suceso");
 					peliencontrada = true;
-					return p;
+					return p.getTitulo();
 				}
 			}
 			System.out.println("no peli");
