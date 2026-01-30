@@ -1,30 +1,21 @@
 package modelo;
 
-import modelo.ClienteAcesso;//import modelo.Entrada;
+//import modelo.Entrada;
 import java.util.ArrayList;
 
 public class Carrito {
+
 	private ArrayList<Sesion> sesiones;
 	private ArrayList<Integer> cantidadesEntradas;
 	private double precioSubTotal, precioTotal, descuentoAplicado, descuento;
-	private ClienteAcesso cliente;
 
 	public Carrito() {
 		this.sesiones = new ArrayList<Sesion>();
-		this.cliente = new ClienteAcesso();
 		this.cantidadesEntradas = new ArrayList<Integer>();
 		this.precioSubTotal = 0.0;
 		this.precioTotal = 0.0;
 		this.descuentoAplicado = 0.0;
 		this.descuento = 0.0;
-	}
-
-	public ClienteAcesso getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(ClienteAcesso cliente) {
-		this.cliente = cliente;
 	}
 
 	@Override
@@ -130,13 +121,13 @@ public class Carrito {
 			Sesion e = sesiones.get(i);
 			int numEntradas = cantidadesEntradas.get(i);
 
-			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getTitulo());
+			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getNombre());
 			System.out.println("  Fecha: " + e.getFecha());
-			System.out.println("  Sala: " + e.getSala());
+			//System.out.println("  Sala: " + e.getSala().getNombre());
 			System.out.println("  Horario: " + e.getHorario());
 			System.out.println("  Personas: " + numEntradas);
 			System.out.println("  Precio de sesion: " + e.getPrecio() + "€");
-		    System.out.println("  Subtotal: " +  e.getPrecio() * numEntradas + "€");
+			System.out.println("  Subtotal: " +  e.getPrecio() * numEntradas + "€");
 		}
 
 		System.out.println("\n--- TOTAL ---");
@@ -179,15 +170,14 @@ public class Carrito {
 		System.out.println(cTest);
 	}
 	
-//	public static void main(String args[]) {
-//		test();
-//	}
-
-}
-
+/*	public static void main(String args[]) {
+		test();
+	}*/
 
 // Avatar 10.0 x 3 = 30.0
 // Joker 5.0 x 2 = 10.0
 // Subtotal 30+10 = 40
 // Descuento 20% = 40 * 0.2 = 8
 // Total 40-8 = 32
+
+}
