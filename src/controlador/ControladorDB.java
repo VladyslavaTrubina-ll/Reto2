@@ -180,14 +180,12 @@ public class ControladorDB {
 		return numespectadores;
 	}
 	public void insertarUsuario(String dni,String nombre,String apellidos,String email, String contrasena ) {
-        String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
-        String user = "root";
-        String password = "";
+       
 
         String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña)VALUES(?,?,?,?,?)";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+             PreparedStatement ps = conexion.prepareStatement(sql); 
 
             // Asignamos el parámetro String
             ps.setString(1, dni);
@@ -206,14 +204,11 @@ public class ControladorDB {
         }
     }
 	public void insertarCompra(String dni,int numentradas, double preciototal,double descuentoaplicado) {
-        String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
-        String user = "root";
-        String password = "";
 
         String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+             PreparedStatement ps = conexion.prepareStatement(sql); 
         	java.sql.Timestamp fechaHora = new java.sql.Timestamp(System.currentTimeMillis());
             // Asignamos el parámetro String
             ps.setString(1, dni);
