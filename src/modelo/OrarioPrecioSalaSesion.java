@@ -1,6 +1,7 @@
 package modelo;
 
 public class OrarioPrecioSalaSesion {
+
 	private String orario, sala;
 	private double precio;
 

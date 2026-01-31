@@ -1,32 +1,24 @@
 package modelo;
 
 public class Pelicula {
-	private String titulo;
+	private String nombre;
 	private int duracion;
 
 	public Pelicula(String titulo, int duracion) {
-		this.titulo = titulo;
+		this.nombre = titulo;
 		this.duracion = duracion;
 	}
 
 	@Override
 	public String toString() {
-		return "Pelicula\ntitulo: " + titulo + "\nduracion: " + duracion + "min"; // TODO? reformat
+		return "Pelicula\nnombre: " + nombre + "\nduracion: " + duracion + "min"; // TODO? reformat
 	}
 
-	public String getTitulo() {
-		return titulo;
+	public String getNombre() {
+		return nombre;
 	}
-
-//	public void setTitulo(String titulo) {
-//		this.titulo = titulo;
-//	}
 
 	public int getDuracion() {
 		return duracion;
 	}
-
-//	public void setDuracion(int duracion) {
-//		this.duracion = duracion;
-//	}
 }
