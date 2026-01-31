@@ -14,13 +14,14 @@ import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Carrito;
 import controlador.Imprimir;
-import modelo.GestorTicket;
+import modelo.GestorTicket; 
+
 
 public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
 	static Carrito carrito = new Carrito();
-static Imprimir imprmir = new Imprimir();
+	static Imprimir imprimir = new Imprimir();
 	public static void main(String args[]) {
 
 		// 0. Connexion a la base de datos
@@ -30,11 +31,29 @@ static Imprimir imprmir = new Imprimir();
 		}
 
 		// TODO realizar 1. Bienvenida
+		imprimir.bienvenida();
 
 		// TODO Tienes cuenta?
 
-		// No -> TODO 1.1 Registrar
+		boolean esRegistrado = false;
+		while (!esRegistrado) {
+			System.out.println("¿Tienes cuenta? (si/no)");
+			String respuesta = gestorCine.controladorEntrada.leerCadena();
+			if (respuesta.equalsIgnoreCase("si")) {
+				esRegistrado = true;
+			} else if (respuesta.equalsIgnoreCase("no")) {
+				System.out.println("Por favor, regístrate para continuar.");
+				
+				// No -> TODO 1.1 Registrar
+				//gestorCine.registrarCliente();
 
+				esRegistrado = false;
+				// Vuelve a preguntar si tiene cuenta
+			} else {
+				System.out.println("Respuesta no válida. Por favor, responde 'si' o 'no'.");
+			}
+		}
+ 
 		// Si -> continuar
 
 		// 2. Login
@@ -51,7 +70,7 @@ static Imprimir imprmir = new Imprimir();
 			// 4.Eligir entradas
 
 			// 4.1 Mostrar peliculas
-		   Imprimir.imprimirPeliculas(gestorCine.controlador);      
+		   imprimir.imprimirPeliculas(gestorCine.controlador);      
 
 			//  4.2 Qieres elegir pelicula?
 
@@ -72,15 +91,15 @@ static Imprimir imprmir = new Imprimir();
 
 
 			// 6. mostrarán las fechas en las que se puede ver esa película
-			ArrayList<FechaSesion> fechas = Imprimir.mostarFecha(peliculaElegida); 
+			//ArrayList<FechaSesion> fechas = Imprimir.mostarFecha(peliculaElegida); 
 
 			// 7. Elegir fecha
 			// Logica en GestorCine
-			FechaSesion fechaElegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
-			 fechaElegida.getFecha();
+			//FechaSesion fechaElegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
+			// fechaElegida.getFecha();
 
 			 // 8. Mostrar sesiones (Hora,Sala y Precio)
-			ArrayList<OrarioPrecioSalaSesion> horarioPrecioYSala = Imprimir.imprimirHoraPrecioYSala(fechaElegida, peliculaElegida);
+			//ArrayList<OrarioPrecioSalaSesion> horarioPrecioYSala = Imprimir.imprimirHoraPrecioYSala(fechaElegida, peliculaElegida);
 			System.out.print("Volver a la selecion de peliculas?");
 
 			// volver?
@@ -90,14 +109,14 @@ static Imprimir imprmir = new Imprimir();
 			}
 
 			// 9. Elegir sesión
-			OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(gestorCine.controlador, horarioPrecioYSala);
+			//OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(gestorCine.controlador, horarioPrecioYSala);
 
 
 			// 10. Hay sillas libres?
-			ArrayList<EspectadoresSesion> sitiosDisponibles = imprimirEspectadores(gestorCine.controlador, fechaElegida,
-					horarioElegido);
+			/*ArrayList<EspectadoresSesion> sitiosDisponibles = imprimirEspectadores(gestorCine.controlador, fechaElegida,
+					horarioElegido);*/
 
-			if (espectadoresActuales == salaLlena(sitiosDisponibles)) {
+			/*if (espectadoresActuales == salaLlena(sitiosDisponibles)) {
 				System.out.println("No hay sitios disponbles para esta sesion");
 				imprimirPeliculas(gestorCine.controlador);
 				// Volver a empezar el bucle principal
@@ -105,7 +124,7 @@ static Imprimir imprmir = new Imprimir();
 
 			// 11. Escribir el numero de entradas
 			int posti = gestorCine.seleccionarNumEspectadores(sitiosDisponibles, horarioElegido);
-			sitiosDisponibles.get(0).setEspectadores(posti);
+			sitiosDisponibles.get(0).setEspectadores(posti);*/
 
 			// generar entrada (sesion + numEntradas) TODO class Entrada
 
@@ -116,11 +135,11 @@ static Imprimir imprmir = new Imprimir();
 			double precioentrada = horarioPrecioYSala.get(0).getPrecio();
 			String orarioentrada = horarioElegido.getOrario();*/
 
-			Sesion nuevaentrada = gestorCine.generarEntrada(PeliculaElegida, fechaElegida.getFecha(),
-					horarioPrecioYSala.get(0).getSala(), orarioentrada, posti, precioentrada);
+			/*Sesion nuevaentrada = gestorCine.generarEntrada(PeliculaElegida, fechaElegida.getFecha(),
+					horarioPrecioYSala.get(0).getSala(), orarioentrada, posti, precioentrada);*/
 
 			// 12. entrada anadida en carrito + TODO mostrará un mensaje con la selección realizada
-			carrito.anadirEntrada(nuevaentrada, posti);
+			/*carrito.anadirEntrada(nuevaentrada, posti);*/
 			
 			// 13. TODO Eligir mas peliculas?
 			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
@@ -147,7 +166,7 @@ static Imprimir imprmir = new Imprimir();
 				//  Borrar no -> contiuar
 
 				// siempre volver a 4.1 Mostrar peliculas
-				imprimirPeliculas(gestorCine.controlador);
+				/*imprimirPeliculas(gestorCine.controlador);*/
 
 			} else {
 				// 14 Pagar? si ->
@@ -157,8 +176,8 @@ static Imprimir imprmir = new Imprimir();
 				// 16. Hacer pago (user input dinero)
 
 				// 17. Insertar compra en DB
-				gestorCine.controlador.insertarCompra(carrito.getDni(), carrito.getSesiones().size(),
-						carrito.getPrecioTotal(), carrito.getDescuento());
+			/*	gestorCine.controlador.insertarCompra(carrito.getDni(), carrito.getSesiones().size(),
+						carrito.getPrecioTotal(), carrito.getDescuento());*/
 
 				// 17.1 idTicket = Insert ticket (compra)
 
@@ -172,8 +191,8 @@ static Imprimir imprmir = new Imprimir();
 				// Imprimir Ticket
 
 				System.out.println("impression de ticket...");
-				String sesion =	gestorCine.controlador.obtenerSesion(fechaElegida, horarioElegido);
-				System.out.println("sesion elegida " + sesion + "");
+				//String sesion =	gestorCine.controlador.obtenerSesion(fechaElegida, horarioElegido);
+				//System.out.println("sesion elegida " + sesion + "");
 				
 				// 18. Guardar ticket?
 				// 18 no -> salir?
@@ -193,32 +212,30 @@ static Imprimir imprmir = new Imprimir();
 		}
 	}
 
-	/*public static ArrayList<OrarioPrecioSalaSesion> imprimirHoraPrecioYSala(FechaSesion fecha, String titulo) {
-		
-		ArrayList<FechaSesion> unafecha = new ArrayList<>();
-		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = gestorCine.controlador.obtenerhorariopreciosala(unafecha,titulo);
-		for (int i = 0; i < orariopreciosala.size(); i++) {
-			System.out.println((1 + i) + ". " + (orariopreciosala.get(i)));
-		}
-		return orariopreciosala;
-	}*/
+	public static void registrarCliente() {
+		System.out.println("=== Registro de nuevo cliente ===");
+		System.out.print("Escribe tu DNI: ");
+		String dni = gestorCine.controladorEntrada.leerCadena();
+		System.out.print("Escribe tu nombre: ");
+		String nombre = gestorCine.controladorEntrada.leerCadena();
+		System.out.print("Escribe tus apellidos: ");
+		String apellidos = gestorCine.controladorEntrada.leerCadena();
+		System.out.print("Escribe tu email: ");
+		String email = gestorCine.controladorEntrada.leerCadena();
+		System.out.print("Escribe tu contraseña: ");
+		String contrasena = gestorCine.controladorEntrada.leerCadena();
 
-	
-	/*public static ArrayList<EspectadoresSesion> imprimirEspectadores(ControladorDB controlador, FechaSesion fecha,
-			OrarioPrecioSalaSesion horarioElegido) {
-		ArrayList<FechaSesion> unafecha = new ArrayList<>();
-		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> unorario = new ArrayList<>();
-		unorario.add(horarioElegido);
-		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
-		if (numespectadores.isEmpty()) {
-			System.out.println("No hay espectadores para esta sesión.");
+		try {
+			gestorCine.controlador.insertarUsuario(dni, nombre, apellidos, email, contrasena);
+			System.out.println("✓ Registro exitoso. Ahora puedes iniciar sesión.");
+		} catch (Exception e) {
+			System.out.println("✗ Error en el registro. Por favor, inténtalo de nuevo.");
+			e.printStackTrace();
 		}
-		return numespectadores;
-	}*/
+	}
 
-	public static int salaLlena(ArrayList<EspectadoresSesion> espectadores) {
+
+	/* public static int salaLlena(ArrayList<EspectadoresSesion> espectadores) {
 		int sitiosdisponibles = espectadores.get(0).getEspectadores();
 		if (sitiosdisponibles == gestorCine.S1.getSitios() || sitiosdisponibles == gestorCine.S2.getSitios()
 				|| sitiosdisponibles == gestorCine.S3.getSitios() || sitiosdisponibles == gestorCine.S4.getSitios()
@@ -227,7 +244,9 @@ static Imprimir imprmir = new Imprimir();
 
 		}
 		return sitiosdisponibles;
-	}
+	}*/
+
+
 
 }
 
