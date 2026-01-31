@@ -13,14 +13,14 @@ import controlador.ControladorDB;
 import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Carrito;
-
+import controlador.Imprimir;
 import modelo.GestorTicket;
 
 public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
 	static Carrito carrito = new Carrito();
-
+static Imprimir imprmir = new Imprimir();
 	public static void main(String args[]) {
 
 		// 0. Connexion a la base de datos
@@ -51,7 +51,7 @@ public class Launcher {
 			// 4.Eligir entradas
 
 			// 4.1 Mostrar peliculas
-			imprimirPeliculas(gestorCine.controlador);
+		   Imprimir.imprimirPeliculas(gestorCine.controlador);      
 
 			//  4.2 Qieres elegir pelicula?
 
@@ -72,7 +72,7 @@ public class Launcher {
 
 
 			// 6. mostrarán las fechas en las que se puede ver esa película
-			ArrayList<FechaSesion> fechas = mostarFecha(peliculaElegida);
+			ArrayList<FechaSesion> fechas = Imprimir.mostarFecha(peliculaElegida); 
 
 			// 7. Elegir fecha
 			// Logica en GestorCine
@@ -80,7 +80,7 @@ public class Launcher {
 			 fechaElegida.getFecha();
 
 			 // 8. Mostrar sesiones (Hora,Sala y Precio)
-			ArrayList<OrarioPrecioSalaSesion> horarioPrecioYSala = imprimirHoraPrecioYSala(fechaElegida, peliculaElegida);
+			ArrayList<OrarioPrecioSalaSesion> horarioPrecioYSala = Imprimir.imprimirHoraPrecioYSala(fechaElegida, peliculaElegida);
 			System.out.print("Volver a la selecion de peliculas?");
 
 			// volver?
