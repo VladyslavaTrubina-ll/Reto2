@@ -1,0 +1,100 @@
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+ - Joker | 17:00:00 | 2p | 11.0€/p | Desc: 0.0€
+Total: 22.0€
+Descuento: 0.0€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+ - Matrix | 17:00:00 | 3p | 10.5€/p | Desc: 6.300000000000001€
+ - Soul | 18:30:00 | 3p | 11.0€/p | Desc: 6.6000000000000005€
+Total: 51.599999999999994€
+Descuento: 12.900000000000002€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Joker | 17:00:00 | 1p | 11.0€/p | Desc: 0.0€
+Total: 11.0€
+Descuento: 0.0€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Joker | 2026-02-02 | 17:00:00 | 1p | 11.0€/p | Desc: 0.0€
+Total: 11.0€
+Descuento: 0.0€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Matrix | 2026-02-06 | 20:30:00 | 30p | 10.5€/p | Desc: 94.5€
+  - Joker | 2026-02-09 | 20:30:00 | 3p | 11.0€/p | Desc: 9.9€
+  - Parásitos | 2026-02-12 | 22:00:00 | 4p | 11.5€/p | Desc: 13.799999999999999€
+Total: 275.8€
+Descuento: 118.2€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Joker | 2026-02-09 | 20:30:00 | 3p | 11.0€/p | Desc: 6.6000000000000005€
+  - Toy Story 4 | 2026-02-03 | 16:00:00 | 5p | 11.5€/p | Desc: 11.5€
+Total: 72.4€
+Descuento: 18.1€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Toy Story 4 | 2026-02-03 | 16:00:00 | 10p | 11.5€/p | Desc: 23.0€
+  - Joker | 2026-02-09 | 23:00:00 | 20p | 11.0€/p | Desc: 44.0€
+Total: 268.0€
+Descuento: 67.0€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 2p | 11.5€/p | Desc: 0.3€
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 2p | 11.5€/p | Desc: 0.3€
+  - Pelicula
+titulo: Joker
+duracion: 122min | 2026-02-02 | Sala 3D | 17:00:00 | 3p | 11.0€/p | Desc: 0.3€
+Total: 55.3€
+Descuento: 0.3€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 1p | 11.5€/p | Desc: 4.6000000000000005€
+  - Pelicula
+titulo: Dune
+duracion: 155min | 2026-02-04 | Sala VIP | 17:30:00 | 1p | 11.5€/p | Desc: 4.6000000000000005€
+Total: 18.4€
+Descuento: 4.6000000000000005€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Pelicula
+titulo: Interstellar
+duracion: 169min | 2026-02-02 | Sala 3D | 17:00:00 | 1p | 11.0€/p | Desc: 0.0€
+Total: 11.0€
+Descuento: 0.0€
