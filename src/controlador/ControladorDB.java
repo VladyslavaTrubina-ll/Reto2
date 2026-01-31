@@ -182,7 +182,7 @@ public class ControladorDB {
 	public void insertarUsuario(String dni,String nombre,String apellidos,String email, String contrasena ) {
        
 
-        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña)VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña)VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
 
         try {
              PreparedStatement ps = conexion.prepareStatement(sql); 
