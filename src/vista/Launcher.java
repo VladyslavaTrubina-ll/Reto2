@@ -57,7 +57,7 @@ public class Launcher {
 		// Si -> continuar
 
 		// 2. Login
-		ClienteAcesso cliente = gestorCine.login();
+		//ClienteAcesso cliente = gestorCine.login();
 
 		// 3. Compra
 
@@ -65,7 +65,7 @@ public class Launcher {
 		int espectadoresActuales = 0;
 		boolean comprando = true;
 		
-		while (comprando) {
+		do {
 
 			// 4.Eligir entradas
 
@@ -73,16 +73,75 @@ public class Launcher {
 		   imprimir.imprimirPeliculas(gestorCine.controlador);      
 
 			//  4.2 Qieres elegir pelicula?
+			System.out.print("¿Quieres elegir pelicula? (si/no): ");
+			String elegirPeli = gestorCine.controladorEntrada.leerCadena();
 
-			// 4.2 no -> 4.3 Hay algo en carrito?
-
-			// 4.3 no -> salir?
-
-			// salir si -> fin programa
-
-			// salir no -> volver a 4.1 Mostrar peliculas
-
-			// 4.3 si -> comprar?
+			if (!elegirPeli.equalsIgnoreCase("si")) {
+				// 4.2 no -> 4.3 Hay algo en carrito?
+				if (carrito.getSesiones().isEmpty()) {
+					// 4.3 no -> salir?
+					System.out.println("¿Quieres salir? (si/no)");
+					String salir = gestorCine.controladorEntrada.leerCadena();
+					// salir si -> fin programa
+					if (salir.equalsIgnoreCase("si")) {
+						peliEligida = gestorCine.elegirPelicula(gestorCine.controlador);
+						imprimir.imprimirFecha(peliEligida);
+						elegirFecha = gestorCine.elegirFecha(gestorCine.controlador, fechas); //ToDO verificar
+						
+						boolean seleccionSesion = false;
+						while (!seleccionSesion) {
+							imprimir.imprimirHoraPrecioYSala(elegirFecha, peliEligida.getNombre());
+							System.out.print("¿Quieres Volver? (si/no): ");
+							String volver = gestorCine.controladorEntrada.leerCadena();
+							if (volver.equalsIgnoreCase("si")) {
+								break;
+							} else {
+								gestorCine.elegirSesion();
+							}
+						boolean haySillas = gestorCine.verificarSiHaySillas(); //ToDO tiene estar en otro sitio?
+						if (!haySillas) {
+							System.out.println("No hay sillas disponibles para esta sesión.");
+							continue; // Volver a imprimirHoraPrecioYSala
+						}
+					}
+					// salir no -> volver a 4.1 Mostrar peliculas
+					continue;
+				} else {
+					// 4.3 si -> comprar?
+					System.out.println("¿Quieres comprar lo que hay en el carrito? (si/no)");
+					String comprar = gestorCine.controladorEntrada.leerCadena();
+					if (comprar.equalsIgnoreCase("si")) {
+						// 13 no -> Mostrar resumen de compra
+						carrito.resumen(cliente.getNombre(), cliente.getApellidos(), carrito);
+						// 14. Pagar?
+						boolean compraconfirmada = gestorCine.confirmarcompra(carrito);
+						if (!compraconfirmada) {
+							System.out.println("Compra anulada");
+							carrito.vaciar();
+							continue;
+						}
+						// 17. Insertar compra en DB
+						gestorCine.controlador.insertarCompra(cliente.getDni(), carrito.getSesiones().size(),
+								carrito.getPrecioTotal(), carrito.getDescuento());
+						System.out.println("impression de ticket...");
+						System.out.println("Quieres guardar el ticket?");
+						String guardarticket = gestorCine.controladorEntrada.leerCadena();
+						if (guardarticket.equalsIgnoreCase("Si")) {
+							GestorTicket.salvaCompra(cliente, carrito);
+						}
+						carrito.vaciar();
+						System.out.println("¿Quieres salir? (si/no)");
+						String salir = gestorCine.controladorEntrada.leerCadena();
+						if (salir.equalsIgnoreCase("si")) {
+							break;
+						}
+						continue;
+					}
+					// salir no -> volver a 4.1 Mostrar peliculas
+					continue;
+				}
+			}
+//TODO aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasta haqui test
 
 			//  4.2 si -> 5. elegir pelicula
 
@@ -91,15 +150,22 @@ public class Launcher {
 
 
 			// 6. mostrarán las fechas en las que se puede ver esa película
-			//ArrayList<FechaSesion> fechas = Imprimir.mostarFecha(peliculaElegida); 
+			ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(peliculaElegida);
+			for (int i = 0; i < fechas.size(); i++) {
+				System.out.println((1 + i) + ". " + (fechas.get(i)));
+			}
 
 			// 7. Elegir fecha
 			// Logica en GestorCine
-			//FechaSesion fechaElegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
-			// fechaElegida.getFecha();
+			FechaSesion fechaElegida = gestorCine.elegirfecha(gestorCine.controlador, fechas);
+			fechaElegida.getFecha();
 
 			 // 8. Mostrar sesiones (Hora,Sala y Precio)
-			//ArrayList<OrarioPrecioSalaSesion> horarioPrecioYSala = Imprimir.imprimirHoraPrecioYSala(fechaElegida, peliculaElegida);
+			ArrayList<OrarioPrecioSalaSesion> horarioPrecioYSala = gestorCine.controlador
+					.obtenerhorariopreciosala(fechas, peliculaElegida);
+			for (int i = 0; i < horarioPrecioYSala.size(); i++) {
+				System.out.println((1 + i) + ". " + (horarioPrecioYSala.get(i)));
+			}
 			System.out.print("Volver a la selecion de peliculas?");
 
 			// volver?
@@ -109,37 +175,37 @@ public class Launcher {
 			}
 
 			// 9. Elegir sesión
-			//OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(gestorCine.controlador, horarioPrecioYSala);
+			OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(gestorCine.controlador, horarioPrecioYSala);
 
 
 			// 10. Hay sillas libres?
-			/*ArrayList<EspectadoresSesion> sitiosDisponibles = imprimirEspectadores(gestorCine.controlador, fechaElegida,
-					horarioElegido);*/
+			ArrayList<EspectadoresSesion> sitiosDisponibles = Imprimir.imprimirEspectadores(
+					gestorCine.controlador, fechaElegida, horarioElegido);
 
-			/*if (espectadoresActuales == salaLlena(sitiosDisponibles)) {
+			if (sitiosDisponibles.isEmpty()) {
 				System.out.println("No hay sitios disponbles para esta sesion");
-				imprimirPeliculas(gestorCine.controlador);
-				// Volver a empezar el bucle principal
+				continue;
 			}
 
 			// 11. Escribir el numero de entradas
 			int posti = gestorCine.seleccionarNumEspectadores(sitiosDisponibles, horarioElegido);
-			sitiosDisponibles.get(0).setEspectadores(posti);*/
+			sitiosDisponibles.get(0).setEspectadores(posti);
 
 			// generar entrada (sesion + numEntradas) TODO class Entrada
 
 			// genero un entrada con los varios datos//
 
 			//ya esta en carrito
-			/*double descuento = 0.0;
-			double precioentrada = horarioPrecioYSala.get(0).getPrecio();
-			String orarioentrada = horarioElegido.getOrario();*/
+			double descuento = 0.0;
+			double precioentrada = horarioElegido.getPrecio();
+			String orarioentrada = horarioElegido.getOrario();
 
-			/*Sesion nuevaentrada = gestorCine.generarEntrada(PeliculaElegida, fechaElegida.getFecha(),
-					horarioPrecioYSala.get(0).getSala(), orarioentrada, posti, precioentrada);*/
+			Sesion nuevaentrada = gestorCine.generarEntrada(PeliculaElegida, fechaElegida.getFecha(),
+					horarioElegido.getSala(), orarioentrada, posti, precioentrada);
 
 			// 12. entrada anadida en carrito + TODO mostrará un mensaje con la selección realizada
-			/*carrito.anadirEntrada(nuevaentrada, posti);*/
+			carrito.anadirEntrada(nuevaentrada, posti);
+			System.out.println("Entrada añadida al carrito.");
 			
 			// 13. TODO Eligir mas peliculas?
 			System.out.println("\n¿Seleccionar mas peliculas? (si/no)");
@@ -166,7 +232,7 @@ public class Launcher {
 				//  Borrar no -> contiuar
 
 				// siempre volver a 4.1 Mostrar peliculas
-				/*imprimirPeliculas(gestorCine.controlador);*/
+				// siempre volver a 4.1 Mostrar peliculas
 
 			} else {
 				// 14 Pagar? si ->
@@ -176,8 +242,8 @@ public class Launcher {
 				// 16. Hacer pago (user input dinero)
 
 				// 17. Insertar compra en DB
-			/*	gestorCine.controlador.insertarCompra(carrito.getDni(), carrito.getSesiones().size(),
-						carrito.getPrecioTotal(), carrito.getDescuento());*/
+				gestorCine.controlador.insertarCompra(cliente.getDni(), carrito.getSesiones().size(),
+						carrito.getPrecioTotal(), carrito.getDescuento());
 
 				// 17.1 idTicket = Insert ticket (compra)
 
@@ -208,9 +274,14 @@ public class Launcher {
 				carrito.vaciar();
 
 				// 20. salir?
+				System.out.println("¿Quieres salir? (si/no)");
+				String salir = gestorCine.controladorEntrada.leerCadena();
+				if (salir.equalsIgnoreCase("si")) {
+					break;
+				}
 			}
 		}
-	}
+	
 
 	public static void registrarCliente() {
 		System.out.println("=== Registro de nuevo cliente ===");

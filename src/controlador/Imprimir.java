@@ -39,7 +39,7 @@ public class Imprimir {
 		return numespectadores;
 	}
 	
-	/*public static ArrayList<FechaSesion> mostarFecha(String titulo) {
+	public static ArrayList<FechaSesion> imprimirFecha(String titulo) {
 		ArrayList<FechaSesion> fechas = modelo.gestorCine.controlador.obtenerfechasporperli(titulo);
 		for (int i = 0; i < fechas.size(); i++) {
 			System.out.println((1 + i) + ". " + (fechas.get(i)));
@@ -56,5 +56,5 @@ public class Imprimir {
 			System.out.println((1 + i) + ". " + (horaPrecioSala.get(i)));
 		}
 		return horaPrecioSala;
-	}*/
+	}
 }

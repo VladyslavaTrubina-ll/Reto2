@@ -76,7 +76,7 @@ public class GestorCine {
 		return this.clienteLogueado;
 	}
 
-	public Pelicula elegirpelicula(ControladorDB controlador) { /*elegir pelicula, con ciclo hasta que no se escriba la
+	public Pelicula elegirPelicula(ControladorDB controlador) { /*elegir pelicula, con ciclo hasta que no se escriba la
 																pelicula, implementado en el if manera de no contar acentos/ */
 
 		boolean peliencontrada = false;
@@ -103,9 +103,9 @@ public class GestorCine {
 		return null; //TODO sin sentido
 	}
 
-	public FechaSesion elegirfecha(ControladorDB controlador, ArrayList<FechaSesion> fechas) { // elegir fecha de
+	public FechaSesion elegirFecha(ControladorDB controlador /*TODO para que controlador */, ArrayList<FechaSesion> fechas) { // elegir fecha de
 																								// pelicula
-																								// selecionada//
+																								// seleccionada//
 		System.out.println("Elegir una fecha");
 		if (fechas.isEmpty()) {
 			System.out.println("Error : No hay fechas disponibles para esta película");
@@ -115,6 +115,10 @@ public class GestorCine {
 		return fechas.get(opcion - 1);
 	}
 
+	public Sesion elegirSesion() {
+		// TODO hacer
+		
+	}
 	public OrarioPrecioSalaSesion elegirHorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> horario) {
 
 		int opcion = this.controladorEntrada.esValorMenuValido(1, horario.size());
@@ -128,6 +132,13 @@ public class GestorCine {
 		return horarioElegido;
 	}
 
+	public verificarSiHaySillas() {
+		// TODO hacer
+
+		//no 
+
+		//si 
+	}
 	public int seleccionarNumEspectadores(ArrayList<EspectadoresSesion> espectadores, OrarioPrecioSalaSesion obtenerSala) { // seleccionar
 																														// asientos
 																														// con
