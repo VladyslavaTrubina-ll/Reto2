@@ -85,10 +85,11 @@ public class ControladorDB {
 
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		String query = "Select  Titulo, duracion,min(fecha), min(hora_inicio) FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula          \r\n"
-        + " WHERE fecha >= CURDATE() AND hora_inicio > current_time" + " group by titulo,duracion\r\n"
-        + "having  min(fecha) > CURDATE() or (min(fecha) = CURDATE() and min(hora_inicio) > current_time)\r\n"
-        + "order by min(fecha), min(hora_inicio)";
+		
+		String query = "SELECT DISTINCT Titulo, duracion FROM Pelicula P " +
+                 "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " +                 
+                 "ORDER BY Titulo";
+
 		
 		try {
 			Statement consulta = conexion.createStatement();

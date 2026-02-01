@@ -42,15 +42,16 @@ public class ControladorEntradaYSalida {
 	}
 
 	public String leerCadena() {
+		while (true) {
 		String entrada = sc.nextLine().trim();
 
 		if(entrada.isEmpty()) {
-			return ("Error: no puedes dejar el campo vacío.");
-		 // Llamada recursiva para volver a pedir la entrada
+			System.out.println("Error: no puedes dejar el campo vacío.");
+			return leerCadena(); // Llamada recursiva para volver a pedir la entrada
 		}
 		return entrada;
 	}
-
+}
 
 	public int leerEntero() {
 		return sc.nextInt();

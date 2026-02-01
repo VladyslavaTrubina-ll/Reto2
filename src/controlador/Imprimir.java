@@ -10,11 +10,6 @@ import controlador.ControladorDB;
 
 public class Imprimir {
 	
-	public ControladorDB controlador;
-
-	public Imprimir() {
-		this.controlador = new ControladorDB("cine_daw");
-	}
 	public static void bienvenida(){
 		
 		System.out.println("=================================");
@@ -24,7 +19,7 @@ public class Imprimir {
 	}
 
 	public static void imprimirPeliculas(ControladorDB controlador) {
-		System.out.println("Peliculas disponibles");
+		System.out.println("\nPeliculas disponibles");
 		System.out.println("---------------------");
 		ArrayList<Pelicula> peliculas = controlador.obtenerPelis();
 
@@ -50,13 +45,14 @@ public class Imprimir {
 		return numespectadores;
 	}
 	
-	/*public static ArrayList<FechaSesion> imprimirFecha(String titulo) {
-		ArrayList<FechaSesion> fechas = modelo.gestorCine.controlador.obtenerfechasporperli(titulo);
+	public static ArrayList<FechaSesion> imprimirFecha(ControladorDB controlador, String titulo) {
+		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
+		System.out.println("\nFechas disponibles para: " + titulo);
 		for (int i = 0; i < fechas.size(); i++) {
-			System.out.println((1 + i) + ". " + (fechas.get(i)));
+			System.out.printf("[%d] %s%n", (1 + i), fechas.get(i));
 		}
 		return fechas;
-	}*/
+	}
 	
 	/*public static ArrayList<OrarioPrecioSalaSesion> imprimirHoraPrecioYSala(FechaSesion fecha, String titulo) {
 		

@@ -48,7 +48,7 @@ public class GestorCine {
 	}
 
 	public ClienteAcesso login() {
-		ArrayList<Pelicula> peliculas = this.controlador.obtenerPelis();
+		//ArrayList<Pelicula> peliculas = this.controlador.obtenerPelis();
 		
 		boolean encontrado = false;
 		//ClienteAcesso clienteLogueado = null;
@@ -72,7 +72,7 @@ public class GestorCine {
 				contador++;
 			}
 			if (!encontrado) {
-				System.out.println("datos incorrectos, intentalo de nuevo");
+				System.out.println("Datos incorrectos, intentalo de nuevo");
 			}
 		}
 		return this.clienteLogueado;
