@@ -74,30 +74,30 @@ public class Launcher {
 		boolean vasEligPeli = false;
 		
 		while (!vasEligPeli) {
-		System.out.print("¿Quieres elegir pelicula? (si/no): ");
-		String elegirPeli = gestorCine.controladorEntrada.leerCadena();
+			System.out.print("¿Quieres elegir pelicula? (si/no): ");
+			String elegirPeli = gestorCine.controladorEntrada.leerCadena();
 		
-		if (elegirPeli.equalsIgnoreCase("no")) {
+			if (elegirPeli.equalsIgnoreCase("no")) {
 			// 4.2 no -> 4.3 Hay algo en carrito?
-			if (carrito.getSesiones().isEmpty()) {
-				// 4.3 no -> salir?
-				System.out.println("¿Quieres salir? (si/no)");
-				String salir = gestorCine.controladorEntrada.leerCadena();
+				if (carrito.getSesiones().isEmpty()) {
+					// 4.3 no -> salir?
+					System.out.println("¿Quieres salir? (si/no)");
+					String salir = gestorCine.controladorEntrada.leerCadena();
 				
-				// salir si -> fin programa
-				if (salir.equalsIgnoreCase("si")) {
-					System.out.println("Hasta luego!");
-					return; // Termina el programa
+					// salir si -> fin programa
+					if (salir.equalsIgnoreCase("si")) {
+							System.out.println("Hasta luego!");
+							return; // Termina el programa
 					}
-				} else {
-       	 		}
-		} else if (elegirPeli.equalsIgnoreCase("si")) {
-			Pelicula peliEligida = gestorCine.elegirPelicula(gestorCine.controlador);
+					} else {
+       	 			}
+			} else if (elegirPeli.equalsIgnoreCase("si")) {
+				Pelicula peliEligida = gestorCine.elegirPelicula(gestorCine.controlador);
 				
-			ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(peliEligida.getNombre());
-			imprimir.imprimirFecha(gestorCine.controlador, peliEligida.getNombre());
-			FechaSesion elegirFecha = gestorCine.elegirFecha(gestorCine.controlador, fechas); //ToDO verificar
-			System.out.println("nooo");
+				ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(peliEligida.getNombre());
+				imprimir.imprimirFecha(gestorCine.controlador, peliEligida.getNombre());
+				FechaSesion elegirFecha = gestorCine.elegirFecha(gestorCine.controlador, fechas); //ToDO verificar
+				System.out.println("nooo");
 			} else {
 				System.out.println("Respuesta no válida. Por favor, responde 'si' o 'no'.");
 			}
