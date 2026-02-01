@@ -42,11 +42,35 @@ public class ControladorEntradaYSalida {
 	}
 
 	public String leerCadena() {
-		return sc.nextLine();
+		String entrada = sc.nextLine().trim();
+
+		if(entrada.isEmpty()) {
+			return ("Error: no puedes dejar el campo vacío.");
+		 // Llamada recursiva para volver a pedir la entrada
+		}
+		return entrada;
 	}
+
 
 	public int leerEntero() {
 		return sc.nextInt();
+	}
+	
+	public static String letraMalluscula(String texto) {
+	    if (texto == null || texto.isEmpty()) {
+	        return texto;
+	    }
+
+		String[] palabras = texto.trim().toLowerCase().split("\\s+");
+	    StringBuilder resultado = new StringBuilder();
+	    
+		for (String palabra : palabras) {
+        resultado.append(Character.toUpperCase(palabra.charAt(0)))
+                 .append(palabra.substring(1))
+                 .append(" ");
+    }
+    
+    return resultado.toString().trim();
 	}
 
 	public int pedirParticipantes(int asientosDisponibles) {

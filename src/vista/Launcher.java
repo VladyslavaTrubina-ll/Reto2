@@ -1,6 +1,11 @@
 package vista;
 
 import java.util.Scanner;
+import modelo. *;
+import controlador. *;
+import java.util.ArrayList;
+/*
+import java.util.Scanner;
 import modelo.ClienteAcesso;
 import modelo.Sesion;
 import modelo.EspectadoresSesion;
@@ -14,7 +19,7 @@ import modelo.Pelicula;
 import modelo.Sala;
 import modelo.Carrito;
 import controlador.Imprimir;
-import modelo.GestorTicket; 
+import modelo.GestorTicket; */
 
 
 public class Launcher {
@@ -22,22 +27,23 @@ public class Launcher {
 	private static GestorCine gestorCine = new GestorCine();
 	static Carrito carrito = new Carrito();
 	static Imprimir imprimir = new Imprimir();
+	
 	public static void main(String args[]) {
 
 		// 0. Connexion a la base de datos
-
 		if (!gestorCine.conexionRealizada()) {
 			return;
 		}
 
 		// TODO realizar 1. Bienvenida
-		imprimir.bienvenida();
+		Imprimir.bienvenida();
 
 		// TODO Tienes cuenta?
 
 		boolean esRegistrado = false;
+		
 		while (!esRegistrado) {
-			System.out.println("¿Tienes cuenta? (si/no)");
+			System.out.print("¿Tienes cuenta? (si/no): ");
 			String respuesta = gestorCine.controladorEntrada.leerCadena();
 			if (respuesta.equalsIgnoreCase("si")) {
 				esRegistrado = true;
@@ -45,7 +51,7 @@ public class Launcher {
 				System.out.println("Por favor, regístrate para continuar.");
 				
 				// No -> TODO 1.1 Registrar
-				//gestorCine.registrarCliente();
+				registrarCliente();
 
 				esRegistrado = false;
 				// Vuelve a preguntar si tiene cuenta
@@ -53,6 +59,43 @@ public class Launcher {
 				System.out.println("Respuesta no válida. Por favor, responde 'si' o 'no'.");
 			}
 		}
+	}
+	public static void registrarCliente() {
+		System.out.println("=== Registro para nuevo cliente ===");
+		System.out.print("Escribe tu DNI: ");
+		String dni = gestorCine.controladorEntrada.leerCadena();
+		System.out.print("Escribe tu nombre: ");
+		String nombre = ControladorEntradaYSalida.letraMalluscula(gestorCine.controladorEntrada.leerCadena());
+		System.out.print("Escribe tus apellidos: ");
+		String apellidos = ControladorEntradaYSalida.letraMalluscula(gestorCine.controladorEntrada.leerCadena());
+		String email = "";
+		boolean emailValido = false;
+		
+		while (!emailValido) {
+		System.out.print("Escribe tu email: ");
+		email = gestorCine.controladorEntrada.leerCadena();
+
+		// ^.+ qulquer simvolo antes @
+		if (email.matches("^.+@gmail\\.com$")) {
+    		emailValido = true;
+		} else {
+    		System.out.println("Email no válido. Por favor, escribe un email de Gmail.");
+			emailValido = false;
+		}
+		}
+
+		System.out.print("Escribe tu contraseña: ");
+		String contrasena = gestorCine.controladorEntrada.leerCadena();
+
+		try {
+			gestorCine.controlador.insertarUsuario(dni, nombre, apellidos, email, contrasena);
+			System.out.println("✓ Registro exitoso. Ahora puedes iniciar sesión.");
+		} catch (Exception e) {
+			System.out.println("✗ Error en el registro. Por favor, inténtalo de nuevo.");
+			e.printStackTrace();
+		}
+	}
+}
  
 		// Si -> continuar
 
@@ -61,7 +104,7 @@ public class Launcher {
 
 		// 3. Compra
 
-
+/*
 		int espectadoresActuales = 0;
 		boolean comprando = true;
 		
@@ -319,7 +362,7 @@ public class Launcher {
 
 
 
-}
+
 
 // tipos de seciones de codigo:
 

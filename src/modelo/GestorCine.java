@@ -12,7 +12,9 @@ import modelo.Pelicula;
 import modelo.Ticket;
 import controlador.ControladorEntradaYSalida;
 import controlador.ControladorDB;
+import controlador.Imprimir;
 import java.util.ArrayList;
+
 
 public class GestorCine {
 
@@ -187,7 +189,7 @@ public class GestorCine {
 	}
 
 	public boolean confirmarcompra(Carrito carrito) {
-		System.out.println("Confirmar compra?");
+		System.out.print("Confirmar compra? (si/no): ");
 		String confirma = this.controladorEntrada.leerCadena();
 		if (confirma.equalsIgnoreCase("si")) {
 			System.out.println(" compra confirmada");
@@ -197,6 +199,7 @@ public class GestorCine {
 		}
 	}
 
+	
 	/*public static void main(String[] args) {
 		GestorCine gestor = new GestorCine();
 		System.out.println("GestorCine inicializado: " + gestor);
