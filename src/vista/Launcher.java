@@ -80,7 +80,7 @@ public class Launcher {
 					OrarioPrecioSalaSesion elegirHorario = gestorCine.elegirHorario(elegirFecha,
 							peliEligida.getNombre());
 
-					String idSesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(),
+					String idSesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(),// IDSESION para insert
 							elegirHorario.getOrario(), elegirHorario.getSala());
 					System.out.println("lasesione" + idSesion);
 					int numespectadores = gestorCine.seleccionarNumEspectadores(elegirFecha, elegirHorario);
@@ -91,12 +91,12 @@ public class Launcher {
 					carrito.anadirEntrada(sesion, numespectadores);
 					carrito.resumen(cliente.getNombre(), cliente.getApellidos(), carrito);
 					gestorCine.confirmarcompra(carrito);
-					int numentradas = carrito.getSesiones().size();
+					int numentradas = carrito.getSesiones().size();//NUMERO ENTRADAS DIFERENTES COMPRADAS NECESARIO PARA INSERT COMPRA
 					int idCompra = gestorCine.controlador.insertarCompra(cliente.getDni(), numentradas,
-							carrito.getPrecioTotal(), carrito.getDescuentoAplicado());
+							carrito.getPrecioTotal(), carrito.getDescuentoAplicado()); // INSERT COMPRA RETORNA INT IDCOMPRA PARA INSERT ENTRADA
 
 					gestorCine.controlador.insertarEntrada(idCompra, idSesion, numespectadores, sesion.getPrecio(),
-							sesion.getDescuento());
+							sesion.getDescuento());//INSERT ENTRADA
 
 					System.out.println("Fin eligimos peli");
 					String elegirMasPeli = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir mas peliculas?");
