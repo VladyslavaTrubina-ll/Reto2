@@ -80,7 +80,14 @@ public class Launcher {
 					
 					String sesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(), elegirHorario.getOrario(),elegirHorario.getSala());
 					System.out.println("lasesione" + sesion);
-			
+					gestorCine.seleccionarNumEspectadores(elegirFecha, elegirHorario);
+					/* ArrayList<EspectadoresSesion> espectadores = gestorCine.controlador */
+					/*		.obtenerespectadoresporsesion(elegirFecha, horarios); */
+				/*	gestorCine.seleccionarNumEspectadores(espectadores, horarios.get(0).getSala()); */
+					// Sesion sTest1 = Sesion.sample("Peli 1", "01-01-2000");// //TODO anadir en
+					// carrito cosas celecsionadas
+
+					// carrito.anadirEntrada(peliEligida.getNombre(), elegirFecha.getFecha() );//
 
 					System.out.println("Fin eligimos peli");
 					String elegirMasPeli = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir mas peliculas?");

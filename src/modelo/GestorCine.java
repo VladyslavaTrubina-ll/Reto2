@@ -85,9 +85,9 @@ public class GestorCine {
 		System.out.println("Película seleccionada: " + peliElegida.getNombre());
 		return peliElegida;
 	}
-	
+
 	public FechaSesion elegirFecha(String titulo) { // elegir fecha de
-		ArrayList<FechaSesion>	fechas = imprimir.imprimirFecha(controlador, titulo);
+		ArrayList<FechaSesion> fechas = imprimir.imprimirFecha(controlador, titulo);
 		System.out.println("Elegir una fecha");
 		if (fechas.isEmpty()) {
 			System.out.println("Error : No hay fechas disponibles para esta película");
@@ -103,47 +103,44 @@ public class GestorCine {
 	}
 
 	public OrarioPrecioSalaSesion elegirHorario(FechaSesion fecha, String pelicula) {
-		ArrayList<OrarioPrecioSalaSesion> horarioPrecioSala = imprimir.imprimirHoraPrecioYSala(fecha, pelicula, controlador);
+		ArrayList<OrarioPrecioSalaSesion> horarioPrecioSala = imprimir.imprimirHoraPrecioYSala(fecha, pelicula,
+				controlador);
 		int opcion = controladorEntrada.esValorMenuValido(1, horarioPrecioSala.size());
 
-		
 		OrarioPrecioSalaSesion horarioElegido = horarioPrecioSala.get(opcion - 1);
 
 		return horarioElegido;
 	}
 
-	public int seleccionarNumEspectadores(ArrayList<EspectadoresSesion> espectadores, String salaNombre) { // seleccionar
-																											// asientos
-																											// con
-		if (espectadores == null || espectadores.isEmpty()) {
-			System.out.println("Error: No hay espectadores para esta sesión");
-			return 0; // AGGIUNGI QUESTO RETURN!
-		}
-		if  (salaLlena(espectadores, salaNombre)) {
+	public int seleccionarNumEspectadores(FechaSesion fecha, OrarioPrecioSalaSesion horario) { // seleccionar
+		int espectadores = imprimir.imprimirEspectadores(controlador, fecha, horario); // asientos
+		// con
+
+		if (salaLlena(espectadores, horario.getSala())) {
 			System.out.println("La sesion esta al completo");
 			return 0;
 		}
 		int capacidad = 0;
 
-		if (salaNombre.contains("Principal"))
+		if (horario.getSala().contains("Principal"))
 			capacidad = S1.getSitios();
-		else if (salaNombre.contains("Premium"))
+		else if (horario.getSala().contains("Premium"))
 			capacidad = S2.getSitios();
-		else if (salaNombre.contains("3D"))
+		else if (horario.getSala().contains("3D"))
 			capacidad = S3.getSitios();
-		else if (salaNombre.contains("VIP"))
+		else if (horario.getSala().contains("VIP"))
 			capacidad = S4.getSitios();
-		else if (salaNombre.contains("Familiar"))
+		else if (horario.getSala().contains("Familiar"))
 			capacidad = S5.getSitios();
 
-		int ocupados = espectadores.get(0).getEspectadores();
+		int ocupados = espectadores;
 		int disponibles = capacidad - ocupados;
 		System.out.print("selecionar numero de asientos");
 		int participantes = controladorEntrada.numBilletesComprandos(disponibles);
-		espectadores.get(0).anadirespectadores(participantes);
+		espectadores = participantes + espectadores;
 
 		System.out.println("Reservados " + participantes + " asientos");
-		System.out.println("Total en sala: " + espectadores.get(0).getEspectadores());
+		System.out.println("Total en sala: " + espectadores);
 		return participantes;
 	}
 
@@ -162,8 +159,8 @@ public class GestorCine {
 
 	public boolean confirmarcompra(Carrito carrito) {
 		String confirma = controladorEntrada.leerSiNo("Confirmar compra?");
-		
-	if (confirma.equalsIgnoreCase("si")) {
+
+		if (confirma.equalsIgnoreCase("si")) {
 			System.out.println(" compra confirmada");
 			return true;
 		} else {
@@ -171,27 +168,25 @@ public class GestorCine {
 		}
 	}
 
-	public boolean salaLlena(ArrayList<EspectadoresSesion> espectadores,String salaNombre) {
-		int ocupados = espectadores.get(0).getEspectadores();
+	public boolean salaLlena(int espectadores, String salaNombre) {
+		int ocupados = espectadores;
 		int capacidad = 0;
 
-	    if (salaNombre.contains("Principal")) {
-	        capacidad = S1.getSitios();
-	    } else if (salaNombre.contains("Premium")) {
-	        capacidad = S2.getSitios();
-	    } else if (salaNombre.contains("3D")) {
-	        capacidad = S3.getSitios();
-	    } else if (salaNombre.contains("VIP")) {
-	        capacidad = S4.getSitios();
-	    } else if (salaNombre.contains("Familiar")) {
-	        capacidad = S5.getSitios();
-	    }
-	    
+		if (salaNombre.contains("Principal")) {
+			capacidad = S1.getSitios();
+		} else if (salaNombre.contains("Premium")) {
+			capacidad = S2.getSitios();
+		} else if (salaNombre.contains("3D")) {
+			capacidad = S3.getSitios();
+		} else if (salaNombre.contains("VIP")) {
+			capacidad = S4.getSitios();
+		} else if (salaNombre.contains("Familiar")) {
+			capacidad = S5.getSitios();
+		}
 
-	    return ocupados >= capacidad;
+		return ocupados >= capacidad;
 	}
-			
-		
+
 	/*
 	 * public static void main(String[] args) { GestorCine gestor = new
 	 * GestorCine(); System.out.println("GestorCine inicializado: " + gestor);

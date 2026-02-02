@@ -151,16 +151,12 @@ public class ControladorDB {
 
 	}
 
-	public ArrayList<EspectadoresSesion> obtenerespectadoresporsesion(FechaSesion fecha,
-			ArrayList<OrarioPrecioSalaSesion> orarioelegido) {
+	public  int  obtenerespectadoresporsesion(FechaSesion fecha,
+			OrarioPrecioSalaSesion orarioelegido) {
 		String fechaElegida;
-		ArrayList<EspectadoresSesion> numespectadores = new ArrayList<EspectadoresSesion>();
-		if (orarioelegido.isEmpty()) {
-			return numespectadores;
-		}
-
-		String hora = orarioelegido.get(0).getOrario();
-		String Sala = orarioelegido.get(0).getSala();
+		int numespectadores = 0;
+		String hora = orarioelegido.getOrario();
+		String Sala = orarioelegido.getSala();
 		fechaElegida = fecha.getFecha();
 
 		String query = "SELECT espectadores FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE SE.hora_inicio = '"
@@ -171,8 +167,8 @@ public class ControladorDB {
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				EspectadoresSesion newnumespectadores = new EspectadoresSesion(resultado.getInt("espectadores"));
-				numespectadores.add(newnumespectadores);
+			numespectadores = resultado.getInt("espectadores");
+				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

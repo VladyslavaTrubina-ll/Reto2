@@ -15,6 +15,8 @@ public class OrarioPrecioSalaSesion {
 		this.sala = sala;
 	}
 
+	
+
 	@Override
 	public String toString() {
 		return "Informe sobre sesion elegido\n  " + sala + " hora de inicio: " + horario + ", precio: " + precio + "]";
