@@ -62,17 +62,18 @@ public class ControladorDB {
 		return Conexioncerrada;
 	}
 
-	public ArrayList<ClienteAcesso> obtenerCliente(String email, String contraseña) {
-		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
-		String query = "SELECT dni, nombre, apellidos,email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " 
+	public ArrayList<ClienteAcesso> obtenerCliente(String email) {
+		ArrayList<ClienteAcesso> clientes = new ArrayList<ClienteAcesso>();
+		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " //TODO error
 				+ "WHERE email = '" + email + "'";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
-				cliente.add(nuevoCliente);
+				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),
+						resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
+				clientes.add(nuevoCliente);
 			}
 			consulta.close();
 		} catch (SQLException e) {
@@ -80,15 +81,16 @@ public class ControladorDB {
 			e.printStackTrace();
 		}
 
-		return cliente;
+		return clientes;
 	}
 
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		String query = "Select  Titulo, duracion,min(fecha), min(hora_inicio) FROM Pelicula P JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula          \r\n"
-        + " WHERE fecha >= CURDATE() AND hora_inicio > current_time" + " group by titulo,duracion\r\n"
-        + "having  min(fecha) > CURDATE() or (min(fecha) = CURDATE() and min(hora_inicio) > current_time)\r\n"
-        + "order by min(fecha), min(hora_inicio)";
+		
+		String query = "SELECT DISTINCT Titulo, duracion FROM Pelicula P " +
+                 "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " +                 
+                 "ORDER BY Titulo";
+
 		
 		try {
 			Statement consulta = conexion.createStatement();
@@ -127,7 +129,7 @@ public class ControladorDB {
 		return fechapeli;
 	}
 
-	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) {
+	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) { //TODO no nesesario. cojer en fechar
 		if (fechas.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -180,10 +182,11 @@ public class ControladorDB {
 		}
 		return numespectadores;
 	}
+	
 	public void insertarUsuario(String dni,String nombre,String apellidos,String email, String contrasena ) {
        
 
-        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña)VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
 
         try {
              PreparedStatement ps = conexion.prepareStatement(sql); 
@@ -204,6 +207,7 @@ public class ControladorDB {
             e.printStackTrace();
         }
     }
+	
 	public void insertarCompra(String dni,int numentradas, double preciototal,double descuentoaplicado) {
 
         String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";
