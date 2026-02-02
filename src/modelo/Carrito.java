@@ -136,7 +136,7 @@ public class Carrito {
 		System.out.println("TOTAL: " + carrito.getPrecioTotal() + "€");
 	}
 	
-	public static void test() {
+	/*public static void test() {
 		System.out.println("test initializacion de Carrito");
 		
 		Carrito cTest = new Carrito();

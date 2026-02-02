@@ -5,7 +5,6 @@ import modelo.*;
 import controlador.*;
 import java.util.ArrayList;
 
-
 public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
@@ -22,7 +21,6 @@ public class Launcher {
 	}
 
 	public static void mainProceso() {
-
 
 		// TODO realizar 1. Bienvenida
 		Imprimir.bienvenida();
@@ -79,22 +77,28 @@ public class Launcher {
 					// TODO Hacer como elegirPelicula
 					// TODO para obtener fechas, horario, presio por peli usar class Sesion
 
-				
-					
 					FechaSesion elegirFecha = gestorCine.elegirFecha(peliEligida.getNombre()); // TODO verificar
-					
-					OrarioPrecioSalaSesion elegirHorario =gestorCine.elegirHorario(elegirFecha, peliEligida.getNombre());
-					
-					String sesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(), elegirHorario.getOrario(),elegirHorario.getSala());
-					System.out.println("lasesione" + sesion);
-					gestorCine.seleccionarNumEspectadores(elegirFecha, elegirHorario);
-					/* ArrayList<EspectadoresSesion> espectadores = gestorCine.controlador */
-					/*		.obtenerespectadoresporsesion(elegirFecha, horarios); */
-				/*	gestorCine.seleccionarNumEspectadores(espectadores, horarios.get(0).getSala()); */
-					// Sesion sTest1 = Sesion.sample("Peli 1", "01-01-2000");// //TODO anadir en
-					// carrito cosas celecsionadas
 
-					// carrito.anadirEntrada(peliEligida.getNombre(), elegirFecha.getFecha() );//
+					OrarioPrecioSalaSesion elegirHorario = gestorCine.elegirHorario(elegirFecha,
+							peliEligida.getNombre());
+
+					String idSesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(),
+							elegirHorario.getOrario(), elegirHorario.getSala());
+					System.out.println("lasesione" + idSesion);
+					int numespectadores = gestorCine.seleccionarNumEspectadores(elegirFecha, elegirHorario);
+					Sesion sesion = gestorCine.generarEntrada(peliEligida, elegirFecha.getFecha(),
+							elegirHorario.getOrario(), elegirHorario.getSala(), numespectadores,
+							elegirHorario.getPrecio());
+
+					carrito.anadirEntrada(sesion, numespectadores);
+					carrito.resumen(cliente.getNombre(), cliente.getApellidos(), carrito);
+					gestorCine.confirmarcompra(carrito);
+					int numentradas = carrito.getSesiones().size();
+					int idCompra = gestorCine.controlador.insertarCompra(cliente.getDni(), numentradas,
+							carrito.getPrecioTotal(), carrito.getDescuentoAplicado());
+
+					gestorCine.controlador.insertarEntrada(idCompra, idSesion, numespectadores, sesion.getPrecio(),
+							sesion.getDescuento());
 
 					System.out.println("Fin eligimos peli");
 					String elegirMasPeli = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir mas peliculas?");
@@ -105,7 +109,7 @@ public class Launcher {
 					} else if (elegirMasPeli.equalsIgnoreCase("si")) {
 						System.out.println("Eligimos mas peli");
 
-						/*Mostrar resumen de compra */
+						/* Mostrar resumen de compra */
 					}
 				}
 				if (carrito.getSesiones().isEmpty()) {
@@ -119,9 +123,8 @@ public class Launcher {
 
 			}
 
-			
 			String salir = gestorCine.controladorEntrada.leerSiNo("¿Quieres salir?");
-			
+
 			// salir si -> fin programa
 			if (salir.equalsIgnoreCase("si")) {
 				System.out.println("Hasta luego!");
@@ -130,24 +133,24 @@ public class Launcher {
 			}
 		}
 	}
-	
+
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
 		// System.out.print("Escribe tu DNI: ");
 		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
-		
+
 		String nombre = ControladorEntradaYSalida
-		.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
-		
+				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
+
 		String apellidos = ControladorEntradaYSalida
-		.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tus apellidos: "));
+				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tus apellidos: "));
 		String email = "";
 		boolean emailValido = false;
-		
+
 		while (!emailValido) {
-			
+
 			email = gestorCine.controladorEntrada.leerCadena("Escribe tu email: ");
-			
+
 			// ^.+ qulquer simvolo antes @
 			if (email.matches("^.+@gmail\\.com$")) {
 				emailValido = true;
@@ -156,9 +159,9 @@ public class Launcher {
 				emailValido = false;
 			}
 		}
-		
+
 		String contrasena = gestorCine.controladorEntrada.leerCadena("Escribe tu contraseña: ");
-		
+
 		try {
 			gestorCine.controlador.insertarUsuario(dni, nombre, apellidos, email, contrasena);
 			System.out.println("Registrado corectamente!");
@@ -167,10 +170,11 @@ public class Launcher {
 			e.printStackTrace();
 		}
 	}
+
 	public static void procesoPagar() {
-	//if (siPagar) { // Puede estar coomo funcion
+		// if (siPagar) { // Puede estar coomo funcion
 		System.out.println("Pagar");
-		
+
 		String pagarSiNo = gestorCine.controladorEntrada.leerSiNo("¿Quieres pagar?");
 
 		if (pagarSiNo.equalsIgnoreCase("si")) {
@@ -186,16 +190,16 @@ public class Launcher {
 			if (eliminarSiNo.equalsIgnoreCase("si")) {
 				carrito.vaciar();
 				System.out.println("Carrito vaciado");
-				/*Para nosotros */
+				/* Para nosotros */
 				System.out.println(carrito.getSesiones().size());
 				System.out.println(carrito.getPrecioTotal());
 			} else if (eliminarSiNo.equalsIgnoreCase("no")) {
 				System.out.println("Carrito no vaciado");
 			}
 
-		//}
+			// }
+		}
 	}
-}
 }
 
 /*

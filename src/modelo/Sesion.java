@@ -5,18 +5,27 @@ public class Sesion {
 	private String fecha, horario;
 	private String sala;
 	private int numEspectadores;
-	private double precio;
+	private double precio,descuento;
 
-	public Sesion(Pelicula pelicula, String fecha, String horario, String sala, int numEspectadores, double precio) {
+	public Sesion(Pelicula pelicula, String fecha, String horario, String sala, int numEspectadores, double precio,double descuento) {
 		this.pelicula = pelicula;
 		this.fecha = fecha;
 		this.horario = horario;
 		// a nadie le sale el horario de fin en una app de cine.
 		this.sala = sala;
+		this.descuento = descuento;
 		this.precio = precio;
 		this.numEspectadores = numEspectadores;
 	}
 	
+	public double getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(double descuento) {
+		this.descuento = descuento;
+	}
+
 	public Sesion() {
 		// TODO Auto-generated constructor stub
 	}
@@ -80,7 +89,7 @@ public class Sesion {
 		this.numEspectadores += numEntradas;
 	}
 	
-	public static Sesion sample(String peliculaNombre, String fecha) {
+	/*public static Sesion sample(String peliculaNombre, String fecha) {
 		
 		Pelicula pTest = new Pelicula(peliculaNombre, 90);
 		Sala salaTest = new Sala("Sala Test", 20);
@@ -88,9 +97,9 @@ public class Sesion {
 		Sesion sTest = new Sesion(pTest, fecha, "12:00", "", 5, 10.0);
 		
 		return sTest;
-	}
+	}*/
 	
-	public static void test(int n) {
+	/*public static void test(int n) {
 		System.out.println("test initializacion de Sesion y +" + n + " espectadores");
 		
 		Sesion sTest = sample("Avatar", "01-01-1970");
@@ -99,7 +108,7 @@ public class Sesion {
 		
 		sTest.actualizarEspectadores(n);
 		
-		System.out.println(sTest);
+		System.out.println(sTest);*/
 		
 	}
 	
@@ -107,4 +116,4 @@ public class Sesion {
 //		test(1);
 //	}
 
-}
+

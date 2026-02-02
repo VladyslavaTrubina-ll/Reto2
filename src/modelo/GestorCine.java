@@ -22,7 +22,7 @@ public class GestorCine {
 	public ControladorDB controlador;
 	public Imprimir imprimir = new Imprimir();
 	// Salas disponibles
-	public Sala S1 = new Sala("Sala Principal", 40);
+	public Sala S1 = new Sala("Sala Principal", 100);
 	public Sala S2 = new Sala("Sala Premium", 60);
 	public Sala S3 = new Sala("Sala 3D", 56);
 	public Sala S4 = new Sala("Sala VIP", 60);
