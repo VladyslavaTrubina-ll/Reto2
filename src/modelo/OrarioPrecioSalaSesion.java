@@ -15,9 +15,11 @@ public class OrarioPrecioSalaSesion {
 		this.sala = sala;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "Informe sobre sesion elegido\n  " + sala + " hora de inicio: " + orario + ", "", precio: " + precio + "]";
+		return "OrarioPrecioSalaSesion [orario=" + orario + ", sala=" + sala + ", precio=" + precio + "]";
 	}
 
 	public String getOrario() {

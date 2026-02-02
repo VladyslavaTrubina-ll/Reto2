@@ -87,6 +87,7 @@ public class Launcher {
 					
 					String sesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(), elegirHorario.getOrario(),elegirHorario.getSala());
 					System.out.println("lasesione" + sesion);
+					gestorCine.seleccionarNumEspectadores(elegirFecha, elegirHorario);
 					/* ArrayList<EspectadoresSesion> espectadores = gestorCine.controlador */
 					/*		.obtenerespectadoresporsesion(elegirFecha, horarios); */
 				/*	gestorCine.seleccionarNumEspectadores(espectadores, horarios.get(0).getSala()); */
