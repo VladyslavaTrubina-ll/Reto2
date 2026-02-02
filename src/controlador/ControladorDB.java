@@ -132,7 +132,7 @@ public class ControladorDB {
 
 		String fechaString = fecha.getFecha();
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = new ArrayList<OrarioPrecioSalaSesion>();
-		String query = "SELECT  SA.nombre, hora_inicio, precio_sesion FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
+		String query = "SELECT   hora_inicio, SA.nombre, precio_sesion FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
 				+ fechaString + "'AND id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + titulo + "')";
 		try {
 			Statement consulta = conexion.createStatement();
@@ -228,7 +228,7 @@ public class ControladorDB {
 	}
 
 	public String obtenerSesion(String fecha, String hora, String sala) {
-		String sesion = "dioporco";
+		String sesion = "";
 		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '"
 				+ hora + "' AND SA.id_sala = (SELECT id_sala FROM Sala  WHERE nombre = '" + sala + "') "
 				+ "AND fecha = '" + fecha + "'";
