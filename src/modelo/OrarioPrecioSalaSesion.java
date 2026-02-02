@@ -2,30 +2,30 @@ package modelo;
 
 public class OrarioPrecioSalaSesion {
 
-	private String orario, sala;
+	private String horario, sala;
 	private double precio;
 
 	public OrarioPrecioSalaSesion() {
 
 	}
 
-	public OrarioPrecioSalaSesion(String orario,String sala ,Double precio) {
-		this.orario = orario;
+	public OrarioPrecioSalaSesion(String horario,String sala ,Double precio) {
+		this.horario = horario;
 		this.precio = precio;
 		this.sala = sala;
 	}
 
 	@Override
 	public String toString() {
-		return "Informe sobre sesion elegido\n  " + sala + " hora de inicio: " + orario + ", "", precio: " + precio + "]";
+		return "Informe sobre sesion elegido\n  " + sala + " hora de inicio: " + horario + ", precio: " + precio + "]";
 	}
 
 	public String getOrario() {
-		return orario;
+		return horario;
 	}
 
-	public void setOrario(String orario) {
-		this.orario = orario;
+	public void setOrario(String horario) {
+		this.horario = horario;
 	}
 
 	public String getSala() {
