@@ -71,7 +71,7 @@ public class Sesion {
 	
 	@Override
 	public String toString() {
-		return "Sesion [pelicula=" + pelicula.getTitulo() 
+		return "Sesion [pelicula=" + pelicula.getNombre()
 		+ ", fecha=" + fecha + ", horario=" + horario  + ", sala="+ sala 
 		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
 	}

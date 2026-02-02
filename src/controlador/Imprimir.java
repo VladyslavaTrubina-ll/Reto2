@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
+import modelo.GestorCine;
 import modelo.OrarioPrecioSalaSesion;
 import modelo.Pelicula;
-import controlador.ControladorDB;
+
 
 public class Imprimir {
-	
+
 	public static void bienvenida(){
 		
 		System.out.println("=================================");
@@ -18,7 +19,7 @@ public class Imprimir {
 		System.out.println("=================================");
 	}
 
-	public static void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
+	public  void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
 		System.out.println("\nPeliculas disponibles");
 		System.out.println("---------------------");
 
@@ -31,7 +32,7 @@ public class Imprimir {
 			System.out.printf("[%d] %s - %d min%n", (i + 1), p.getNombre(), p.getDuracion());
 		}
 	}
-	public static ArrayList<EspectadoresSesion> imprimirEspectadores(ControladorDB controlador, FechaSesion fecha,
+	public  ArrayList<EspectadoresSesion> imprimirEspectadores(ControladorDB controlador, FechaSesion fecha,
 			OrarioPrecioSalaSesion horarioElegido) {
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
@@ -44,7 +45,7 @@ public class Imprimir {
 		return numespectadores;
 	}
 	
-	public static ArrayList<FechaSesion> imprimirFecha(ControladorDB controlador, String titulo) {
+	public  ArrayList<FechaSesion> imprimirFecha(ControladorDB controlador, String titulo) {
 		ArrayList<FechaSesion> fechas = controlador.obtenerfechasporperli(titulo);
 		System.out.println("\nFechas disponibles para: " + titulo);
 		for (int i = 0; i < fechas.size(); i++) {
@@ -53,16 +54,16 @@ public class Imprimir {
 		return fechas;
 	}
 	
-	/*public static ArrayList<OrarioPrecioSalaSesion> imprimirHoraPrecioYSala(FechaSesion fecha, String titulo) {
+	public  ArrayList<OrarioPrecioSalaSesion> imprimirHoraPrecioYSala(FechaSesion fecha, String titulo, ControladorDB controlador) {
 		
 		ArrayList<FechaSesion> unafecha = new ArrayList<>();
 		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> horaPrecioSala = gestorCine.controlador.obtenerhorariopreciosala(unafecha,titulo);
+		ArrayList<OrarioPrecioSalaSesion> horaPrecioSala = controlador.obtenerhorariopreciosala(unafecha,titulo);
 		for (int i = 0; i < horaPrecioSala.size(); i++) {
 			System.out.println((1 + i) + ". " + (horaPrecioSala.get(i)));
 		}
 		return horaPrecioSala;
-	}*/
+	}
 
 	
 }
