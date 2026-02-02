@@ -93,18 +93,17 @@ public class Launcher {
 					// TODO Hacer como elegirPelicula
 					// TODO para obtener fechas, horario, presio por peli usar class Sesion
 
-					ArrayList<FechaSesion> fechas = gestorCine.controlador
-							.obtenerfechasporperli(peliEligida.getNombre());
-					gestorCine.imprimir.imprimirFecha(gestorCine.controlador, peliEligida.getNombre());
-					FechaSesion elegirFecha = gestorCine.elegirFecha(gestorCine.controlador, fechas); // TODO verificar
-					ArrayList<OrarioPrecioSalaSesion> horarios = gestorCine.imprimir
-							.imprimirHoraPrecioYSala(elegirFecha, peliEligida.getNombre(), gestorCine.controlador);
-					gestorCine.elegirHorario(gestorCine.controlador, horarios);
-			String sesion =		gestorCine.controlador.obtenerSesion(elegirFecha, horarios.get(0).getOrario(),
-							horarios.get(0).getSala());
-					ArrayList<EspectadoresSesion> espectadores = gestorCine.controlador
-							.obtenerespectadoresporsesion(fechas, horarios);
-					gestorCine.seleccionarNumEspectadores(espectadores, horarios.get(0).getSala());
+				
+					
+					FechaSesion elegirFecha = gestorCine.elegirFecha(peliEligida.getNombre()); // TODO verificar
+					
+					OrarioPrecioSalaSesion elegirHorario =gestorCine.elegirHorario(elegirFecha, peliEligida.getNombre());
+					
+					String sesion = gestorCine.controlador.obtenerSesion(elegirFecha.getFecha(), elegirHorario.getOrario(),elegirHorario.getSala());
+					System.out.println("lasesione" + sesion);
+					/* ArrayList<EspectadoresSesion> espectadores = gestorCine.controlador */
+					/*		.obtenerespectadoresporsesion(elegirFecha, horarios); */
+				/*	gestorCine.seleccionarNumEspectadores(espectadores, horarios.get(0).getSala()); */
 					// Sesion sTest1 = Sesion.sample("Peli 1", "01-01-2000");// //TODO anadir en
 					// carrito cosas celecsionadas
 

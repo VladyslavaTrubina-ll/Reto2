@@ -128,18 +128,11 @@ public class ControladorDB {
 		return fechapeli;
 	}
 
-	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) { // TODO
-																														// no
-																														// nesesario.
-																														// cojer
-																														// en
-																														// fechar
-		if (fechas.isEmpty()) {
-			return new ArrayList<>();
-		}
-		String fechaString = fechas.get(0).getFecha();
+	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(FechaSesion fecha, String titulo) {
+
+		String fechaString = fecha.getFecha();
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = new ArrayList<OrarioPrecioSalaSesion>();
-		String query = "SELECT hora_inicio, precio_sesion, SA.nombre FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
+		String query = "SELECT  SA.nombre, hora_inicio, precio_sesion FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
 				+ fechaString + "'AND id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + titulo + "')";
 		try {
 			Statement consulta = conexion.createStatement();
@@ -147,7 +140,7 @@ public class ControladorDB {
 
 			while (resultado.next()) {
 				OrarioPrecioSalaSesion neworariopreciosesion = new OrarioPrecioSalaSesion(resultado.getString(1),
-						resultado.getDouble(2), resultado.getString(3));
+						resultado.getString(2), resultado.getDouble(3));
 				orariopreciosala.add(neworariopreciosesion);
 
 			}
@@ -158,17 +151,17 @@ public class ControladorDB {
 
 	}
 
-	public ArrayList<EspectadoresSesion> obtenerespectadoresporsesion(ArrayList<FechaSesion> fecha,
+	public ArrayList<EspectadoresSesion> obtenerespectadoresporsesion(FechaSesion fecha,
 			ArrayList<OrarioPrecioSalaSesion> orarioelegido) {
 		String fechaElegida;
 		ArrayList<EspectadoresSesion> numespectadores = new ArrayList<EspectadoresSesion>();
-		if (fecha.isEmpty() || orarioelegido.isEmpty()) {
+		if (orarioelegido.isEmpty()) {
 			return numespectadores;
 		}
 
 		String hora = orarioelegido.get(0).getOrario();
 		String Sala = orarioelegido.get(0).getSala();
-		fechaElegida = fecha.get(0).getFecha();
+		fechaElegida = fecha.getFecha();
 
 		String query = "SELECT espectadores FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE SE.hora_inicio = '"
 				+ hora + "' AND SA.nombre = '" + Sala + "' AND SE.fecha = '" + fechaElegida + "'";
@@ -234,11 +227,11 @@ public class ControladorDB {
 		}
 	}
 
-	public String obtenerSesion(FechaSesion fecha, String hora, String sala) {
-		String sesion = "";
-		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '" + hora
-				+ "' AND SA.id_sala = (SELECT id_sala FROM Sala  WHERE nombre = '" + sala + "') " + "AND fecha = '"
-				+ fecha + "'";
+	public String obtenerSesion(String fecha, String hora, String sala) {
+		String sesion = "dioporco";
+		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '"
+				+ hora + "' AND SA.id_sala = (SELECT id_sala FROM Sala  WHERE nombre = '" + sala + "') "
+				+ "AND fecha = '" + fecha + "'";
 
 		try {
 			Statement consulta = conexion.createStatement();
@@ -254,22 +247,19 @@ public class ControladorDB {
 		return sesion;
 	}
 
-	/*public int obtenerEspectadoresSesion(String sesion) {
-		String query = "SELECT espectadores,  FROM Sesion WHERE id_sesion = '" + sesion + "' ";
-		int obtenerEspectadores = 0;
-		try {
-			Statement consulta = conexion.createStatement();
-			ResultSet resultado = consulta.executeQuery(query);
-
-			while (resultado.next()) {
-				obtenerEspectadores = resultado.getInt("espectadores");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return obtenerEspectadores;
-	}*/
+	/*
+	 * public int obtenerEspectadoresSesion(String sesion) { String query =
+	 * "SELECT espectadores,  FROM Sesion WHERE id_sesion = '" + sesion + "' "; int
+	 * obtenerEspectadores = 0; try { Statement consulta =
+	 * conexion.createStatement(); ResultSet resultado =
+	 * consulta.executeQuery(query);
+	 * 
+	 * while (resultado.next()) { obtenerEspectadores =
+	 * resultado.getInt("espectadores");
+	 * 
+	 * } } catch (SQLException e) { e.printStackTrace(); } return
+	 * obtenerEspectadores; }
+	 */
 
 	public void insertarEntrada(int numentradas, double preciototal, double descuentoaplicado) {
 		String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
