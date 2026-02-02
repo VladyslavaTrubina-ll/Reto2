@@ -34,11 +34,10 @@ public class Imprimir {
 	}
 	public  ArrayList<EspectadoresSesion> imprimirEspectadores(ControladorDB controlador, FechaSesion fecha,
 			OrarioPrecioSalaSesion horarioElegido) {
-		ArrayList<FechaSesion> unafecha = new ArrayList<>();
-		unafecha.add(fecha);
+	
 		ArrayList<OrarioPrecioSalaSesion> unorario = new ArrayList<>();
 		unorario.add(horarioElegido);
-		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(unafecha, unorario);
+		ArrayList<EspectadoresSesion> numespectadores = controlador.obtenerespectadoresporsesion(fecha, unorario);
 		if (numespectadores.isEmpty()) {
 			System.out.println("No hay espectadores para esta sesión.");
 		}
@@ -56,9 +55,8 @@ public class Imprimir {
 	
 	public  ArrayList<OrarioPrecioSalaSesion> imprimirHoraPrecioYSala(FechaSesion fecha, String titulo, ControladorDB controlador) {
 		
-		ArrayList<FechaSesion> unafecha = new ArrayList<>();
-		unafecha.add(fecha);
-		ArrayList<OrarioPrecioSalaSesion> horaPrecioSala = controlador.obtenerhorariopreciosala(unafecha,titulo);
+		
+		ArrayList<OrarioPrecioSalaSesion> horaPrecioSala = controlador.obtenerhorariopreciosala(fecha,titulo);
 		for (int i = 0; i < horaPrecioSala.size(); i++) {
 			System.out.println((1 + i) + ". " + (horaPrecioSala.get(i)));
 		}

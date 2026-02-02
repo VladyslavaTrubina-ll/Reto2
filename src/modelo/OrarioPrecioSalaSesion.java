@@ -9,7 +9,7 @@ public class OrarioPrecioSalaSesion {
 
 	}
 
-	public OrarioPrecioSalaSesion(String orario, Double precio, String sala) {
+	public OrarioPrecioSalaSesion(String orario,String sala ,Double precio) {
 		this.orario = orario;
 		this.precio = precio;
 		this.sala = sala;

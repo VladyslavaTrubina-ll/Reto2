@@ -85,11 +85,9 @@ public class GestorCine {
 		System.out.println("Película seleccionada: " + peliElegida.getNombre());
 		return peliElegida;
 	}
-
-	public FechaSesion elegirFecha(ControladorDB controlador /* TODO para que controlador */,
-			ArrayList<FechaSesion> fechas) { // elegir fecha de
-		// pelicula
-		// seleccionada//
+	
+	public FechaSesion elegirFecha(String titulo) { // elegir fecha de
+		ArrayList<FechaSesion>	fechas = imprimir.imprimirFecha(controlador, titulo);
 		System.out.println("Elegir una fecha");
 		if (fechas.isEmpty()) {
 			System.out.println("Error : No hay fechas disponibles para esta película");
@@ -104,15 +102,12 @@ public class GestorCine {
 		return null;
 	}
 
-	public OrarioPrecioSalaSesion elegirHorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> horario) {
+	public OrarioPrecioSalaSesion elegirHorario(FechaSesion fecha, String pelicula) {
+		ArrayList<OrarioPrecioSalaSesion> horarioPrecioSala = imprimir.imprimirHoraPrecioYSala(fecha, pelicula, controlador);
+		int opcion = controladorEntrada.esValorMenuValido(1, horarioPrecioSala.size());
 
-		int opcion = this.controladorEntrada.esValorMenuValido(1, horario.size());
-
-		if (horario.isEmpty()) {
-			System.out.println("Error : No hay horarios disponibles para esta fecha");
-			return null;
-		}
-		OrarioPrecioSalaSesion horarioElegido = horario.get(opcion - 1);
+		
+		OrarioPrecioSalaSesion horarioElegido = horarioPrecioSala.get(opcion - 1);
 
 		return horarioElegido;
 	}
