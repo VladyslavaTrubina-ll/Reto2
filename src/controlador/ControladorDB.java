@@ -62,17 +62,18 @@ public class ControladorDB {
 		return Conexioncerrada;
 	}
 
-	public ArrayList<ClienteAcesso> obtenerCliente(String email, String contraseña) {
-		ArrayList<ClienteAcesso> cliente = new ArrayList<ClienteAcesso>();
-		String query = "SELECT dni, nombre, apellidos,email,AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " 
+	public ArrayList<ClienteAcesso> obtenerCliente(String email) {
+		ArrayList<ClienteAcesso> clientes = new ArrayList<ClienteAcesso>();
+		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " //TODO error
 				+ "WHERE email = '" + email + "'";
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
-				cliente.add(nuevoCliente);
+				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),
+						resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
+				clientes.add(nuevoCliente);
 			}
 			consulta.close();
 		} catch (SQLException e) {
@@ -80,7 +81,7 @@ public class ControladorDB {
 			e.printStackTrace();
 		}
 
-		return cliente;
+		return clientes;
 	}
 
 	public ArrayList<Pelicula> obtenerPelis() {
@@ -128,7 +129,7 @@ public class ControladorDB {
 		return fechapeli;
 	}
 
-	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) {
+	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) { //TODO no nesesario. cojer en fechar
 		if (fechas.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -181,10 +182,11 @@ public class ControladorDB {
 		}
 		return numespectadores;
 	}
+	
 	public void insertarUsuario(String dni,String nombre,String apellidos,String email, String contrasena ) {
        
 
-        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña)VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
 
         try {
              PreparedStatement ps = conexion.prepareStatement(sql); 
@@ -205,6 +207,7 @@ public class ControladorDB {
             e.printStackTrace();
         }
     }
+	
 	public void insertarCompra(String dni,int numentradas, double preciototal,double descuentoaplicado) {
 
         String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";

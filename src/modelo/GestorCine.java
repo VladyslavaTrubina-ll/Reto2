@@ -48,22 +48,20 @@ public class GestorCine {
 	}
 
 	public ClienteAcesso login() {
-		//ArrayList<Pelicula> peliculas = this.controlador.obtenerPelis();
 		
 		boolean encontrado = false;
 		//ClienteAcesso clienteLogueado = null;
 
 		while (!encontrado) {
-			System.out.print("Escribe su email: ");
-			String email = controladorEntrada.leerCadena();
-			System.out.print("Escribe su contraseña: ");
-			String contraseña = controladorEntrada.leerCadena();
+			String email = controladorEntrada.leerCadena("Escribe su email: ");
+			String contraseña = controladorEntrada.leerCadena("Escribe su contraseña: ");
 			
-			ArrayList<ClienteAcesso> cliente = this.controlador.obtenerCliente(email, contraseña);
+			ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(email);
+			System.out.println(clientes);
 			int contador = 0;
 			
-			while (contador < cliente.size() && !encontrado) {
-				ClienteAcesso c = cliente.get(contador);
+			while (contador < clientes.size() && !encontrado) {
+				ClienteAcesso c = clientes.get(contador);
 				if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
 					encontrado = true;
 					System.out.println("login realizado con suceso");
@@ -78,31 +76,15 @@ public class GestorCine {
 		return this.clienteLogueado;
 	}
 
-	public Pelicula elegirPelicula(ControladorDB controlador) { /*elegir pelicula, con ciclo hasta que no se escriba la
-																pelicula, implementado en el if manera de no contar acentos/ */
+	public Pelicula elegirPelicula() { 
+		ArrayList<Pelicula> peliculas = controlador.obtenerPelis();
+		Imprimir.imprimirPeliculas(peliculas);
+		System.out.println("Selecionar la pelicula que se quieres ver:");
+		int peliculaIndex = controladorEntrada.esValorMenuValido(1, peliculas.size());
 
-		boolean peliencontrada = false;
-
-		while (!peliencontrada) {
-			ArrayList<Pelicula> peliculas = controlador.obtenerPelis();
-			System.out.println("selecionar la pelicula que se quiere ver");
-			String pelicula = this.controladorEntrada.leerCadena();
-			for (Pelicula p : peliculas) {
-				if (pelicula.equalsIgnoreCase(p.getNombre())
-
-						|| pelicula.replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o')
-							.replace('ú', 'u').equalsIgnoreCase(p.getNombre().replace('á', 'a').replace('é', 'e')
-							.replace('í', 'i').replace('ó', 'o').replace('ú', 'u'))) {
-
-					System.out.println("Pelicula selecionada con suceso");
-					peliencontrada = true;
-					return p;
-				}
-			}
-			System.out.println("Pelicula no encontrada, intentalo de nuevo");
-			peliencontrada = false;
-		}
-		return null; //TODO sin sentido
+		Pelicula peliElegida = peliculas.get(peliculaIndex - 1); 
+		System.out.println("Película seleccionada: " + peliElegida.getNombre());
+    	return peliElegida;
 	}
 
 	public FechaSesion elegirFecha(ControladorDB controlador /*TODO para que controlador */, ArrayList<FechaSesion> fechas) { // elegir fecha de
@@ -119,7 +101,7 @@ public class GestorCine {
 
 	public Sesion elegirSesion() {
 		// TODO hacer
-		
+		return null;
 	}
 	public OrarioPrecioSalaSesion elegirHorario(ControladorDB controlador, ArrayList<OrarioPrecioSalaSesion> horario) {
 
@@ -134,11 +116,11 @@ public class GestorCine {
 		return horarioElegido;
 	}
 
-	public verificarSiHaySillas() {
+	public String verificarSiHaySillas() {
 		// TODO hacer
 
 		//no 
-
+		return null;
 		//si 
 	}
 	public int seleccionarNumEspectadores(ArrayList<EspectadoresSesion> espectadores, OrarioPrecioSalaSesion obtenerSala) { // seleccionar
@@ -168,7 +150,7 @@ public class GestorCine {
 		int ocupados = espectadores.get(0).getEspectadores();
 		int disponibles = capacidad - ocupados;
 		System.out.print("selecionar numero de asientos");
-		int participantes = this.controladorEntrada.pedirParticipantes(disponibles);
+		int participantes = controladorEntrada.pedirParticipantes(disponibles);
 		espectadores.get(0).anadirespectadores(participantes);
 
 		System.out.println("Reservados " + participantes + " asientos");
@@ -189,8 +171,7 @@ public class GestorCine {
 	}
 
 	public boolean confirmarcompra(Carrito carrito) {
-		System.out.print("Confirmar compra? (si/no): ");
-		String confirma = this.controladorEntrada.leerCadena();
+		String confirma = controladorEntrada.leerSiNo("Confirmar compra?");
 		if (confirma.equalsIgnoreCase("si")) {
 			System.out.println(" compra confirmada");
 			return true;

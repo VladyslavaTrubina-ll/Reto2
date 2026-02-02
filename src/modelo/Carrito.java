@@ -112,7 +112,7 @@ public class Carrito {
 	
 	public static void resumen(String nombre, String apellidos, Carrito carrito) {
 		ArrayList<Sesion> sesiones = carrito.getSesiones();
-		ArrayList<Integer>  cantidadesEntradas = carrito.getCantidadesEntradas();
+		ArrayList<Integer> cantidadesEntradas = carrito.getCantidadesEntradas();
 		System.out.println("\n=== RESUMEN COMPRA ===");
 		
 		System.out.println("\nIdentificador" + ": " + nombre + " " + apellidos);

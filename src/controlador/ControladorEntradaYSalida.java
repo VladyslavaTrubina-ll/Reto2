@@ -41,20 +41,63 @@ public class ControladorEntradaYSalida {
 		}
 	}
 
-	public String leerCadena() {
-		while (true) {
-		String entrada = sc.nextLine().trim();
+	public String leerCadena(String text) {
+		
+		boolean valido = false;
+		String entradaValida = "";
+		while (!valido) {
+			System.out.print(text);
+			String entrada = sc.nextLine().trim();
 
-		if(entrada.isEmpty()) {
-			System.out.println("Error: no puedes dejar el campo vacío.");
-			return leerCadena(); // Llamada recursiva para volver a pedir la entrada
+			if(entrada.isEmpty()) {
+				System.out.println("Error: no puedes dejar el campo vacío.");
+			
+			} else {
+				valido = true;
+				entradaValida = entrada;
+			}
 		}
-		return entrada;
-	}
+		return entradaValida;
+}
+	public String leerSiNo(String text) {
+		
+		boolean valido = false;
+		String entradaValida = "";
+		while (!valido) {
+			System.out.print(text + " (si/no): ");
+			String entrada = sc.nextLine().trim();
+
+			if(!entrada.equalsIgnoreCase("no") && !entrada.equalsIgnoreCase("si")) {
+				System.out.println("Error: escribe si o no"); //Respuesta no válida. Por favor, responde 'si' o 'no'.
+			
+			} else {
+				valido = true;
+				entradaValida = entrada;
+			}
+		}
+		return entradaValida;
 }
 
 	public int leerEntero() {
 		return sc.nextInt();
+	}
+	
+	public int leerOpciones(String text, ArrayList<Integer> opciones) {
+		boolean valido = false;
+		int entradaValida = 0;
+		while (!valido) {
+			System.out.print(text);
+			int entrada = sc.nextInt();
+
+			if(!opciones.contains(entrada)) {
+				System.out.println("Error: opsion no existe"); 
+				
+			} else {
+				valido = true;
+				entradaValida = entrada;
+			}
+		}
+		return entradaValida;
 	}
 	
 	public static String letraMalluscula(String texto) {

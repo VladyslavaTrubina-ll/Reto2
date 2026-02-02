@@ -1,6 +1,6 @@
 package modelo;
 
-public class FechaSesion {
+public class FechaSesion {  //TODO quiza nececito eliminar
 	private String fecha;
 
 	public FechaSesion() {

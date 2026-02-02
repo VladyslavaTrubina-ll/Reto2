@@ -18,10 +18,9 @@ public class Imprimir {
 		System.out.println("=================================");
 	}
 
-	public static void imprimirPeliculas(ControladorDB controlador) {
+	public static void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
 		System.out.println("\nPeliculas disponibles");
 		System.out.println("---------------------");
-		ArrayList<Pelicula> peliculas = controlador.obtenerPelis();
 
 		if (peliculas.isEmpty()) {
         System.out.println("No hay películas disponibles.");
@@ -65,13 +64,5 @@ public class Imprimir {
 		return horaPrecioSala;
 	}*/
 
-	public static void main(String[] args) {
-		Imprimir imprimir = new Imprimir();
-		if (!imprimir.controlador.iniciarConexion()) {
-			System.out.println("No se pudo conectar a la base de datos");
-			return;
-		}
-		bienvenida();
-		imprimirPeliculas(imprimir.controlador);
-	}
+	
 }
