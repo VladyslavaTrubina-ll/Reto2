@@ -13,7 +13,7 @@ public class FechaSesion {  //TODO quiza nececito eliminar
 
 	@Override
 	public String toString() {
-		return "Fechas disponibles del sesion [" + fecha + "]";
+		return fecha;
 	}
 
 	public String getFecha() {

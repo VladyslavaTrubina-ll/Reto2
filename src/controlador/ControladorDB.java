@@ -108,7 +108,7 @@ public class ControladorDB {
 		return pelis;
 	}
 
-	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) {
+	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) { //TODO quitar
 		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
 		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
 				+ titulo + "' && fecha >= CURDATE()" + "ORDER BY fecha";

@@ -117,20 +117,20 @@ public class ControladorEntradaYSalida {
     return resultado.toString().trim();
 	}
 
-	public int pedirParticipantes(int asientosDisponibles) {
+	public int numBilletesComprandos(int asientosDisponibles) {
 		while (true) {
-			System.out.print("Numero de participantes (max " + asientosDisponibles + "): ");
+			System.out.print("\nBilletes disponibles " + asientosDisponibles + "\nQuantos entradas queres comprar:  ");
 
 			try {
 				String entrada = sc.nextLine().trim();
-				int participantes = Integer.parseInt(entrada);
+				int billetes = Integer.parseInt(entrada);
 
-				if (participantes <= 0) {
+				if (billetes <= 0) {
 					System.out.println("Error: Debe ser un número positivo");
-				} else if (participantes > asientosDisponibles) {
+				} else if (billetes > asientosDisponibles) {
 					System.out.println("Error: Solo hay " + asientosDisponibles + " asientos");
 				} else {
-					return participantes; // numero valido //
+					return billetes; // numero valido //
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("Error: Ingrese un número válido");
