@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 import modelo.Pelicula;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
@@ -64,7 +63,8 @@ public class ControladorDB {
 
 	public ArrayList<ClienteAcesso> obtenerCliente(String email) {
 		ArrayList<ClienteAcesso> clientes = new ArrayList<ClienteAcesso>();
-		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " //TODO error
+		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " // TODO
+																															// error
 				+ "WHERE email = '" + email + "'";
 		try {
 			Statement consulta = conexion.createStatement();
@@ -72,7 +72,8 @@ public class ControladorDB {
 
 			while (resultado.next()) {
 				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),
-						resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
+						resultado.getString(3), resultado.getString(4), resultado.getString(5));
+				;
 				clientes.add(nuevoCliente);
 			}
 			consulta.close();
@@ -86,12 +87,10 @@ public class ControladorDB {
 
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
-		
-		String query = "SELECT DISTINCT Titulo, duracion FROM Pelicula P " +
-                 "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " +                 
-                 "ORDER BY Titulo";
 
-		
+		String query = "SELECT DISTINCT Titulo, duracion FROM Pelicula P "
+				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " + "ORDER BY Titulo";
+
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -129,7 +128,12 @@ public class ControladorDB {
 		return fechapeli;
 	}
 
-	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) { //TODO no nesesario. cojer en fechar
+	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(ArrayList<FechaSesion> fechas, String titulo) { // TODO
+																														// no
+																														// nesesario.
+																														// cojer
+																														// en
+																														// fechar
 		if (fechas.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -182,105 +186,125 @@ public class ControladorDB {
 		}
 		return numespectadores;
 	}
-	
-	public void insertarUsuario(String dni,String nombre,String apellidos,String email, String contrasena ) {
-       
 
-        String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
+	public void insertarUsuario(String dni, String nombre, String apellidos, String email, String contrasena) {
 
-        try {
-             PreparedStatement ps = conexion.prepareStatement(sql); 
+		String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
 
-            // Asignamos el parámetro String
-            ps.setString(1, dni);
-            ps.setString(2, nombre);
-            ps.setString(3, apellidos);
-            ps.setString(4, email);
-            ps.setString(5, contrasena);
+		try {
+			PreparedStatement ps = conexion.prepareStatement(sql);
 
-            // Ejecutamos el INSERT
-            ps.executeUpdate();
+			// Asignamos el parámetro String
+			ps.setString(1, dni);
+			ps.setString(2, nombre);
+			ps.setString(3, apellidos);
+			ps.setString(4, email);
+			ps.setString(5, contrasena);
 
-            System.out.println("Usuario insertado correctamente");
+			// Ejecutamos el INSERT
+			ps.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-	
-	public void insertarCompra(String dni,int numentradas, double preciototal,double descuentoaplicado) {
+			System.out.println("Usuario insertado correctamente");
 
-        String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-        try {
-             PreparedStatement ps = conexion.prepareStatement(sql); 
-        	java.sql.Timestamp fechaHora = new java.sql.Timestamp(System.currentTimeMillis());
-            // Asignamos el parámetro String
-            ps.setString(1, dni);
-            ps.setTimestamp(2, fechaHora);
-            ps.setInt(3, numentradas );
-            ps.setDouble(4, preciototal);
-            ps.setDouble(5, descuentoaplicado);
+	public void insertarCompra(String dni, int numentradas, double preciototal, double descuentoaplicado) {
 
-            // Ejecutamos el INSERT
-            ps.executeUpdate();
-            System.out.println("Compra insertada correctamente");
+		String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-	
-	
-	
-	public String obtenerSesion(FechaSesion fecha,OrarioPrecioSalaSesion orariosala) {
+		try {
+			PreparedStatement ps = conexion.prepareStatement(sql);
+			java.sql.Timestamp fechaHora = new java.sql.Timestamp(System.currentTimeMillis());
+			// Asignamos el parámetro String
+			ps.setString(1, dni);
+			ps.setTimestamp(2, fechaHora);
+			ps.setInt(3, numentradas);
+			ps.setDouble(4, preciototal);
+			ps.setDouble(5, descuentoaplicado);
+
+			// Ejecutamos el INSERT
+			ps.executeUpdate();
+			System.out.println("Compra insertada correctamente");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String obtenerSesion(FechaSesion fecha, OrarioPrecioSalaSesion orariosala) {
 		String sesion = "";
 		String hora = orariosala.getOrario();
 		String sala = orariosala.getSala();
 		String fechaelegida = fecha.getFecha();
-		String query = "SELECT id_sesion FROM Sesion WHERE hora_inicio = '" + hora + "' AND id_sala = (SELECT id_sala FROM Sala WHERE nombre = '" + sala + "') "
-				+ "AND fecha = '" + fechaelegida + "'";
+		String query = "SELECT id_sesion FROM Sesion WHERE hora_inicio = '" + hora
+				+ "' AND id_sala = (SELECT id_sala FROM Sala WHERE nombre = '" + sala + "') " + "AND fecha = '"
+				+ fechaelegida + "'";
 
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				 sesion = resultado.getString("id_sesion");
-				
+				sesion = resultado.getString("id_sesion");
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return sesion;
-	}	
-	public void actualizarespectadoressesion() {
-		
 	}
-	/*public void insertarEntrada(String dni,int numentradas, double preciototal,double descuentoaplicado) {
-        String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
-        String user = "root";
-        String password = "";
 
-        String sql = "INSERT INTO Entrada (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,?)";
+	public void actualizarespectadoressesion() {
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-        	java.sql.Timestamp fechaHora = new java.sql.Timestamp(System.currentTimeMillis());
-            // Asignamos el parámetro String
-            ps.setString(1, dni);
-            ps.setTimestamp(2, fechaHora);
-            ps.setInt(3, numentradas );
-            ps.setDouble(4, preciototal);
-            ps.setDouble(5, descuentoaplicado);
+	}
 
-            // Ejecutamos el INSERT
-            ps.executeUpdate();
+	public void insertarEntrada(int numentradas, double preciototal, double descuentoaplicado) {
+		String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
+		String user = "root";
+		String password = "";
 
-            System.out.println("Compra insertada correctamente");
+		String sql = "INSERT INTO Entrada ( fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, ?, ?, ?,)";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
+		try (Connection conn = DriverManager.getConnection(url, user, password);
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			java.sql.Timestamp fechaHora = new java.sql.Timestamp(System.currentTimeMillis());
+			// Asignamos el parámetro String
+			ps.setTimestamp(2, fechaHora);
+			ps.setInt(3, numentradas);
+			ps.setDouble(4, preciototal);
+			ps.setDouble(5, descuentoaplicado);
+
+			// Ejecutamos el INSERT
+			ps.executeUpdate();
+
+			System.out.println("Entrada insertada correctamente");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String obtenerIdSesion(String fecha, String sala, String horario, String titulo) {
+		String query = "SELECT id_sesion FROM Sesion SE JOIN Pelicula P ON P.id_pelicula = SE.id_pelicula "
+				+ "JOIN Sala Sa on Sa.id_sala = Se.id Sala WHERE fecha ='" + fecha
+				+ "'AND P.id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + titulo
+				+ "') AND SA.id_sala = (SELECT id_sala FROM Sala Where nombre = '" + sala + "') AND hora_inicio = '"
+				+ horario + "'";
+		String IdSesion = "";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				 IdSesion = resultado.getString(1);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return IdSesion;
+	}
 }
