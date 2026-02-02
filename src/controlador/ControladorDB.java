@@ -287,24 +287,4 @@ public class ControladorDB {
 		}
 	}
 
-	public String obtenerIdSesion(String fecha, String sala, String horario, String titulo) {
-		String query = "SELECT id_sesion FROM Sesion SE JOIN Pelicula P ON P.id_pelicula = SE.id_pelicula "
-				+ "JOIN Sala Sa on Sa.id_sala = Se.id Sala WHERE fecha ='" + fecha
-				+ "'AND P.id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + titulo
-				+ "') AND SA.id_sala = (SELECT id_sala FROM Sala Where nombre = '" + sala + "') AND hora_inicio = '"
-				+ horario + "'";
-		String IdSesion = "";
-		try {
-			Statement consulta = conexion.createStatement();
-			ResultSet resultado = consulta.executeQuery(query);
-
-			while (resultado.next()) {
-				 IdSesion = resultado.getString(1);
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return IdSesion;
-	}
 }
