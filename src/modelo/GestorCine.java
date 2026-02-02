@@ -139,7 +139,7 @@ public class GestorCine {
 		int ocupados = espectadores.get(0).getEspectadores();
 		int disponibles = capacidad - ocupados;
 		System.out.print("selecionar numero de asientos");
-		int participantes = controladorEntrada.pedirParticipantes(disponibles);
+		int participantes = controladorEntrada.numBilletesComprandos(disponibles);
 		espectadores.get(0).anadirespectadores(participantes);
 
 		System.out.println("Reservados " + participantes + " asientos");
