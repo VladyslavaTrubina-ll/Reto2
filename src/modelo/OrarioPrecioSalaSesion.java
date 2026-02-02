@@ -17,7 +17,7 @@ public class OrarioPrecioSalaSesion {
 
 	@Override
 	public String toString() {
-		return "Informe sobre sesiones [orario: " + orario + ", " + sala + ", precio: " + precio + "]";
+		return "Informe sobre sesion elegido\n  " + sala + " hora de inicio: " + orario + ", "", precio: " + precio + "]";
 	}
 
 	public String getOrario() {
