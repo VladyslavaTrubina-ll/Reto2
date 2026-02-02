@@ -234,14 +234,11 @@ public class ControladorDB {
 		}
 	}
 
-	public String obtenerSesion(FechaSesion fecha, OrarioPrecioSalaSesion orariosala) {
+	public String obtenerSesion(FechaSesion fecha, String hora, String sala) {
 		String sesion = "";
-		String hora = orariosala.getOrario();
-		String sala = orariosala.getSala();
-		String fechaelegida = fecha.getFecha();
-		String query = "SELECT id_sesion FROM Sesion WHERE hora_inicio = '" + hora
-				+ "' AND id_sala = (SELECT id_sala FROM Sala WHERE nombre = '" + sala + "') " + "AND fecha = '"
-				+ fechaelegida + "'";
+		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '" + hora
+				+ "' AND SA.id_sala = (SELECT id_sala FROM Sala  WHERE nombre = '" + sala + "') " + "AND fecha = '"
+				+ fecha + "'";
 
 		try {
 			Statement consulta = conexion.createStatement();
@@ -257,9 +254,22 @@ public class ControladorDB {
 		return sesion;
 	}
 
-	public void actualizarespectadoressesion() {
+	/*public int obtenerEspectadoresSesion(String sesion) {
+		String query = "SELECT espectadores,  FROM Sesion WHERE id_sesion = '" + sesion + "' ";
+		int obtenerEspectadores = 0;
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
 
-	}
+			while (resultado.next()) {
+				obtenerEspectadores = resultado.getInt("espectadores");
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return obtenerEspectadores;
+	}*/
 
 	public void insertarEntrada(int numentradas, double preciototal, double descuentoaplicado) {
 		String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
