@@ -22,12 +22,8 @@ public class Launcher {
 	}
 
 	public static void mainProceso() {
-
-
 		// TODO realizar 1. Bienvenida
 		Imprimir.bienvenida();
-
-		// TODO Tienes cuenta?
 
 		boolean esRegistrado = false;
 
@@ -40,13 +36,9 @@ public class Launcher {
 
 				// No -> TODO 1.1 Registrar
 				registrarCliente();
-
 				esRegistrado = false;
-				// Vuelve a preguntar si tiene cuenta
 			}
 		}
-		// Si -> continuar
-
 		// 2. Login
 		ClienteAcesso cliente = gestorCine.login();
 
@@ -59,17 +51,18 @@ public class Launcher {
 		boolean procesoPrincipal = true;
 
 		while (procesoPrincipal) {
-
-			boolean siPagar = false;
+			//boolean siPagar = false;
 			boolean vasEligPeli = false;
 
 			while (!vasEligPeli) {
-
-				// System.out.print("¿Quieres elegir pelicula? (si/no): ");
 				String elegirPeli = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir pelicula?");
 
 				if (elegirPeli.equalsIgnoreCase("no")) {
 					// 4.2 no -> 4.3 Hay algo en carrito?
+					//carrito.resumen(cliente.getNombre(), cliente.getApellidos(), carrito);
+					if(carrito.getSesiones().isEmpty()) {
+						System.out.println("Carrito vacio, no puedes pagar");
+
 					System.out.println("No elegimos peli");
 					vasEligPeli = true;
 				} else if (elegirPeli.equalsIgnoreCase("si")) {
@@ -197,6 +190,35 @@ public class Launcher {
 	}
 }
 }
+
+
+/*if (elegirPeli.equalsIgnoreCase("no")) {
+    // 4.2 no -> 4.3 Hay algo en carrito?
+    if (carrito.getSesiones().isEmpty()) {
+        // 4.3 no -> Carrito vacío, salir?
+        System.out.println("Carrito vacío, no puedes comprar.");
+        String deseaSalir = gestorCine.controladorEntrada.leerSiNo("¿Deseas salir?");
+        if (deseaSalir.equalsIgnoreCase("si")) {
+            System.out.println("Hasta luego!");
+            procesoPrincipal = false;
+            vasEligPeli = true;
+        } else {
+            // Vuelve a preguntar si quiere elegir película
+            vasEligPeli = false;
+        }
+    } else {
+        // 4.3 si -> Tienes entradas en carrito
+        System.out.println("\nTienes entradas en carrito.");
+        String deseaComprar = gestorCine.controladorEntrada.leerSiNo("¿Quieres comprar?");
+        if (deseaComprar.equalsIgnoreCase("si")) {
+            procesoPagar();  // Llamar al método de pago
+            vasEligPeli = true;
+        } else {
+            // Vuelve a preguntar si quiere elegir más películas
+            vasEligPeli = false;
+        }
+    }
+} */
 
 /*
  * int espectadoresActuales = 0; boolean comprando = true;
