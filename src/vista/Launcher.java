@@ -26,7 +26,7 @@ public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
 	static Carrito carrito = new Carrito();
-	static Imprimir imprimir = new Imprimir();
+	
 	
 	public static void main(String args[]) {
 		while(true) {
@@ -97,10 +97,12 @@ public class Launcher {
 					// TODO para obtener fechas, horario, presio por peli usar class Sesion
 					
 					ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(peliEligida.getNombre());
-					imprimir.imprimirFecha(gestorCine.controlador, peliEligida.getNombre()); 
+				gestorCine.imprimir.imprimirFecha(gestorCine.controlador, peliEligida.getNombre()); 
 					FechaSesion elegirFecha = gestorCine.elegirFecha(gestorCine.controlador, fechas); //TODO verificar
-					Sesion sTest1 = Sesion.sample("Peli 1", "01-01-2000"); //TODO anadir en carrito cosas celecsionadas
-					carrito.anadirEntrada(sTest1, 1);
+					gestorCine.imprimir.imprimirHoraPrecioYSala(elegirFecha, peliEligida.getNombre(),gestorCine.controlador);
+					//Sesion sTest1 = Sesion.sample("Peli 1", "01-01-2000");// //TODO anadir en carrito cosas celecsionadas
+					
+					//carrito.anadirEntrada(peliEligida.getNombre(), elegirFecha.getFecha() );//
 					
 					System.out.println("Fin eligimos peli");
 					//System.out.print("¿Quieres elegir mas peliculas? (si/no): ");

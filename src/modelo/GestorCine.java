@@ -21,7 +21,7 @@ public class GestorCine {
 	/*Controladores y gestión*/
 	public ControladorEntradaYSalida controladorEntrada;
 	public ControladorDB controlador;
-
+public Imprimir imprimir = new Imprimir();
 	// Salas disponibles
 	public Sala S1 = new Sala("Sala Principal", 100);
 	public Sala S2 = new Sala("Sala Premium", 55);
@@ -78,7 +78,7 @@ public class GestorCine {
 
 	public Pelicula elegirPelicula() { 
 		ArrayList<Pelicula> peliculas = controlador.obtenerPelis();
-		Imprimir.imprimirPeliculas(peliculas);
+		imprimir.imprimirPeliculas(peliculas);
 		System.out.println("Selecionar la pelicula que se quieres ver:");
 		int peliculaIndex = controladorEntrada.esValorMenuValido(1, peliculas.size());
 
