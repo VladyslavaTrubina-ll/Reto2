@@ -42,7 +42,7 @@ public class ControladorEntradaYSalida {
 	}
 
 	public String leerCadena(String text) {
-		
+
 		boolean valido = false;
 		String entradaValida = "";
 		while (!valido) {
@@ -51,39 +51,40 @@ public class ControladorEntradaYSalida {
 			String entrada = sc.nextLine().trim();
 			System.out.println("------------------------------------------");
 
-			if(entrada.isEmpty()) {
+			if (entrada.isEmpty()) {
 				System.out.println("Error: no puedes dejar el campo vacío.");
-			
+
 			} else {
 				valido = true;
 				entradaValida = entrada;
 			}
 		}
 		return entradaValida;
-}
+	}
+
 	public String leerSiNo(String text) {
-		
+
 		boolean valido = false;
 		String entradaValida = "";
 		while (!valido) {
 			System.out.print(text + " (si/no): ");
 			String entrada = sc.nextLine().trim();
 
-			if(!entrada.equalsIgnoreCase("no") && !entrada.equalsIgnoreCase("si")) {
-				System.out.println("Error: escribe si o no"); //Respuesta no válida. Por favor, responde 'si' o 'no'.
-			
+			if (!entrada.equalsIgnoreCase("no") && !entrada.equalsIgnoreCase("si")) {
+				System.out.println("Error: escribe si o no"); // Respuesta no válida. Por favor, responde 'si' o 'no'.
+
 			} else {
 				valido = true;
 				entradaValida = entrada;
 			}
 		}
 		return entradaValida;
-}
+	}
 
 	public int leerEntero() {
 		return sc.nextInt();
 	}
-	
+
 	public int leerOpciones(String text, ArrayList<Integer> opciones) {
 		boolean valido = false;
 		int entradaValida = 0;
@@ -91,9 +92,9 @@ public class ControladorEntradaYSalida {
 			System.out.print(text);
 			int entrada = sc.nextInt();
 
-			if(!opciones.contains(entrada)) {
-				System.out.println("Error: opsion no existe"); 
-				
+			if (!opciones.contains(entrada)) {
+				System.out.println("Error: opsion no existe");
+
 			} else {
 				valido = true;
 				entradaValida = entrada;
@@ -101,22 +102,20 @@ public class ControladorEntradaYSalida {
 		}
 		return entradaValida;
 	}
-	
+
 	public static String letraMalluscula(String texto) {
-	    if (texto == null || texto.isEmpty()) {
-	        return texto;
-	    }
+		if (texto == null || texto.isEmpty()) {
+			return texto;
+		}
 
 		String[] palabras = texto.trim().toLowerCase().split("\\s+");
-	    StringBuilder resultado = new StringBuilder();
-	    
+		StringBuilder resultado = new StringBuilder();
+
 		for (String palabra : palabras) {
-        resultado.append(Character.toUpperCase(palabra.charAt(0)))
-                 .append(palabra.substring(1))
-                 .append(" ");
-    }
-    
-    return resultado.toString().trim();
+			resultado.append(Character.toUpperCase(palabra.charAt(0))).append(palabra.substring(1)).append(" ");
+		}
+
+		return resultado.toString().trim();
 	}
 
 	public int numBilletesComprandos(int asientosDisponibles) {
@@ -139,13 +138,13 @@ public class ControladorEntradaYSalida {
 			}
 		}
 	}
-	
+
 	public double leerNumeroDouble() {
 		while (true) {
 			try {
 				String entrada = sc.nextLine().trim();
 				double numero = Double.parseDouble(entrada);
-				
+
 				if (numero < 0) {
 					System.out.println("Error: Debe ser un número positivo");
 				} else {
@@ -156,7 +155,26 @@ public class ControladorEntradaYSalida {
 			}
 		}
 	}
-	public String leerNie(String text) {
-		
+
+	public String leerDNI(String text) {
+		String nie = "";
+		boolean valido = false;
+
+		System.out.println(text); // Mostra il messaggio all'utente
+
+		while (!valido) {
+			System.out.print("Escribe tu  DNI: ");
+			nie = sc.nextLine();
+
+			if (nie.length() == 9) {
+				valido = true;
+			
+			} else {
+				System.out.println("ERROR: EL DNI tiene que ser de 9 caracteres!");
+				System.out.println("Has escrito " + nie.length() + " caracteres");
+			}
+		}
+
+		return nie;
 	}
 }
