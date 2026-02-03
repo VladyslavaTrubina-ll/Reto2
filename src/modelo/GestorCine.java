@@ -4,7 +4,6 @@ import modelo.Carrito;
 import modelo.Sesion;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
-import modelo.FechaSesion;
 import modelo.Sala;
 import modelo.Pelicula;
 

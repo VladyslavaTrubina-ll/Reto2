@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import modelo.EspectadoresSesion;
-import modelo.FechaSesion;
 import modelo.GestorCine;
 import modelo.Sesion;
 import modelo.Pelicula;
