@@ -1,24 +1,26 @@
 package modelo;
 
 public class Sesion {
+	
+	//TODO VERIFICSR set EN TODOS CLASSES
 	Pelicula pelicula;
-	private String fecha, horario;
-	private String sala;
+	private String fecha, horaInicio, horaFin;
+	private Sala sala;
 	private int numEspectadores;
 	private double precio;
 
-	public Sesion(Pelicula pelicula, String fecha, String horario, String sala, int numEspectadores, double precio) {
+	public Sesion(Pelicula pelicula, String fecha, String horaInicio, String horaFin, Sala sala, int numEspectadores, double precio) {
 		this.pelicula = pelicula;
 		this.fecha = fecha;
-		this.horario = horario;
-		// a nadie le sale el horario de fin en una app de cine.
+		this.horaInicio = horaInicio;
+		this.horaFin = horaFin;
 		this.sala = sala;
 		this.precio = precio;
 		this.numEspectadores = numEspectadores;
 	}
 	
 	public Sesion() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public void setPelicula(Pelicula pelicula) {
@@ -37,19 +39,19 @@ public class Sesion {
 		this.fecha = fecha;
 	}
 	
-	public String getHorario() {
-		return horario;
+	public String getHoraInicio() {
+		return horaInicio;
 	}
 
-	public void setHorario(String horario) {
-		this.horario = horario;
+	public String getHoraFin() {
+		return horaFin;
 	}
 
-	public String getSala() {
+	public Sala getSala() {
 		return sala;
 	}
 
-	public void setSala(String sala) {
+	public void setSala(Sala sala) {
 		this.sala = sala;
 	}
 	
@@ -72,7 +74,7 @@ public class Sesion {
 	@Override
 	public String toString() {
 		return "Sesion [pelicula=" + pelicula.getNombre()
-		+ ", fecha=" + fecha + ", horario=" + horario  + ", sala="+ sala 
+		+ ", fecha=" + fecha + ", horaInicio=" + horaInicio  + ", horaFIn=" + horaFin  + ", sala="+ sala 
 		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
 	}
 	
@@ -85,7 +87,7 @@ public class Sesion {
 		Pelicula pTest = new Pelicula(peliculaNombre, 90);
 		Sala salaTest = new Sala("Sala Test", 20);
 		
-		Sesion sTest = new Sesion(pTest, fecha, "12:00", "", 5, 10.0);
+		Sesion sTest = new Sesion(pTest, fecha, "12:00", "16:00", salaTest, 5, 10.0);
 		
 		return sTest;
 	}
