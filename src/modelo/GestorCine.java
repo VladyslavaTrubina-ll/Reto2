@@ -168,7 +168,6 @@ public class GestorCine {
 			if (text.equals(dato) || text.equals(dato2)) {
 				System.out.println("Error usuario ya registrado con este dato");
 				return true;
-
 			} else {
 				contador++;
 			}
