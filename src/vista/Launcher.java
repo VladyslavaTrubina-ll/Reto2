@@ -49,64 +49,69 @@ public class Launcher {
 	        boolean eligiendoPeliculas = true;
 
 	        while (eligiendoPeliculas) {
-	        	imprimir.imprimirPeliculas(gestorCine.controlador.obtenerPelis());  
+	        	ArrayList<Pelicula> pelis = gestorCine.controlador.obtenerPelis();
+	        	imprimir.imprimirPeliculas(pelis);  
 	            // 4.1 ¿Quieres elegir película?
 				//System.out.println("----------------------------------");
 	            String elegirPeli = gestorCine.controladorEntrada.leerSiNo("\n¿Quieres elegir película?");
 
 	            if (elegirPeli.equalsIgnoreCase("si")) {
 	                // 4.2 Elegir película
-	                Pelicula peliElegida = gestorCine.elegirPelicula();
+	                Pelicula peliElegida = gestorCine.elegirPelicula(pelis);
 
 	                // 5. Elegir fecha
 	                
-	                ArrayList<FechaSesion> fechas = gestorCine.controlador.obtenerfechasporperli(peliElegida.getNombre());
-	                imprimir.imprimirFecha(gestorCine.controlador, peliElegida.getNombre());
-					//System.out.println("\n----------------------------------");
-	                String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
-	               
-	                if (volverSiNo.equalsIgnoreCase("si")) {
-	                	continue; // Vuelve a mostrar películas
-	               
-	                } else if (volverSiNo.equalsIgnoreCase("no")) {
-	                	FechaSesion fechaElegida = gestorCine.elegirFecha(fechas);
-	                	if (fechaElegida == null) {
-	                		continue;
-	                	}
-	                	boolean sesionElegida = false;
-	                	while (!sesionElegida) {
-	                		// 6. Elegir horario/sala/precio
-	                		OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(fechaElegida, peliElegida.getNombre());
-
-	                		// 7. Obtener sesión de BD
-	                		String idSesion = gestorCine.controlador.obtenerSesion(
-	                		    fechaElegida.getFecha(),
-	                		    horarioElegido.getOrario(),
-	                		    horarioElegido.getSala()
-	                		);
-
+	                ArrayList<String> fechas = gestorCine.controlador.obtenerFechasPorPerli(peliElegida.getNombre());
+	                ArrayList<String> fechasUnicos = imprimir.imprimirFechas(fechas, peliElegida.getNombre());
+	                
+	                String fechaElegida = gestorCine.elegirFecha(fechasUnicos);
+	                Sesion sesionElegida = new Sesion();
+	                int numEspectadores = 0;
+	                
+	                boolean eligiendoSesion = true;
+	                while (eligiendoSesion) {
+	                	// 6. Elegir horario/sala/precio
+	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesinesPorPerli(fechaElegida, peliElegida);
+	                	//TODO imprimir sesiones
+	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
+	                	if (volverSiNo.equalsIgnoreCase("si")) {
+	                		eligiendoSesion = false;
+	                		//continue;  Vuelve a mostrar películas
+	                		
+	                	} else if (volverSiNo.equalsIgnoreCase("no")) {
+	                		//OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(fechaElegida, peliElegida.getNombre());
+	                		
 	                		// 8. Verificar y seleccionar número de espectadores
 	                		int numEspectadores = gestorCine.seleccionarNumEspectadores(fechaElegida, horarioElegido);
 	                		
 	                		if (numEspectadores <= 0) {
 	                			System.out.println("No hay sillas libres, elige otra sesión.");
-	                			continue;
+	                			eligiendoSesion = true;
+	                		} else {
+	                			eligiendoSesion = false;
 	                		}
-
-	                		// 9. Generar entrada (Sesion)
-	                		Sesion nuevaEntrada = gestorCine.generarEntrada(
-	                		    peliElegida,
-	                		    fechaElegida.getFecha(),
-	                		    horarioElegido.getSala(),
-	                		    horarioElegido.getOrario(),
-	                		    numEspectadores,
-	                		    horarioElegido.getPrecio()
-	                		);
-
-	                		// 10. Añadir al carrito
-	                		carrito.anadirEntrada(nuevaEntrada, numEspectadores);
-	                		System.out.println(" Test Entrada añadida al carrito");
-	                		sesionElegida = true;
+	                		
+	                	}
+	                }
+	                	
+	                // 9. Generar entrada(Sesion, numEntadas/numEspectadores) TODO new classe 
+	                /*	Sesion nuevaEntrada = gestorCine.generarEntrada(
+	                			peliElegida,
+	                			fechaElegida.getFecha(),
+	                			horarioElegido.getSala(),
+	                			horarioElegido.getOrario(),
+	                			numEspectadores,
+	                			horarioElegido.getPrecio()
+	                			);
+	                 */
+	                // 10. Añadir al carrito 
+	                carrito.anadirEntrada(sesionElegida, numEspectadores);
+	                System.out.println(" Test Entrada añadida al carrito");
+	                
+					//System.out.println("\n----------------------------------");
+	               
+	                	if (fechaElegida == null) {
+	                		continue;
 	                	}
 
 	                	// 11. ¿Quieres elegir más películas?
@@ -202,8 +207,8 @@ public class Launcher {
 	    if (confirmar.equalsIgnoreCase("si")) {
 	        // Procesar pago
 	        double precioConIva = Math.round(carrito.getPrecioTotal() * 1.21 * 100.0) / 100.0;
-	        double cambio = procesarPagoDinero(precioConIva);
-	        carrito.setCambio(cambio);
+	     //   double cambio = procesarPagoDinero(precioConIva);
+	    //    carrito.setCambio(cambio);
 	        
 	        // 15. Insertar compra en BD
 	        gestorCine.controlador.insertarCompra(
@@ -295,5 +300,5 @@ public class Launcher {
 			}
 		}
 	}
-
+*/
 // 4. breakpoints: volver a 4.1, salir, comprar, pagar, guardar ticket = mesage + input (verificar) + cambiar de estado
