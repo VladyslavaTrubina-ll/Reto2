@@ -1,6 +1,6 @@
 package modelo;
 
-public class FechaSesion {
+public class FechaSesion {  //TODO quiza nececito eliminar
 	private String fecha;
 
 	public FechaSesion() {
@@ -13,7 +13,7 @@ public class FechaSesion {
 
 	@Override
 	public String toString() {
-		return "Fechas disponibles del sesion [" + fecha + "]";
+		return fecha;
 	}
 
 	public String getFecha() {

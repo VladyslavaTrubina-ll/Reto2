@@ -11,7 +11,7 @@ public class Pelicula {
 
 	@Override
 	public String toString() {
-		return "Pelicula\nnombre: " + nombre + "\nduracion: " + duracion + "min"; // TODO? reformat
+		return String.format("%s | %d min", nombre, duracion); // TODO? reformat
 	}
 
 	public String getNombre() {

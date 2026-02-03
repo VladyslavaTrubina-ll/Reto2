@@ -41,28 +41,96 @@ public class ControladorEntradaYSalida {
 		}
 	}
 
-	public String leerCadena() {
-		return sc.nextLine();
-	}
+	public String leerCadena(String text) {
+		
+		boolean valido = false;
+		String entradaValida = "";
+		while (!valido) {
+			System.out.print(text);
+			String entrada = sc.nextLine().trim();
+
+			if(entrada.isEmpty()) {
+				System.out.println("Error: no puedes dejar el campo vacío.");
+			
+			} else {
+				valido = true;
+				entradaValida = entrada;
+			}
+		}
+		return entradaValida;
+}
+	public String leerSiNo(String text) {
+		
+		boolean valido = false;
+		String entradaValida = "";
+		while (!valido) {
+			System.out.print(text + " (si/no): ");
+			String entrada = sc.nextLine().trim();
+
+			if(!entrada.equalsIgnoreCase("no") && !entrada.equalsIgnoreCase("si")) {
+				System.out.println("Error: escribe si o no"); //Respuesta no válida. Por favor, responde 'si' o 'no'.
+			
+			} else {
+				valido = true;
+				entradaValida = entrada;
+			}
+		}
+		return entradaValida;
+}
 
 	public int leerEntero() {
 		return sc.nextInt();
 	}
+	
+	public int leerOpciones(String text, ArrayList<Integer> opciones) {
+		boolean valido = false;
+		int entradaValida = 0;
+		while (!valido) {
+			System.out.print(text);
+			int entrada = sc.nextInt();
 
-	public int pedirParticipantes(int asientosDisponibles) {
+			if(!opciones.contains(entrada)) {
+				System.out.println("Error: opsion no existe"); 
+				
+			} else {
+				valido = true;
+				entradaValida = entrada;
+			}
+		}
+		return entradaValida;
+	}
+	
+	public static String letraMalluscula(String texto) {
+	    if (texto == null || texto.isEmpty()) {
+	        return texto;
+	    }
+
+		String[] palabras = texto.trim().toLowerCase().split("\\s+");
+	    StringBuilder resultado = new StringBuilder();
+	    
+		for (String palabra : palabras) {
+        resultado.append(Character.toUpperCase(palabra.charAt(0)))
+                 .append(palabra.substring(1))
+                 .append(" ");
+    }
+    
+    return resultado.toString().trim();
+	}
+
+	public int numBilletesComprandos(int asientosDisponibles) {
 		while (true) {
-			System.out.print("Numero de participantes (max " + asientosDisponibles + "): ");
+			System.out.print("\nBilletes disponibles " + asientosDisponibles + "\nQuantos entradas queres comprar:  ");
 
 			try {
 				String entrada = sc.nextLine().trim();
-				int participantes = Integer.parseInt(entrada);
+				int billetes = Integer.parseInt(entrada);
 
-				if (participantes <= 0) {
+				if (billetes <= 0) {
 					System.out.println("Error: Debe ser un número positivo");
-				} else if (participantes > asientosDisponibles) {
+				} else if (billetes > asientosDisponibles) {
 					System.out.println("Error: Solo hay " + asientosDisponibles + " asientos");
 				} else {
-					return participantes; // numero valido //
+					return billetes; // numero valido //
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("Error: Ingrese un número válido");

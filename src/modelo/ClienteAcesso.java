@@ -13,7 +13,19 @@ public class ClienteAcesso {
 		this.apellidos = apellidos;
 		this.email = email;
 		this.contraseña = contraseña;
+		
+		
 
+	}
+	
+	@Override
+	public String toString() {
+		return "ClienteAcesso [dni=" + dni 
+				+ ", nombre=" + nombre 
+				+ ", apellidos=" + apellidos 
+				+ ", email=" + email 
+				+ ", contraseña=" + contraseña 
+				+ "]";
 	}
 
 	public String getNombre() {
