@@ -26,7 +26,7 @@ public class ControladorDB {
 	}
 
 	public ControladorDB() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	// Iniciar conexion
@@ -65,8 +65,7 @@ public class ControladorDB {
 
 	public ArrayList<ClienteAcesso> obtenerCliente(String email) {
 		ArrayList<ClienteAcesso> clientes = new ArrayList<ClienteAcesso>();
-		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente " // TODO
-																															// error
+		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente "
 				+ "WHERE email = '" + email + "'";
 		try {
 			Statement consulta = conexion.createStatement();
@@ -80,7 +79,7 @@ public class ControladorDB {
 			}
 			consulta.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -103,7 +102,7 @@ public class ControladorDB {
 			}
 			consulta.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -139,10 +138,7 @@ public class ControladorDB {
 		ArrayList<Sesion> sesiones = new ArrayList<Sesion>();
 		String query = "SELECT SE.hora_inicio, SE.hora_fin, SE.espectadores, SE.precio_sesion, SA.nombre FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
 				+ fecha + "'AND id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + pelicula.getNombre() + "')";
-		
-		/*Sesion(Pelicula pelicula, String fecha, String horaInicio, String horaFin, Sala sala, int numEspectadores, double precio)
-		 * public Pelicula(String titulo, int duracion, String genero, double precioBase)
-		 * public Sala(String nombre, int sitios)*/
+	
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);

@@ -104,7 +104,7 @@ public class Carrito {
 			Sesion sesion = sesiones.get(i);
 			int numEntradas = cantidadesEntradas.get(i);
 			
-			this.precioSubTotal += sesion.getPrecio() * numEntradas; // TODO verificar double*int
+			this.precioSubTotal += sesion.getPrecio() * numEntradas;
 		}
 		
 		// 4. Aplicar descuento

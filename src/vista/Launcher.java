@@ -72,17 +72,17 @@ public class Launcher {
 	                while (eligiendoSesion) {
 	                	// 6. Elegir horario/sala/precio
 	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
-	                	//TODO imprimir sesiones
+	                	//TODO imprimir sesiones y mejorar print
 	                	imprimir.imprimirHoraPrecioYSala(sesiones);
 	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
 	                	if (volverSiNo.equalsIgnoreCase("si")) {
 	                		eligiendoSesion = false;
 	                		
 	                	} else if (volverSiNo.equalsIgnoreCase("no")) {
-	                		Sesion sesionSeleccionada = gestorCine.elegirSesion(sesiones); //TODO
+	                		Sesion sesionSeleccionada = gestorCine.elegirSesion(sesiones);
 	                		
 	                		// 8. Verificar y seleccionar número de espectadores
-	                		int numEspectadoresSelect = gestorCine.seleccionarNumEspectadores(sesionSeleccionada); //TODO
+	                		int numEspectadoresSelect = gestorCine.seleccionarNumEspectadores(sesionSeleccionada);
 	                		
 	                		if (numEspectadoresSelect <= 0) {
 	                			System.out.println("No hay sillas libres, elige otra sesión.");

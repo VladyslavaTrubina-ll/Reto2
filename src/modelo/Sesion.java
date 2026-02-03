@@ -2,7 +2,7 @@ package modelo;
 
 public class Sesion {
 	
-	//TODO quitar set
+	//TODO VERIFICSR set EN TODOS CLASSES
 	Pelicula pelicula;
 	private String fecha, horaInicio, horaFin;
 	private Sala sala;
@@ -20,7 +20,6 @@ public class Sesion {
 	}
 	
 	public Sesion() {
-		// TODO Auto-generated constructor stub
 		
 	}
 
