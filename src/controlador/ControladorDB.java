@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import modelo.Pelicula;
+import modelo.dniMailCliente;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
@@ -260,7 +261,7 @@ public class ControladorDB {
 	 * obtenerEspectadores; }
 	 */
 
-	public void insertarEntrada( int id_compra,String id_sesion, int numentradas, double preciototal,
+	public void insertarEntrada(int id_compra, String id_sesion, int numentradas, double preciototal,
 			double descuentoaplicado) {
 		String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
 		String user = "root";
@@ -288,4 +289,21 @@ public class ControladorDB {
 		}
 	}
 
+	public ArrayList<dniMailCliente> dniEmailCliente() {
+		ArrayList<dniMailCliente> dniEmailCliente = new ArrayList<dniMailCliente>();
+		String query = "SELECT dni, email FROM Cliente";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+			dniMailCliente	newdniEmailCliente = new dniMailCliente(resultado.getString(1),resultado.getString(2));
+			dniEmailCliente.add(newdniEmailCliente);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dniEmailCliente;
+	}
 }

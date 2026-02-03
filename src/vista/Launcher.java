@@ -136,6 +136,7 @@ public class Launcher {
 		System.out.println("=== Registro para nuevo cliente ===");
 		// System.out.print("Escribe tu DNI: ");
 		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
+		
 
 		String nombre = ControladorEntradaYSalida
 				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
