@@ -121,7 +121,7 @@ public class ControladorEntradaYSalida {
 
 	public int numBilletesComprandos(int asientosDisponibles) {
 		while (true) {
-			System.out.print("\nBilletes disponibles " + asientosDisponibles + "\nQuantos entradas queres comprar:  ");
+			System.out.print("\nBilletes disponibles " + asientosDisponibles + "\nQuantos entradas queres comprar:");
 
 			try {
 				String entrada = sc.nextLine().trim();
@@ -152,7 +152,7 @@ public class ControladorEntradaYSalida {
 					return numero;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("Error: Ingrese un número válido (use . para decimales)");
+				System.out.println("Error: Ingrese un número válido");
 			}
 		}
 	}

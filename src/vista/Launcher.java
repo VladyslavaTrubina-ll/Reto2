@@ -73,7 +73,7 @@ public class Launcher {
 	                	// 6. Elegir horario/sala/precio
 	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
 	                	//TODO imprimir sesiones y mejorar print
-	                	imprimir.imprimirHoraPrecioYSala(sesiones);
+	                	imprimir.imprimirSesiones(sesiones);
 	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
 	                	if (volverSiNo.equalsIgnoreCase("si")) {
 	                		eligiendoSesion = false;
@@ -159,7 +159,7 @@ public class Launcher {
 	}
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
-		// System.out.print("Escribe tu DNI: ");
+	
 		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
 		
 		String nombre = ControladorEntradaYSalida

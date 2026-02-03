@@ -13,7 +13,6 @@ import modelo.Sala;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.Sesion;
-import vista.Sesiones;
 
 
 public class ControladorDB {
@@ -89,20 +88,23 @@ public class ControladorDB {
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
 
-		String query = "SELECT DISTINCT Titulo, duracion, genero, precio_base FROM Pelicula P "
-				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " + "ORDER BY Titulo";
-
+		String query = "SELECT DISTINCT Titulo, duracion, genero FROM Pelicula P "
+				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula "
+				+ "WHERE fecha >= CURDATE() AND hora_inicio > current_time "
+				+ "GROUP BY titulo, duracion, genero "
+				+ "HAVING min(fecha) > CURDATE() OR (min(fecha) = CURDATE() AND min(hora_inicio) > current_time) "
+				+ "ORDER BY Titulo";
+		
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2), resultado.getString(3), resultado.getDouble(4));
+				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2), resultado.getString(3));
 				pelis.add(nuevaPeli);
 			}
 			consulta.close();
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 
@@ -113,8 +115,7 @@ public class ControladorDB {
 		ArrayList<String> fechas = new ArrayList<String>();
 
 		String query = "SELECT fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
-				+ titulo + "' && fecha "
-				//+" => CURDATE()"
+				+ titulo + "' AND fecha >= CURDATE() "
 				+ "ORDER BY fecha";
 		
 		try {
