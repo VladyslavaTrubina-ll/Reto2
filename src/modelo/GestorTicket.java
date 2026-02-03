@@ -23,7 +23,7 @@ public class GestorTicket {
 				pw.println("  - " + e.getPelicula() + 
 		                	" | " + e.getFecha() +
 		                	" | " + e.getSala() + 
-		                	" | " + e.getHorario() + 
+		                	" | " + e.getHoraInicio() + 
 		                    " | " + e.getNumEspectadores() + "p | " + 
 		                    e.getPrecio() + "€/p | " +
 		                    "Desc: " + carrito.getDescuentoAplicado() + "€");

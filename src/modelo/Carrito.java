@@ -135,7 +135,7 @@ public class Carrito {
 			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getNombre());
 			System.out.println("  Fecha: " + e.getFecha());
 			//System.out.println("  Sala: " + e.getSala().getNombre());
-			System.out.println("  Horario: " + e.getHorario());
+			System.out.println("  Horario: " + e.getHoraInicio());
 			System.out.println("  Personas: " + numEntradas);
 			System.out.println("  Precio de sesion: " + e.getPrecio() + "€");
 			System.out.println("  Subtotal: " +  e.getPrecio() * numEntradas + "€");
