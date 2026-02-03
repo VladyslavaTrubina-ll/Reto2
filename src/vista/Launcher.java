@@ -5,7 +5,6 @@ import modelo.*;
 import controlador.*;
 import java.util.ArrayList;
 
-
 public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
@@ -158,7 +157,10 @@ public class Launcher {
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
 		// System.out.print("Escribe tu DNI: ");
-		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
+		String dni = "";
+		do {
+			dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
+		} while (gestorCine.dniOEmailYaRegistrados(dni));
 
 		String nombre = ControladorEntradaYSalida
 				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
@@ -166,21 +168,23 @@ public class Launcher {
 		String apellidos = ControladorEntradaYSalida
 				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tus apellidos: "));
 		String email = "";
-		boolean emailValido = false;
 
-		while (!emailValido) {
+		do {
+			boolean emailValido = false;
 
-			email = gestorCine.controladorEntrada.leerCadena("Escribe tu email: ");
+			while (!emailValido) {
 
-			// ^.+ qulquer simvolo antes @
-			if (email.matches("^.+@gmail\\.com$")) {
-				emailValido = true;
-			} else {
-				System.out.println("Email no válido. Por favor, escribe un email de Gmail.");
-				emailValido = false;
+				email = gestorCine.controladorEntrada.leerCadena("Escribe tu email: ");
+
+				// ^.+ qulquer simvolo antes @
+				if (email.matches("^.+@gmail\\.com$")) {
+					emailValido = true;
+				} else {
+					System.out.println("Email no válido. Por favor, escribe un email de Gmail.");
+					emailValido = false;
+				}
 			}
-		}
-
+		} while (gestorCine.dniOEmailYaRegistrados(email));
 		String contrasena = gestorCine.controladorEntrada.leerCadena("Escribe tu contraseña: ");
 
 		try {

@@ -13,6 +13,7 @@ import modelo.Sala;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.Sesion;
+import modelo.dniMailCliente;
 
 public class ControladorDB {
 	private Connection conexion;
@@ -273,11 +274,29 @@ public class ControladorDB {
 		String query = "UPDATE Sesion SET espectadores = espectadores + '" + numespectadores + "' WHERE  id_sesion = '"
 				+ idSesion + "'";
 		try {
-	        Statement stmt = conexion.createStatement();
-	        int filasActualizadas = stmt.executeUpdate(query);
-	        stmt.close();
-	    } catch (SQLException e) {
-	        System.out.println("Error en update: " + e.getMessage());
-	    }
+			Statement stmt = conexion.createStatement();
+			int filasActualizadas = stmt.executeUpdate(query);
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("Error en update: " + e.getMessage());
+		}
+	}
+
+	public ArrayList<dniMailCliente> dniEmailCliente() {
+		ArrayList<dniMailCliente> dniEmailCliente = new ArrayList<dniMailCliente>();
+		String query = "SELECT dni, email FROM Cliente";
+		try {
+			Statement consulta = conexion.createStatement();
+			ResultSet resultado = consulta.executeQuery(query);
+
+			while (resultado.next()) {
+				dniMailCliente newdniEmailCliente = new dniMailCliente(resultado.getString(1), resultado.getString(2));
+				dniEmailCliente.add(newdniEmailCliente);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return dniEmailCliente;
 	}
 }

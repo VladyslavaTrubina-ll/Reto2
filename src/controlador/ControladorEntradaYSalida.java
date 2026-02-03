@@ -156,4 +156,7 @@ public class ControladorEntradaYSalida {
 			}
 		}
 	}
+	public String leerNie(String text) {
+		
+	}
 }

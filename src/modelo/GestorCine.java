@@ -84,7 +84,7 @@ public class GestorCine {
 
 	public String elegirFecha(ArrayList<String> fechas) {
 		System.out.println("Test Elegir una fecha");
-		
+
 		if (fechas.isEmpty()) {
 			System.out.println("Error : No hay fechas disponibles para esta película");
 			return null;
@@ -92,12 +92,12 @@ public class GestorCine {
 		int opcion = controladorEntrada.esValorMenuValido(1, fechas.size());
 		String fechaElegida = fechas.get(opcion - 1);
 		System.out.println("Fecha seleccionada: " + fechaElegida);
-		
+
 		return fechaElegida;
 	}
 
 	public Sesion elegirSesion(ArrayList<Sesion> sesiones) {
-		
+
 		int opcion = controladorEntrada.esValorMenuValido(1, sesiones.size());
 
 		Sesion sesionElegido = sesiones.get(opcion - 1);
@@ -108,7 +108,7 @@ public class GestorCine {
 	public int seleccionarNumEspectadores(Sesion sesion) { // seleccionar
 		int capacidad = sesion.getSala().getSitios();
 		int ocupados = sesion.getNumEspectadores();
-		
+
 		int disponibles = capacidad - ocupados;
 
 		if (disponibles <= 0) {
@@ -116,7 +116,7 @@ public class GestorCine {
 			return 0;
 		}
 		System.out.print("selecionar numero de asientos");
-		
+
 		int participantes = controladorEntrada.numBilletesComprandos(disponibles);
 
 		System.out.println("Reservados " + participantes + " asientos");
@@ -166,16 +166,35 @@ public class GestorCine {
 
 		return ocupados >= capacidad;
 	}
-	public  ArrayList<String> obtenerIdSesion(Carrito carrito) {
-		ArrayList<String> idSessiones= new ArrayList<>();
-		
+
+	public ArrayList<String> obtenerIdSesion(Carrito carrito) {
+		ArrayList<String> idSessiones = new ArrayList<>();
+
 		for (Sesion sesion : carrito.getSesiones()) {
-			String idSesion = controlador.obtenerIdSesion(
-			sesion.getFecha(),
-		sesion.getHoraInicio(),
-		sesion.getSala().getNombre());
+			String idSesion = controlador.obtenerIdSesion(sesion.getFecha(), sesion.getHoraInicio(),
+					sesion.getSala().getNombre());
 			idSessiones.add(idSesion);
 		}
-	return idSessiones;
+		return idSessiones;
+	}
+
+	public boolean dniOEmailYaRegistrados(String text) {
+	
+		int contador = 0;
+
+		while (contador < controlador.dniEmailCliente().size()) {
+
+			String dato = controlador.dniEmailCliente().get(contador).getDni();
+			String dato2 = controlador.dniEmailCliente().get(contador).getEmail();
+			// COMPARAMOS DIRECTAMENTE
+			if (text.equals(dato) || text.equals(dato2)) {
+				System.out.println("Error usuario ya registrado con este dato");
+				return true;
+
+			} else {
+				contador++;
+			}
+		}
+		return false;
 	}
 }
