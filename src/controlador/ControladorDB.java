@@ -102,8 +102,6 @@ public class ControladorDB {
 
 			while (resultado.next()) {
 				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2), resultado.getString(3));
-				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2), resultado.getString(3),
-						resultado.getDouble(4));
 				pelis.add(nuevaPeli);
 			}
 			consulta.close();
