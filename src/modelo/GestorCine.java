@@ -124,13 +124,14 @@ public class GestorCine {
 		return participantes;
 	}
 
-	public Sesion generarEntrada(Pelicula pelicula, String fecha, String sala, String horario, int numPersonas,
+	public Sesion generarEntrada(Pelicula pelicula, String fecha, Sala sala, String horaInicio, String horaFin, int numPersonas,
 			double precio) {
 		Sesion nuevaentrada = new Sesion();
 		nuevaentrada.setPelicula(pelicula);
 		nuevaentrada.setFecha(fecha);
 		nuevaentrada.setSala(sala);
-		nuevaentrada.setHorario(horario);
+		nuevaentrada.setHoraInicio(horaInicio);
+		nuevaentrada.setHoraFin(horaFin);
 		nuevaentrada.setNumEspectadores(numPersonas);
 		nuevaentrada.setPrecio(precio);
 		return nuevaentrada;

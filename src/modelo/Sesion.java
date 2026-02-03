@@ -2,7 +2,7 @@ package modelo;
 
 public class Sesion {
 	
-	//TODO VERIFICSR set EN TODOS CLASSES
+	//TODO VERIFICSR set EN CLASSES
 	Pelicula pelicula;
 	private String fecha, horaInicio, horaFin;
 	private Sala sala;
@@ -43,8 +43,16 @@ public class Sesion {
 		return horaInicio;
 	}
 
+	public void setHoraInicio(String horaInicio) {
+		this.horaInicio = horaInicio;
+	}
+
 	public String getHoraFin() {
 		return horaFin;
+	}
+
+	public void setHoraFin(String horaFin) {
+		this.horaFin = horaFin;
 	}
 
 	public Sala getSala() {
@@ -82,7 +90,7 @@ public class Sesion {
 		this.numEspectadores += numEntradas;
 	}
 	
-	public static Sesion sample(String peliculaNombre, String fecha) {
+	/*public static Sesion sample(String peliculaNombre, String fecha) {
 		
 		Pelicula pTest = new Pelicula(peliculaNombre, 90);
 		Sala salaTest = new Sala("Sala Test", 20);
@@ -103,7 +111,7 @@ public class Sesion {
 		
 		System.out.println(sTest);
 		
-	}
+	}*/
 	
 //	public static void main(String args[]) {
 //		test(1);

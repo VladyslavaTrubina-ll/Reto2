@@ -29,7 +29,7 @@ public class Imprimir {
     	}
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
-			System.out.printf("[%d] %s - %d min (%s) - %.2f€%n", (i + 1), p.getNombre(), p.getDuracion(), p.getGenero(), p.getPrecioBase());
+			System.out.printf("[%d] %s - %d min (%s)%n", (i + 1), p.getNombre(), p.getDuracion(), p.getGenero());
 		}
 	}
 	public ArrayList<String> imprimirFechas(ArrayList<String> fechas, String titulo) {
@@ -55,10 +55,15 @@ public class Imprimir {
 	    return fechasUnicos;
 	}
 	
-	public void imprimirHoraPrecioYSala(ArrayList<Sesion> sesiones) {
-		
+	public void imprimirSesiones(ArrayList<Sesion> sesiones) {
+		System.out.println("\nSesiones disponibles:");
+		System.out.println("------------------------------");
 		for (int i = 0; i < sesiones.size(); i++) {
-			System.out.println((1 + i) + ". " + (sesiones.get(i)));
+			Sesion s = sesiones.get(i);
+			System.out.printf("[%d] %s - %s | Sala: %s | Precio: %.2f€ | Disponibles: %d%n", 
+				(i + 1), s.getHoraInicio(), s.getHoraFin(), 
+				s.getSala().getNombre(), s.getPrecio(), 
+				(s.getSala().getSitios() - s.getNumEspectadores()));
 		}
 	}
 

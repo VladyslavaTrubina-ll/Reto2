@@ -58,90 +58,93 @@ public class Launcher {
 					// 4.2 Elegir película
 					Pelicula peliElegida = gestorCine.elegirPelicula(pelis);
 
-					// 5. Elegir fecha
-
-					ArrayList<String> fechas = gestorCine.controlador.obtenerFechasPorPerli(peliElegida.getNombre());
-					ArrayList<String> fechasUnicos = imprimir.imprimirFechas(fechas, peliElegida.getNombre());
-
-					String fechaElegida = gestorCine.elegirFecha(fechasUnicos);
-					Sesion sesionElegida = null;
-					int numEspectadores = 0;
-
-					boolean eligiendoSesion = true;
-					while (eligiendoSesion) {
-						// 6. Elegir horario/sala/precio
-						ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida,
-								peliElegida);
-						// TODO imprimir sesiones y mejorar print
-						imprimir.imprimirHoraPrecioYSala(sesiones);
-						String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
-						if (volverSiNo.equalsIgnoreCase("si")) {
-							eligiendoSesion = false;
-
-						} else if (volverSiNo.equalsIgnoreCase("no")) {
-							Sesion sesionSeleccionada = gestorCine.elegirSesion(sesiones);
-
-							// 8. Verificar y seleccionar número de espectadores
-							int numEspectadoresSelect = gestorCine.seleccionarNumEspectadores(sesionSeleccionada);
-
-							if (numEspectadoresSelect <= 0) {
-								System.out.println("No hay sillas libres, elige otra sesión.");
-
-							} else {
-								sesionElegida = sesionSeleccionada;
-								numEspectadores = numEspectadoresSelect;
-								eligiendoSesion = false;
-							}
-
-						}
-					}
-					if (sesionElegida != null) {
-						// 9. Generar entrada(Sesion, numEntadas/numEspectadores) TODO new classe
-						/*
-						 * Sesion nuevaEntrada = gestorCine.generarEntrada( peliElegida,
-						 * fechaElegida.getFecha(), horarioElegido.getSala(),
-						 * horarioElegido.getOrario(), numEspectadores, horarioElegido.getPrecio() );
-						 */
-						// 10. Añadir al carrito
-						carrito.anadirEntrada(sesionElegida, numEspectadores);
-						System.out.println(" Test Entrada añadida al carrito");
-
-						// 11. ¿Quieres elegir más películas?
-						String masPeliculas = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir más películas?");
-						if (masPeliculas.equalsIgnoreCase("si")) {
-							continue;
-						}
-						if (masPeliculas.equalsIgnoreCase("no")) {
-							// Mostrar resumen de compra y pagar
-							procesoPagar();
-							eligiendoPeliculas = false;
-						}
-					}
-
-				} else if (elegirPeli.equalsIgnoreCase("no")) {
-					// 12. ¿Hay algo en carrito?
-					if (carrito.getSesiones().isEmpty()) {
-						// 12.1 Carrito vacío
-						System.out.println("Carrito vacío, no puedes comprar");
-						eligiendoPeliculas = false;
-					} else {
-						// 12.2 Carrito con entradas
-						System.out.println("Tienes entradas en carrito");
-						String deseaComprar = gestorCine.controladorEntrada.leerSiNo("¿Quieres comprar?");
-
-						if (deseaComprar.equalsIgnoreCase("si")) {
-							// 13. Mostrar resumen y procesar pago
-							procesoPagar();
-							eligiendoPeliculas = false;
-						} else {
-							// Cancelar compra - limpiar carrito
-							carrito.vaciar();
-							System.out.println("Compra cancelada. Carrito vaciado.");
-							eligiendoPeliculas = false;
-						}
-					}
-				}
-			}
+	                // 5. Elegir fecha
+	                
+	                ArrayList<String> fechas = gestorCine.controlador.obtenerFechasPorPerli(peliElegida.getNombre());
+	                ArrayList<String> fechasUnicos = imprimir.imprimirFechas(fechas, peliElegida.getNombre());
+	                
+	                String fechaElegida = gestorCine.elegirFecha(fechasUnicos);
+	                Sesion sesionElegida = null;
+	                int numEspectadores = 0;
+	                
+	                boolean eligiendoSesion = true;
+	                while (eligiendoSesion) {
+	                	// 6. Elegir horario/sala/precio
+	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
+	                	//TODO imprimir sesiones y mejorar print
+	                	imprimir.imprimirSesiones(sesiones);
+	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
+	                	if (volverSiNo.equalsIgnoreCase("si")) {
+	                		eligiendoSesion = false;
+	                		
+	                	} else if (volverSiNo.equalsIgnoreCase("no")) {
+	                		Sesion sesionSeleccionada = gestorCine.elegirSesion(sesiones);
+	                		
+	                		// 8. Verificar y seleccionar número de espectadores
+	                		int numEspectadoresSelect = gestorCine.seleccionarNumEspectadores(sesionSeleccionada);
+	                		
+	                		if (numEspectadoresSelect <= 0) {
+	                			System.out.println("No hay sillas libres, elige otra sesión.");
+	                			
+	                		} else {
+	                			sesionElegida = sesionSeleccionada;
+	                			numEspectadores = numEspectadoresSelect;
+	                			eligiendoSesion = false;
+	                		}
+	                		
+	                	}
+	                }
+	                if (sesionElegida != null) {
+	                	// 9. Generar entrada(Sesion, numEntadas/numEspectadores) TODO new classe 
+	                	/*	Sesion nuevaEntrada = gestorCine.generarEntrada(
+	                			peliElegida,
+	                			fechaElegida.getFecha(),
+	                			horarioElegido.getSala(),
+	                			horarioElegido.getOrario(),
+	                			numEspectadores,
+	                			horarioElegido.getPrecio()
+	                			);
+	                	 */
+	                	// 10. Añadir al carrito 
+	                	carrito.anadirEntrada(sesionElegida, numEspectadores);
+	                	System.out.println(" Test Entrada añadida al carrito");
+	                
+	                	// 11. ¿Quieres elegir más películas?
+	                	String masPeliculas = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir más películas?");
+	                	if (masPeliculas.equalsIgnoreCase("si")) {
+	                		continue;
+	                	}
+	                	if (masPeliculas.equalsIgnoreCase("no")) {
+	                		// Mostrar resumen de compra y pagar
+	                		procesoPagar();
+	                		eligiendoPeliculas = false;
+	                	}
+	                }
+	                
+	            } else if (elegirPeli.equalsIgnoreCase("no")) {
+	                // 12. ¿Hay algo en carrito?
+	                if (carrito.getSesiones().isEmpty()) {
+	                    // 12.1 Carrito vacío
+	                    System.out.println("Carrito vacío, no puedes comprar");
+	                    eligiendoPeliculas = false;
+	                } else {
+	                    // 12.2 Carrito con entradas
+	                    System.out.println("Tienes entradas en carrito");
+	                    String deseaComprar = gestorCine.controladorEntrada.leerSiNo("¿Quieres comprar?");
+	                    
+	                    if (deseaComprar.equalsIgnoreCase("si")) {
+	                        // 13. Mostrar resumen y procesar pago
+	                        procesoPagar();
+	                        eligiendoPeliculas = false;
+	                    } else {
+                    	// Cancelar compra - limpiar carrito
+                    	carrito.vaciar();
+                    	System.out.println("Compra cancelada. Carrito vaciado.");
+                    	eligiendoPeliculas = false;
+	                    }
+	                }
+	            }
+	        }
 
 			// 14. ¿Quieres salir?
 			String salir = gestorCine.controladorEntrada.leerSiNo("¿Quieres salir?");
@@ -156,11 +159,16 @@ public class Launcher {
 
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
+<<<<<<< HEAD
 		// System.out.print("Escribe tu DNI: ");
 		String dni = "";
 		do {
 			dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
 		} while (gestorCine.dniOEmailYaRegistrados(dni));
+=======
+	
+		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
+>>>>>>> d689b4961d6729471b1962a16020c04ecb3bb8b1
 
 		String nombre = ControladorEntradaYSalida
 				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
