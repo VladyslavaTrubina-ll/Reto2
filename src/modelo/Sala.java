@@ -18,10 +18,6 @@ public class Sala {
 		return nombre;
 	}
 
-//	public void setNombre(String nombre) {
-//		this.nombre = nombre;
-//	}
-
 	public int getSitios() {
 		return sitios;
 	}

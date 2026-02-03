@@ -20,12 +20,12 @@ public class GestorCine {
 	public ControladorEntradaYSalida controladorEntrada;
 	public ControladorDB controlador;
 	public Imprimir imprimir = new Imprimir();
-	// Salas disponibles
+	/*  Salas disponibles
 	public Sala S1 = new Sala("Sala Principal", 40);
 	public Sala S2 = new Sala("Sala Premium", 60);
 	public Sala S3 = new Sala("Sala 3D", 56);
 	public Sala S4 = new Sala("Sala VIP", 60);
-	public Sala S5 = new Sala("Sala Familiar", 120);
+	public Sala S5 = new Sala("Sala Familiar", 120);*/
 	public ClienteAcesso clienteLogueado;
 
 	public GestorCine() {
@@ -149,7 +149,7 @@ public class GestorCine {
 		}
 	}
 
-	public boolean salaLlena(int espectadores, String salaNombre) {
+	/*public boolean salaLlena(int espectadores, String salaNombre) {
 		int ocupados = espectadores;
 		int capacidad = 0;
 
@@ -166,7 +166,7 @@ public class GestorCine {
 		}
 
 		return ocupados >= capacidad;
-	}
+	}*/
 
 	public ArrayList<String> obtenerIdSesion(Carrito carrito) {
 		ArrayList<String> idSessiones = new ArrayList<>();
@@ -191,7 +191,6 @@ public class GestorCine {
 			if (text.equals(dato) || text.equals(dato2)) {
 				System.out.println("Error usuario ya registrado con este dato");
 				return true;
-
 			} else {
 				contador++;
 			}
