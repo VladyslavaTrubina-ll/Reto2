@@ -12,6 +12,7 @@ import controlador.ControladorEntradaYSalida;
 import controlador.ControladorDB;
 import controlador.Imprimir;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GestorCine {
 
@@ -164,5 +165,17 @@ public class GestorCine {
 		}
 
 		return ocupados >= capacidad;
+	}
+	public  ArrayList<String> obtenerIdSesion(Carrito carrito) {
+		ArrayList<String> idSessiones= new ArrayList<>();
+		
+		for (Sesion sesion : carrito.getSesiones()) {
+			String idSesion = controlador.obtenerIdSesion(
+			sesion.getFecha(),
+		sesion.getHoraInicio(),
+		sesion.getSala().getNombre());
+			idSessiones.add(idSesion);
+		}
+	return idSessiones;
 	}
 }
