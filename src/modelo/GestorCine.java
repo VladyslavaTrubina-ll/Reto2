@@ -86,8 +86,8 @@ public class GestorCine {
 		return peliElegida;
 	}
 
-	public FechaSesion elegirFecha(String titulo) { // elegir fecha de
-		ArrayList<FechaSesion> fechas = imprimir.imprimirFecha(controlador, titulo);
+	public FechaSesion elegirFecha(ArrayList<FechaSesion> fechas) { // elegir fecha de
+		//ArrayList<FechaSesion> fechas = imprimir.imprimirFecha(controlador, titulo);
 		System.out.println("Elegir una fecha");
 		if (fechas.isEmpty()) {
 			System.out.println("Error : No hay fechas disponibles para esta película");

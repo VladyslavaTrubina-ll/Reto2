@@ -98,3 +98,20 @@ titulo: Interstellar
 duracion: 169min | 2026-02-02 | Sala 3D | 17:00:00 | 1p | 11.0€/p | Desc: 0.0€
 Total: 11.0€
 Descuento: 0.0€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Toy Story 4 | 100 min | 2024-02-03 | Sala Premium | 19:00:00 | 1p | 9.0€/p | Desc: 0.2€
+  - Toy Story 4 | 100 min | 2024-02-03 | Sala Premium | 19:00:00 | 2p | 9.0€/p | Desc: 0.2€
+Total: 21.6€
+Descuento: 5.4€
+
+=== COMPRA ===
+Cliente: Jorge Ibáñez Gallardo
+DNI: 00113344F
+Entradas:
+  - Toy Story 4 | 100 min | 2024-02-03 | Sala Premium | 19:00:00 | 1p | 9.0€/p | Desc: 0.0€
+Total: 9.0€
+Descuento: 0.0€

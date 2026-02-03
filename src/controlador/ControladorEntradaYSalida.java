@@ -46,8 +46,10 @@ public class ControladorEntradaYSalida {
 		boolean valido = false;
 		String entradaValida = "";
 		while (!valido) {
+			System.out.println("\n------------------------------------------");
 			System.out.print(text);
 			String entrada = sc.nextLine().trim();
+			System.out.println("------------------------------------------");
 
 			if(entrada.isEmpty()) {
 				System.out.println("Error: no puedes dejar el campo vacío.");
@@ -134,6 +136,23 @@ public class ControladorEntradaYSalida {
 				}
 			} catch (NumberFormatException e) {
 				System.out.println("Error: Ingrese un número válido");
+			}
+		}
+	}
+	
+	public double leerNumeroDouble() {
+		while (true) {
+			try {
+				String entrada = sc.nextLine().trim();
+				double numero = Double.parseDouble(entrada);
+				
+				if (numero < 0) {
+					System.out.println("Error: Debe ser un número positivo");
+				} else {
+					return numero;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Error: Ingrese un número válido (use . para decimales)");
 			}
 		}
 	}

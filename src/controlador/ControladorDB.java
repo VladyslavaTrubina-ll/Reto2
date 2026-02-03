@@ -111,7 +111,8 @@ public class ControladorDB {
 	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) { //TODO quitar
 		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
 		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
-				+ titulo + "' && fecha >= CURDATE()" + "ORDER BY fecha";
+				+ titulo + "' && fecha <= CURDATE()" + "ORDER BY fecha";
+		
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
@@ -128,7 +129,7 @@ public class ControladorDB {
 		return fechapeli;
 	}
 
-	public ArrayList<OrarioPrecioSalaSesion> obtenerhorariopreciosala(FechaSesion fecha, String titulo) {
+	public ArrayList<OrarioPrecioSalaSesion> horarioPrecioSala(FechaSesion fecha, String titulo) {
 
 		String fechaString = fecha.getFecha();
 		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = new ArrayList<OrarioPrecioSalaSesion>();
@@ -141,7 +142,7 @@ public class ControladorDB {
 			while (resultado.next()) {
 				OrarioPrecioSalaSesion neworariopreciosesion = new OrarioPrecioSalaSesion(resultado.getString(1),
 						resultado.getString(2), resultado.getDouble(3));
-				orariopreciosala.add(neworariopreciosesion);
+			orariopreciosala.add(neworariopreciosesion);
 
 			}
 		} catch (SQLException e) {

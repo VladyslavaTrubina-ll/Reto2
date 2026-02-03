@@ -53,7 +53,7 @@ public class Imprimir {
 	public  ArrayList<OrarioPrecioSalaSesion> imprimirHoraPrecioYSala(FechaSesion fecha, String titulo, ControladorDB controlador) {
 		
 		
-		ArrayList<OrarioPrecioSalaSesion> horaPrecioSala = controlador.obtenerhorariopreciosala(fecha,titulo);
+		ArrayList<OrarioPrecioSalaSesion> horaPrecioSala = controlador.horarioPrecioSala(fecha,titulo);
 		for (int i = 0; i < horaPrecioSala.size(); i++) {
 			System.out.println((1 + i) + ". " + (horaPrecioSala.get(i)));
 		}
