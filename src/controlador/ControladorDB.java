@@ -9,10 +9,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import modelo.Pelicula;
+import modelo.Sala;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
-import modelo.FechaSesion;
-import modelo.OrarioPrecioSalaSesion;
+import modelo.Sesion;
+import vista.Sesiones;
+
 
 public class ControladorDB {
 	private Connection conexion;
@@ -88,7 +90,7 @@ public class ControladorDB {
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
 
-		String query = "SELECT DISTINCT Titulo, duracion FROM Pelicula P "
+		String query = "SELECT DISTINCT Titulo, duracion, genero, precio_base FROM Pelicula P "
 				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " + "ORDER BY Titulo";
 
 		try {
@@ -96,7 +98,7 @@ public class ControladorDB {
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2));
+				Pelicula nuevaPeli = new Pelicula(resultado.getString(1), resultado.getInt(2), resultado.getString(3), resultado.getDouble(4));
 				pelis.add(nuevaPeli);
 			}
 			consulta.close();
@@ -108,75 +110,56 @@ public class ControladorDB {
 		return pelis;
 	}
 
-	public ArrayList<FechaSesion> obtenerfechasporperli(String titulo) { //TODO quitar
-		ArrayList<FechaSesion> fechapeli = new ArrayList<FechaSesion>();
-		String query = "SELECT  fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
-				+ titulo + "' && fecha <= CURDATE()" + "ORDER BY fecha";
+	public ArrayList<String> obtenerFechasPorPerli(String titulo) {
+		ArrayList<String> fechas = new ArrayList<String>();
+
+		String query = "SELECT fecha FROM Sesion S JOIN Pelicula P on S.id_pelicula = P.id_pelicula WHERE P.titulo = '"
+				+ titulo + "' && fecha "
+				//+" => CURDATE()"
+				+ "ORDER BY fecha";
 		
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				FechaSesion nuevafechasesion = new FechaSesion(resultado.getString(1));
-				fechapeli.add(nuevafechasesion);
+				String fecha = resultado.getString(1);
+				fechas.add(fecha);
 
 			}
 			consulta.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return fechapeli;
+		return fechas;
 	}
 
-	public ArrayList<OrarioPrecioSalaSesion> horarioPrecioSala(FechaSesion fecha, String titulo) {
+	public ArrayList<Sesion> obtenerSesionesPorPerli(String fecha, Pelicula pelicula) {
 
-		String fechaString = fecha.getFecha();
-		ArrayList<OrarioPrecioSalaSesion> orariopreciosala = new ArrayList<OrarioPrecioSalaSesion>();
-		String query = "SELECT   hora_inicio, SA.nombre, precio_sesion FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
-				+ fechaString + "'AND id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + titulo + "')";
+		ArrayList<Sesion> sesiones = new ArrayList<Sesion>();
+		String query = "SELECT SE.hora_inicio, SE.hora_fin, SE.espectadores, SE.precio_sesion, SA.nombre FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
+				+ fecha + "'AND id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + pelicula.getNombre() + "')";
+		
+		/*Sesion(Pelicula pelicula, String fecha, String horaInicio, String horaFin, Sala sala, int numEspectadores, double precio)
+		 * public Pelicula(String titulo, int duracion, String genero, double precioBase)
+		 * public Sala(String nombre, int sitios)*/
 		try {
 			Statement consulta = conexion.createStatement();
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				OrarioPrecioSalaSesion neworariopreciosesion = new OrarioPrecioSalaSesion(resultado.getString(1),
-						resultado.getString(2), resultado.getDouble(3));
-			orariopreciosala.add(neworariopreciosesion);
-
+				Sala sala = new Sala(resultado.getString(5), 100); //TODO Anadir a bd sillas en salas !!!!!
+				Sesion sesion = new Sesion(pelicula, fecha, resultado.getString(1), resultado.getString(2), sala, resultado.getInt(3), resultado.getDouble(4));
+				sesiones.add(sesion);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return orariopreciosala;
+		return sesiones;
 
 	}
 
-	public  int  obtenerespectadoresporsesion(FechaSesion fecha,
-			OrarioPrecioSalaSesion orarioelegido) {
-		String fechaElegida;
-		int numespectadores = 0;
-		String hora = orarioelegido.getOrario();
-		String Sala = orarioelegido.getSala();
-		fechaElegida = fecha.getFecha();
-
-		String query = "SELECT espectadores FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE SE.hora_inicio = '"
-				+ hora + "' AND SA.nombre = '" + Sala + "' AND SE.fecha = '" + fechaElegida + "'";
-
-		try {
-			Statement consulta = conexion.createStatement();
-			ResultSet resultado = consulta.executeQuery(query);
-
-			while (resultado.next()) {
-			numespectadores = resultado.getInt("espectadores");
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return numespectadores;
-	}
-
+	
 	public void insertarUsuario(String dni, String nombre, String apellidos, String email, String contrasena) {
 
 		String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
@@ -224,25 +207,7 @@ public class ControladorDB {
 		}
 	}
 
-	public String obtenerSesion(String fecha, String hora, String sala) {
-		String sesion = "";
-		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '"
-				+ hora + "' AND SA.id_sala = (SELECT id_sala FROM Sala  WHERE nombre = '" + sala + "') "
-				+ "AND fecha = '" + fecha + "'";
-
-		try {
-			Statement consulta = conexion.createStatement();
-			ResultSet resultado = consulta.executeQuery(query);
-
-			while (resultado.next()) {
-				sesion = resultado.getString("id_sesion");
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return sesion;
-	}
+	
 
 	/*
 	 * public int obtenerEspectadoresSesion(String sesion) { String query =

@@ -2,7 +2,6 @@ package modelo;
 
 import modelo.Carrito;
 import modelo.Sesion;
-import modelo.OrarioPrecioSalaSesion;
 import modelo.ClienteAcesso;
 import modelo.EspectadoresSesion;
 import modelo.FechaSesion;
@@ -75,10 +74,7 @@ public class GestorCine {
 		return this.clienteLogueado;
 	}
 
-	public Pelicula elegirPelicula() {
-		ArrayList<Pelicula> peliculas = controlador.obtenerPelis();
-		imprimir.imprimirPeliculas(peliculas);
-		System.out.println("Selecionar la pelicula que se quieres ver:");
+	public Pelicula elegirPelicula(ArrayList<Pelicula> peliculas) {
 		int peliculaIndex = controladorEntrada.esValorMenuValido(1, peliculas.size());
 
 		Pelicula peliElegida = peliculas.get(peliculaIndex - 1);
@@ -86,61 +82,45 @@ public class GestorCine {
 		return peliElegida;
 	}
 
-	public FechaSesion elegirFecha(ArrayList<FechaSesion> fechas) { // elegir fecha de
-		//ArrayList<FechaSesion> fechas = imprimir.imprimirFecha(controlador, titulo);
-		System.out.println("Elegir una fecha");
+	public String elegirFecha(ArrayList<String> fechas) {
+		System.out.println("Test Elegir una fecha");
+		
 		if (fechas.isEmpty()) {
 			System.out.println("Error : No hay fechas disponibles para esta película");
 			return null;
 		}
 		int opcion = controladorEntrada.esValorMenuValido(1, fechas.size());
-		return fechas.get(opcion - 1);
+		String fechaElegida = fechas.get(opcion - 1);
+		System.out.println("Fecha seleccionada: " + fechaElegida);
+		
+		return fechaElegida;
 	}
 
-	public Sesion elegirSesion() {
-		// TODO hacer
-		return null;
+	public Sesion elegirSesion(ArrayList<Sesion> sesiones) {
+		
+		int opcion = controladorEntrada.esValorMenuValido(1, sesiones.size());
+
+		Sesion sesionElegido = sesiones.get(opcion - 1);
+		System.out.println("Fecha seleccionada: " + sesionElegido);
+		return sesionElegido;
 	}
 
-	public OrarioPrecioSalaSesion elegirHorario(FechaSesion fecha, String pelicula) {
-		ArrayList<OrarioPrecioSalaSesion> horarioPrecioSala = imprimir.imprimirHoraPrecioYSala(fecha, pelicula,
-				controlador);
-		int opcion = controladorEntrada.esValorMenuValido(1, horarioPrecioSala.size());
+	public int seleccionarNumEspectadores(Sesion sesion) { // seleccionar
+		int capacidad = sesion.getSala().getSitios();
+		int ocupados = sesion.getNumEspectadores();
+		
+		int disponibles = capacidad - ocupados;
 
-		OrarioPrecioSalaSesion horarioElegido = horarioPrecioSala.get(opcion - 1);
-
-		return horarioElegido;
-	}
-
-	public int seleccionarNumEspectadores(FechaSesion fecha, OrarioPrecioSalaSesion horario) { // seleccionar
-		int espectadores = imprimir.imprimirEspectadores(controlador, fecha, horario); // asientos
-		// con
-
-		if (salaLlena(espectadores, horario.getSala())) {
+		if (disponibles <= 0) {
 			System.out.println("La sesion esta al completo");
 			return 0;
 		}
-		int capacidad = 0;
-
-		if (horario.getSala().contains("Principal"))
-			capacidad = S1.getSitios();
-		else if (horario.getSala().contains("Premium"))
-			capacidad = S2.getSitios();
-		else if (horario.getSala().contains("3D"))
-			capacidad = S3.getSitios();
-		else if (horario.getSala().contains("VIP"))
-			capacidad = S4.getSitios();
-		else if (horario.getSala().contains("Familiar"))
-			capacidad = S5.getSitios();
-
-		int ocupados = espectadores;
-		int disponibles = capacidad - ocupados;
 		System.out.print("selecionar numero de asientos");
+		
 		int participantes = controladorEntrada.numBilletesComprandos(disponibles);
-		espectadores = participantes + espectadores;
 
 		System.out.println("Reservados " + participantes + " asientos");
-		System.out.println("Total en sala: " + espectadores);
+		System.out.println("Total en sala: " + (ocupados + participantes));
 		return participantes;
 	}
 
@@ -186,42 +166,4 @@ public class GestorCine {
 
 		return ocupados >= capacidad;
 	}
-
-	/*
-	 * public static void main(String[] args) { GestorCine gestor = new
-	 * GestorCine(); System.out.println("GestorCine inicializado: " + gestor);
-	 * 
-	 * if (!gestor.conexionRealizada()) {
-	 * System.out.println("No se pudo conectar a la base de datos"); return; }
-	 * 
-	 * // 1) Login (requiere DB y entrada por consola) ClienteAcesso cliente =
-	 * gestor.login(); if (cliente == null) {
-	 * System.out.println("No se pudo iniciar sesión"); return; }
-	 * 
-	 * // 2) Elegir horario (ejemplo con lista manual)
-	 * ArrayList<OrarioPrecioSalaSesion> horarios = new ArrayList<>();
-	 * horarios.add(new OrarioPrecioSalaSesion("18:00", 7.5, "Sala Principal"));
-	 * horarios.add(new OrarioPrecioSalaSesion("20:30", 8.0, "Sala Premium"));
-	 * OrarioPrecioSalaSesion horarioElegido =
-	 * gestor.elegirHorario(gestor.controlador, horarios); if (horarioElegido ==
-	 * null) { System.out.println("No se pudo elegir horario"); return; }
-	 * 
-	 * // 3) Seleccionar número de espectadores ArrayList<EspectadoresSesion>
-	 * espectadores = new ArrayList<>(); espectadores.add(new
-	 * EspectadoresSesion(0)); int numPersonas =
-	 * gestor.seleccionarNumEspectadores(espectadores, horarioElegido); if
-	 * (numPersonas <= 0) { System.out.println("No se seleccionaron entradas");
-	 * return; }
-	 * 
-	 * // 4) Generar entrada (sesión de ejemplo) Pelicula pelicula = new
-	 * Pelicula("Pelicula Test", 90); Sesion sesion = gestor.generarEntrada(
-	 * pelicula, "2026-01-29", horarioElegido.getSala(), horarioElegido.getOrario(),
-	 * numPersonas, horarioElegido.getPrecio() );
-	 * 
-	 * // 5) Confirmar compra Carrito carrito = new Carrito();
-	 * carrito.anadirEntrada(sesion, numPersonas); boolean compraOk =
-	 * gestor.confirmarcompra(carrito); System.out.println("Compra confirmada: " +
-	 * compraOk); }
-	 */
-
 }
