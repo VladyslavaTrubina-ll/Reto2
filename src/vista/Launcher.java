@@ -159,16 +159,16 @@ public class Launcher {
 
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
-<<<<<<< HEAD
+
 		// System.out.print("Escribe tu DNI: ");
 		String dni = "";
 		do {
-			dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
+			dni = gestorCine.controladorEntrada.leerDNI(dni);
 		} while (gestorCine.dniOEmailYaRegistrados(dni));
-=======
+
 	
-		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
->>>>>>> d689b4961d6729471b1962a16020c04ecb3bb8b1
+		
+
 
 		String nombre = ControladorEntradaYSalida
 				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
