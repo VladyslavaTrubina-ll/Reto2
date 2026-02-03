@@ -65,37 +65,39 @@ public class Launcher {
 	                ArrayList<String> fechasUnicos = imprimir.imprimirFechas(fechas, peliElegida.getNombre());
 	                
 	                String fechaElegida = gestorCine.elegirFecha(fechasUnicos);
-	                Sesion sesionElegida = new Sesion();
+	                Sesion sesionElegida = null;
 	                int numEspectadores = 0;
 	                
 	                boolean eligiendoSesion = true;
 	                while (eligiendoSesion) {
 	                	// 6. Elegir horario/sala/precio
-	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesinesPorPerli(fechaElegida, peliElegida);
+	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
 	                	//TODO imprimir sesiones
+	                	imprimir.imprimirHoraPrecioYSala(sesiones);
 	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
 	                	if (volverSiNo.equalsIgnoreCase("si")) {
 	                		eligiendoSesion = false;
-	                		//continue;  Vuelve a mostrar películas
 	                		
 	                	} else if (volverSiNo.equalsIgnoreCase("no")) {
-	                		//OrarioPrecioSalaSesion horarioElegido = gestorCine.elegirHorario(fechaElegida, peliElegida.getNombre());
+	                		Sesion sesionSeleccionada = gestorCine.elegirSesion(sesiones); //TODO
 	                		
 	                		// 8. Verificar y seleccionar número de espectadores
-	                		int numEspectadores = gestorCine.seleccionarNumEspectadores(fechaElegida, horarioElegido);
+	                		int numEspectadoresSelect = gestorCine.seleccionarNumEspectadores(sesionSeleccionada); //TODO
 	                		
-	                		if (numEspectadores <= 0) {
+	                		if (numEspectadoresSelect <= 0) {
 	                			System.out.println("No hay sillas libres, elige otra sesión.");
-	                			eligiendoSesion = true;
+	                			
 	                		} else {
+	                			sesionElegida = sesionSeleccionada;
+	                			numEspectadores = numEspectadoresSelect;
 	                			eligiendoSesion = false;
 	                		}
 	                		
 	                	}
 	                }
-	                	
-	                // 9. Generar entrada(Sesion, numEntadas/numEspectadores) TODO new classe 
-	                /*	Sesion nuevaEntrada = gestorCine.generarEntrada(
+	                if (sesionElegida != null) {
+	                	// 9. Generar entrada(Sesion, numEntadas/numEspectadores) TODO new classe 
+	                	/*	Sesion nuevaEntrada = gestorCine.generarEntrada(
 	                			peliElegida,
 	                			fechaElegida.getFecha(),
 	                			horarioElegido.getSala(),
@@ -103,17 +105,11 @@ public class Launcher {
 	                			numEspectadores,
 	                			horarioElegido.getPrecio()
 	                			);
-	                 */
-	                // 10. Añadir al carrito 
-	                carrito.anadirEntrada(sesionElegida, numEspectadores);
-	                System.out.println(" Test Entrada añadida al carrito");
+	                	 */
+	                	// 10. Añadir al carrito 
+	                	carrito.anadirEntrada(sesionElegida, numEspectadores);
+	                	System.out.println(" Test Entrada añadida al carrito");
 	                
-					//System.out.println("\n----------------------------------");
-	               
-	                	if (fechaElegida == null) {
-	                		continue;
-	                	}
-
 	                	// 11. ¿Quieres elegir más películas?
 	                	String masPeliculas = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir más películas?");
 	                	if (masPeliculas.equalsIgnoreCase("si")) {
@@ -122,10 +118,10 @@ public class Launcher {
 	                	if (masPeliculas.equalsIgnoreCase("no")) {
 	                		// Mostrar resumen de compra y pagar
 	                		procesoPagar();
-	                	    eligiendoPeliculas = false;
+	                		eligiendoPeliculas = false;
 	                	}
 	                }
-
+	                
 	            } else if (elegirPeli.equalsIgnoreCase("no")) {
 	                // 12. ¿Hay algo en carrito?
 	                if (carrito.getSesiones().isEmpty()) {
@@ -219,6 +215,7 @@ public class Launcher {
 	        );
 
 	        System.out.println("\nCompra realizada con éxito");
+	        //TODO guardar a BD  update en sesion espectadores con getCantidadesEntradas (class Entrada)
 	        
 	        // 16. ¿Guardar ticket?
 	        String guardarTicket = gestorCine.controladorEntrada.leerSiNo("¿Guardar ticket?");
@@ -236,69 +233,4 @@ public class Launcher {
 	}
 }
 
-	/*public static double procesarPagoDinero(double total) {
-		System.out.println("\n=== PAGO ===");
-		System.out.println("Total a pagar: " + String.format("%.2f", total) + "€");
-		
-		int totalCent = (int) Math.round(total * 100);
-		int aportadoCent = 0;
-		
-		while (aportadoCent < totalCent) {
-			System.out.print("Ingrese dinero (en €): ");
-			double entrada = gestorCine.controladorEntrada.leerNumeroDouble();
-			int entradaCent = (int) Math.round(entrada * 100);
-			aportadoCent += entradaCent;
-			
-			if (aportadoCent < totalCent) {
-				int faltaCent = totalCent - aportadoCent;
-				double falta = faltaCent / 100.0;
-				System.out.println("Faltan: " + String.format("%.2f", falta) + "€");
-			}
-		}
-		
-		int cambioCent = aportadoCent - totalCent;
-		double cambio = cambioCent / 100.0;
-		
-		if (cambioCent > 0) {
-			System.out.println("\nCambio: " + String.format("%.2f", cambio) + "€");
-			desgloseCambio(cambioCent);
-		}
-		
-		return cambio;
-	}
-	
-	public static void desgloseCambio(int cambioCent) {
-		ArrayList<Integer> denominaciones = new ArrayList<>();
-		ArrayList<String> nombres = new ArrayList<>();
-		
-		// Denominaciones en centimos: 200€, 100€, 50€, 20€, 10€, 5€, 2€, 1€, 50¢, 20¢, 10¢, 5¢, 2¢, 1¢
-		denominaciones.add(20000);   nombres.add("200€");
-		denominaciones.add(10000);   nombres.add("100€");
-		denominaciones.add(5000);    nombres.add("50€");
-		denominaciones.add(2000);    nombres.add("20€");
-		denominaciones.add(1000);    nombres.add("10€");
-		denominaciones.add(500);     nombres.add("5€");
-		denominaciones.add(200);     nombres.add("2€");
-		denominaciones.add(100);     nombres.add("1€");
-		denominaciones.add(50);      nombres.add("50¢");
-		denominaciones.add(20);      nombres.add("20¢");
-		denominaciones.add(10);      nombres.add("10¢");
-		denominaciones.add(5);       nombres.add("5¢");
-		denominaciones.add(2);       nombres.add("2¢");
-		denominaciones.add(1);       nombres.add("1¢");
-		
-		System.out.println("\nDesglose del cambio:");
-		int restante = cambioCent;
-		
-		for (int i = 0; i < denominaciones.size(); i++) {
-			int denom = denominaciones.get(i);
-			int cantidad = restante / denom;
-			
-			if (cantidad > 0) {
-				System.out.println("  " + cantidad + " x " + nombres.get(i));
-				restante = restante % denom;
-			}
-		}
-	}
-*/
 // 4. breakpoints: volver a 4.1, salir, comprar, pagar, guardar ticket = mesage + input (verificar) + cambiar de estado
