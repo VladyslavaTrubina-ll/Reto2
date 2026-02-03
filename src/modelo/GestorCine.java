@@ -20,12 +20,7 @@ public class GestorCine {
 	public ControladorEntradaYSalida controladorEntrada;
 	public ControladorDB controlador;
 	public Imprimir imprimir = new Imprimir();
-	/*  Salas disponibles
-	public Sala S1 = new Sala("Sala Principal", 40);
-	public Sala S2 = new Sala("Sala Premium", 60);
-	public Sala S3 = new Sala("Sala 3D", 56);
-	public Sala S4 = new Sala("Sala VIP", 60);
-	public Sala S5 = new Sala("Sala Familiar", 120);*/
+	// Salas disponibles
 	public ClienteAcesso clienteLogueado;
 
 	public GestorCine() {
@@ -149,25 +144,7 @@ public class GestorCine {
 		}
 	}
 
-	/*public boolean salaLlena(int espectadores, String salaNombre) {
-		int ocupados = espectadores;
-		int capacidad = 0;
-
-		if (salaNombre.contains("Principal")) {
-			capacidad = S1.getSitios();
-		} else if (salaNombre.contains("Premium")) {
-			capacidad = S2.getSitios();
-		} else if (salaNombre.contains("3D")) {
-			capacidad = S3.getSitios();
-		} else if (salaNombre.contains("VIP")) {
-			capacidad = S4.getSitios();
-		} else if (salaNombre.contains("Familiar")) {
-			capacidad = S5.getSitios();
-		}
-
-		return ocupados >= capacidad;
-	}*/
-
+	
 	public ArrayList<String> obtenerIdSesion(Carrito carrito) {
 		ArrayList<String> idSessiones = new ArrayList<>();
 

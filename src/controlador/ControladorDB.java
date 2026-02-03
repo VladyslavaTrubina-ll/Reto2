@@ -90,11 +90,11 @@ public class ControladorDB {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
 
 		String query = "SELECT DISTINCT Titulo, duracion, genero FROM Pelicula P "
-				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula "
-				+ "WHERE fecha >= CURDATE() AND hora_inicio > current_time "
-				+ "GROUP BY titulo, duracion, genero "
-				+ "HAVING min(fecha) > CURDATE() OR (min(fecha) = CURDATE() AND min(hora_inicio) > current_time) "
-				+ "ORDER BY Titulo";
+				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " 
+				//"WHERE fecha >= CURDATE() AND hora_inicio > current_time "//
+				+ "GROUP BY titulo, duracion, genero " +
+				//+ "HAVING min(fecha) > CURDATE() OR (min(fecha) = CURDATE() AND min(hora_inicio) > current_time) "//
+				 "ORDER BY Titulo";
 		
 		try {
 			Statement consulta = conexion.createStatement();
@@ -138,7 +138,7 @@ public class ControladorDB {
 	public ArrayList<Sesion> obtenerSesionesPorPerli(String fecha, Pelicula pelicula) {
 
 		ArrayList<Sesion> sesiones = new ArrayList<Sesion>();
-		String query = "SELECT SE.hora_inicio, SE.hora_fin, SE.espectadores, SE.precio_sesion, SA.nombre FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
+		String query = "SELECT SE.hora_inicio, SE.hora_fin, SE.espectadores, SE.precio_sesion, SA.nombre,SA.capacidad FROM Sesion SE JOIN Sala SA ON SA.id_sala = SE.id_sala WHERE fecha ='"
 				+ fecha + "'AND id_pelicula =(Select id_pelicula FROM Pelicula WHERE Titulo = '" + pelicula.getNombre()
 				+ "')";
 
@@ -147,7 +147,7 @@ public class ControladorDB {
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				Sala sala = new Sala(resultado.getString(5), 100); // TODO Anadir a bd sillas en salas !!!!!
+				Sala sala = new Sala(resultado.getString(5), resultado.getInt(6)); // TODO Anadir a bd sillas en salas !!!!!
 				Sesion sesion = new Sesion(pelicula, fecha, resultado.getString(1), resultado.getString(2), sala,
 						resultado.getInt(3), resultado.getDouble(4));
 				sesiones.add(sesion);
