@@ -23,41 +23,41 @@ public class Launcher {
 	}
 
 	public static void mainProceso() {
-	    // 1. Bienvenida
-	    Imprimir.bienvenida();
+		// 1. Bienvenida
+		Imprimir.bienvenida();
 
-	    // 2. Login o Registro
-	    boolean esRegistrado = false;
-	    while (!esRegistrado) {
-	        String tienesCuenta = gestorCine.controladorEntrada.leerSiNo("¿Tienes cuenta?");
-	        
-	        if (tienesCuenta.equalsIgnoreCase("si")) {
-	            esRegistrado = true;
-	        } else if (tienesCuenta.equalsIgnoreCase("no")) {
-	            registrarCliente();
-	        }
-	    }
+		// 2. Login o Registro
+		boolean esRegistrado = false;
+		while (!esRegistrado) {
+			String tienesCuenta = gestorCine.controladorEntrada.leerSiNo("¿Tienes cuenta?");
 
-	    // 3. Login
-	    gestorCine.login();
+			if (tienesCuenta.equalsIgnoreCase("si")) {
+				esRegistrado = true;
+			} else if (tienesCuenta.equalsIgnoreCase("no")) {
+				registrarCliente();
+			}
+		}
 
-	    // 4. Proceso principal de compra
-	    boolean procesoPrincipal = true;
+		// 3. Login
+		gestorCine.login();
 
-	    while (procesoPrincipal) {
-	    	
-	        boolean eligiendoPeliculas = true;
+		// 4. Proceso principal de compra
+		boolean procesoPrincipal = true;
 
-	        while (eligiendoPeliculas) {
-	        	ArrayList<Pelicula> pelis = gestorCine.controlador.obtenerPelis();
-	        	imprimir.imprimirPeliculas(pelis);  
-	            // 4.1 ¿Quieres elegir película?
-				//System.out.println("----------------------------------");
-	            String elegirPeli = gestorCine.controladorEntrada.leerSiNo("\n¿Quieres elegir película?");
+		while (procesoPrincipal) {
 
-	            if (elegirPeli.equalsIgnoreCase("si")) {
-	                // 4.2 Elegir película
-	                Pelicula peliElegida = gestorCine.elegirPelicula(pelis);
+			boolean eligiendoPeliculas = true;
+
+			while (eligiendoPeliculas) {
+				ArrayList<Pelicula> pelis = gestorCine.controlador.obtenerPelis();
+				imprimir.imprimirPeliculas(pelis);
+				// 4.1 ¿Quieres elegir película?
+				// System.out.println("----------------------------------");
+				String elegirPeli = gestorCine.controladorEntrada.leerSiNo("\n¿Quieres elegir película?");
+
+				if (elegirPeli.equalsIgnoreCase("si")) {
+					// 4.2 Elegir película
+					Pelicula peliElegida = gestorCine.elegirPelicula(pelis);
 
 	                // 5. Elegir fecha
 	                
@@ -147,33 +147,34 @@ public class Launcher {
 	            }
 	        }
 
-	        // 14. ¿Quieres salir?
-	        String salir = gestorCine.controladorEntrada.leerSiNo("¿Quieres salir?");
-	        if (salir.equalsIgnoreCase("si")) {
-	            System.out.println("¡Hasta luego!");
-	            procesoPrincipal = false;
-	        } else {
-	            procesoPrincipal = true; // Vuelve al inicio
-	        }
-	    }
+			// 14. ¿Quieres salir?
+			String salir = gestorCine.controladorEntrada.leerSiNo("¿Quieres salir?");
+			if (salir.equalsIgnoreCase("si")) {
+				System.out.println("¡Hasta luego!");
+				procesoPrincipal = false;
+			} else {
+				procesoPrincipal = true; // Vuelve al inicio
+			}
+		}
 	}
+
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
 	
 		String dni = gestorCine.controladorEntrada.leerCadena("Escribe tu DNI: ");
-		
+
 		String nombre = ControladorEntradaYSalida
-		.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
-		
+				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
+
 		String apellidos = ControladorEntradaYSalida
-		.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tus apellidos: "));
+				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tus apellidos: "));
 		String email = "";
 		boolean emailValido = false;
-		
+
 		while (!emailValido) {
-			
+
 			email = gestorCine.controladorEntrada.leerCadena("Escribe tu email: ");
-			
+
 			// ^.+ qulquer simvolo antes @
 			if (email.matches("^.+@gmail\\.com$")) {
 				emailValido = true;
@@ -182,9 +183,9 @@ public class Launcher {
 				emailValido = false;
 			}
 		}
-		
+
 		String contrasena = gestorCine.controladorEntrada.leerCadena("Escribe tu contraseña: ");
-		
+
 		try {
 			gestorCine.controlador.insertarUsuario(dni, nombre, apellidos, email, contrasena);
 			System.out.println("Registrado corectamente!");
@@ -195,42 +196,54 @@ public class Launcher {
 	}
 
 	public static void procesoPagar() {
-	    System.out.println("\n=== RESUMEN DE COMPRA ===");
-	    carrito.resumen(gestorCine.clienteLogueado.getNombre(), gestorCine.clienteLogueado.getApellidos(), carrito);
+		System.out.println("\n=== RESUMEN DE COMPRA ===");
+		carrito.resumen(gestorCine.clienteLogueado.getNombre(), gestorCine.clienteLogueado.getApellidos(), carrito);
 
-	    String confirmar = gestorCine.controladorEntrada.leerSiNo("¿Confirmar compra?");
+		String confirmar = gestorCine.controladorEntrada.leerSiNo("¿Confirmar compra?");
 
-	    if (confirmar.equalsIgnoreCase("si")) {
-	        // Procesar pago
-	        double precioConIva = Math.round(carrito.getPrecioTotal() * 1.21 * 100.0) / 100.0;
-	     //   double cambio = procesarPagoDinero(precioConIva);
-	    //    carrito.setCambio(cambio);
-	        
-	        // 15. Insertar compra en BD
-	        gestorCine.controlador.insertarCompra(
-	            gestorCine.clienteLogueado.getDni(),
-	            carrito.getSesiones().size(),
-	            carrito.getPrecioTotal(),
-	            carrito.getDescuento()
-	        );
+		if (confirmar.equalsIgnoreCase("si")) {
+			// Procesar pago
+			double precioConIva = Math.round(carrito.getPrecioTotal() * 1.21 * 100.0) / 100.0;
+			// double cambio = procesarPagoDinero(precioConIva);
+			// carrito.setCambio(cambio);
 
-	        System.out.println("\nCompra realizada con éxito");
-	        //TODO guardar a BD  update en sesion espectadores con getCantidadesEntradas (class Entrada)
-	        
-	        // 16. ¿Guardar ticket?
-	        String guardarTicket = gestorCine.controladorEntrada.leerSiNo("¿Guardar ticket?");
-	        if (guardarTicket.equalsIgnoreCase("si")) {
-	            GestorTicket.salvaCompra(gestorCine.clienteLogueado, carrito);
-	        }
+			// 15. Insertar compra en BD
+			int idCompra = gestorCine.controlador.insertarCompra(gestorCine.clienteLogueado.getDni(),
+					carrito.getSesiones().size(), carrito.getPrecioTotal(), carrito.getDescuento());
+			ArrayList<String> idsSesiones = gestorCine.obtenerIdSesion(carrito);
 
-	        // 17. Vaciar carrito
-	        carrito.vaciar();
-	    } else {
-	        // No confirmar - liberar reserva automaticamente
-	        carrito.vaciar();
-	        System.out.println("\nCompra no confirmada. Reserva cancelada.");
-	    }
+			for (int i = 0; i < carrito.getSesiones().size(); i++) {
+				Sesion sesion = carrito.getSesiones().get(i);
+				String idSesion = idsSesiones.get(i);
+				int cantidad = carrito.getCantidadesEntradas().get(i);
+				double precio = carrito.getSesiones().get(i).getPrecio() * cantidad;
+				double descuento = 0.0;
+				// Inserisci nel DB per questa sessione
+				gestorCine.controlador.insertarEntrada(idCompra, idSesion, cantidad, precio, descuento);
+				gestorCine.controlador.insertarEspectadores(idSesion, cantidad);
+			}
+
+			// 16. Insertar Entrada en DB
+
+			System.out.println("\nCompra realizada con éxito");
+			// TODO guardar a BD update en sesion espectadores con getCantidadesEntradas
+			// (class Entrada)
+
+			// 16. ¿Guardar ticket?
+			String guardarTicket = gestorCine.controladorEntrada.leerSiNo("¿Guardar ticket?");
+			if (guardarTicket.equalsIgnoreCase("si")) {
+				GestorTicket.salvaCompra(gestorCine.clienteLogueado, carrito);
+			}
+
+			// 17. Vaciar carrito
+			carrito.vaciar();
+		} else {
+			// No confirmar - liberar reserva automaticamente
+			carrito.vaciar();
+			System.out.println("\nCompra no confirmada. Reserva cancelada.");
+		}
 	}
+
 }
 
 // 4. breakpoints: volver a 4.1, salir, comprar, pagar, guardar ticket = mesage + input (verificar) + cambiar de estado
