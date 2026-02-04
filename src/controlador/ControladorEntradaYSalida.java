@@ -12,7 +12,7 @@ public class ControladorEntradaYSalida {
 	public int esValorMenuValido(int minimo, int maximo) {
 
 		while (true) {
-			System.out.print("Seleccione una opción (" + minimo + "-" + maximo + "): ");
+			System.out.print("\nElige una opción (" + minimo + " - " + maximo + "): ");
 
 			if (!sc.hasNextLine()) {
 				return -1;
@@ -66,6 +66,7 @@ public class ControladorEntradaYSalida {
 
 		boolean valido = false;
 		String entradaValida = "";
+		System.out.println("");
 		while (!valido) {
 			System.out.print(text + " (si/no): ");
 			String entrada = sc.nextLine().trim();
@@ -93,7 +94,7 @@ public class ControladorEntradaYSalida {
 			int entrada = sc.nextInt();
 
 			if (!opciones.contains(entrada)) {
-				System.out.println("Error: opsion no existe");
+				System.out.println("Error: opción no existe");
 
 			} else {
 				valido = true;
@@ -120,8 +121,8 @@ public class ControladorEntradaYSalida {
 
 	public int numBilletesComprandos(int asientosDisponibles) {
 		while (true) {
-			System.out.print("\nBilletes disponibles " + asientosDisponibles + "\nQuantos entradas queres comprar:");
-
+			System.out.println("\nHay " + asientosDisponibles + " billetes disponibles");
+			System.out.print("Cuántas billetes quieres comprar: ");
 			try {
 				String entrada = sc.nextLine().trim();
 				int billetes = Integer.parseInt(entrada);

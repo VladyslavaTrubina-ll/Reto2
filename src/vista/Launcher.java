@@ -71,7 +71,7 @@ public class Launcher {
 	                	// 6. Elegir horario/sala/precio
 	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
 	                	//TODO imprimir sesiones y mejorar print
-	                	imprimir.imprimirSesiones(sesiones);
+	                	imprimir.imprimirSesiones(sesiones, fechaElegida);
 	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
 	                	if (volverSiNo.equalsIgnoreCase("si")) {
 	                		eligiendoSesion = false;
@@ -96,7 +96,6 @@ public class Launcher {
 	                if (sesionElegida != null) {
 	                	// 10. Añadir al carrito 
 	                	carrito.anadirEntrada(sesionElegida, numEspectadores);
-	                	System.out.println(" Test Entrada añadida al carrito");
 	                
 	                	// 11. ¿Quieres elegir más películas?
 	                	String masPeliculas = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir más películas?");
@@ -114,11 +113,10 @@ public class Launcher {
 	                // 12. ¿Hay algo en carrito?
 	                if (carrito.getSesiones().isEmpty()) {
 	                    // 12.1 Carrito vacío
-	                    System.out.println("Carrito vacío, no puedes comprar");
 	                    eligiendoPeliculas = false;
 	                } else {
 	                    // 12.2 Carrito con entradas
-	                    System.out.println("Tienes entradas en carrito");
+	                    System.out.println("\n!Tienes entradas en carrito!");
 	                    String deseaComprar = gestorCine.controladorEntrada.leerSiNo("¿Quieres comprar?");
 	                    
 	                    if (deseaComprar.equalsIgnoreCase("si")) {

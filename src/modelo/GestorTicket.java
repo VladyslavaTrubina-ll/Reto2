@@ -62,7 +62,7 @@ public class GestorTicket {
 		    pw.println("						Disfrute de su película");
 		    pw.println();
 		    
-		    System.out.println("Ticket guardado en: " + ARCHIVO);
+		    System.out.println("\nTicket guardado en " + ARCHIVO);
 		} catch (IOException e) {
 			System.out.println("Error al guardar ticket: " + e.getMessage());
 		}

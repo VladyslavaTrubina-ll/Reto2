@@ -40,20 +40,19 @@ public class GestorCine {
 			String contraseña = controladorEntrada.leerCadena("Escribe su contraseña: ");
 
 			ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(email);
-			System.out.println(clientes);
 			int contador = 0;
 
 			while (contador < clientes.size() && !encontrado) {
 				ClienteAcesso c = clientes.get(contador);
 				if (email.equals(c.getEmail()) && contraseña.equals(c.getContraseña())) {
 					encontrado = true;
-					System.out.println("login realizado con suceso");
+					System.out.println("\n	  Bienvenido " + c.getNombre() + "!");
 					this.clienteLogueado = c;
 				}
 				contador++;
 			}
 			if (!encontrado) {
-				System.out.println("Datos incorrectos, intentalo de nuevo");
+				System.out.println("\nDatos incorrectos, inténtalo de nuevo");
 			}
 		}
 		return this.clienteLogueado;
@@ -68,15 +67,13 @@ public class GestorCine {
 	}
 
 	public String elegirFecha(ArrayList<String> fechas) {
-		System.out.println("Test Elegir una fecha");
-
 		if (fechas.isEmpty()) {
-			System.out.println("Error : No hay fechas disponibles para esta película");
+			System.out.println("No hay fechas disponibles para esta película");
 			return null;
 		}
 		int opcion = controladorEntrada.esValorMenuValido(1, fechas.size());
 		String fechaElegida = fechas.get(opcion - 1);
-		System.out.println("Fecha seleccionada: " + fechaElegida);
+		//System.out.println("Fecha seleccionada: " + fechaElegida);
 
 		return fechaElegida;
 	}
@@ -86,7 +83,7 @@ public class GestorCine {
 		int opcion = controladorEntrada.esValorMenuValido(1, sesiones.size());
 
 		Sesion sesionElegido = sesiones.get(opcion - 1);
-		System.out.println("Fecha seleccionada: " + sesionElegido);
+		//System.out.println("Fecha seleccionada: " + sesionElegido);
 		return sesionElegido;
 	}
 
@@ -100,12 +97,9 @@ public class GestorCine {
 			System.out.println("La sesion esta al completo");
 			return 0;
 		}
-		System.out.print("selecionar numero de asientos");
+		//System.out.print("seleccionar numero de asientos: ");
 
 		int participantes = controladorEntrada.numBilletesComprandos(disponibles);
-
-		System.out.println("Reservados " + participantes + " asientos");
-		System.out.println("Total en sala: " + (ocupados + participantes));
 		return participantes;
 	}
 	

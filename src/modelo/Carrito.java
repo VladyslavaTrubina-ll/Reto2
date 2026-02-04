@@ -119,71 +119,27 @@ public class Carrito {
 	}	
 	
 	public void resumen(String nombre, String apellidos) {
-		System.out.println("\n=== RESUMEN COMPRA ===");
-		
-		System.out.println("\nIdentificador" + ": " + nombre + " " + apellidos);
+		System.out.println("\n================= TICKET DE COMPRA =================");
+		System.out.println("Identificador: " + nombre + " " + apellidos);
+		System.out.println("---------------------------------------------------");
 
 		for (int i = 0; i < sesiones.size(); i++) {
 			Sesion e = sesiones.get(i);
 			int numEntradas = cantidadesEntradas.get(i);
 
-			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getNombre());
-			System.out.println("  Fecha: " + e.getFecha());
+			System.out.println("\nPelícula " + (i + 1) + ": " + e.getPelicula().getNombre());
+			System.out.println("\n  Fecha: " + e.getFecha());
 			System.out.println("  Sala: " + e.getSala().getNombre());
 			System.out.println("  Horario: " + e.getHoraInicio());
 			System.out.println("  Personas: " + numEntradas);
-			System.out.println("  Precio de sesion: " + e.getPrecio() + "€");
-			System.out.println("  Subtotal: " +  e.getPrecio() * numEntradas + "€");
+			System.out.printf("  Precio por sesión: %.2f€%n", e.getPrecio());
+			System.out.printf("  Subtotal: %.2f€%n", e.getPrecio() * numEntradas);
 		}
 
-		System.out.println("\n--- TOTAL ---");
-		System.out.println("Subtotal: " + precioSubTotal + "€");
-		System.out.println("Descuento (" + descuentoAplicado * 100 + "%): "+ descuento +"€");
-		System.out.println("TOTAL: " + precioTotal + "€");
+		System.out.println("\n------------------ TOTAL -----------------------");
+		System.out.printf("Subtotal: %.2f€%n", precioSubTotal);
+		System.out.printf("Descuento (%.0f%%): %.2f€%n", descuentoAplicado * 100, descuento);
+		System.out.printf("TOTAL A PAGAR: %.2f€%n", precioTotal);
+		System.out.println("===================================================");
 	}
-	
-	/*public static void test() {
-		System.out.println("test initializacion de Carrito");
-		
-		Carrito cTest = new Carrito();
-		System.out.println(cTest);
-		
-		
-		Sesion sTest1 = Sesion.sample("Peli 1", "01-01-2000");
-		Sesion sTest2 = Sesion.sample("Peli 2", "02-01-2000");
-		
-		System.out.println("test anadir entradas a Carrito #1");
-		cTest.anadirEntrada(sTest1, 1);
-		System.out.println(cTest);
-		
-		System.out.println("test anadir entradas a Carrito #2");
-		cTest.anadirEntrada(sTest2, 2);
-		System.out.println(cTest);
-	
-		
-		// si compra hacer esto!
-//		sTest1.actualizarEspectadores(1);
-//		sTest2.actualizarEspectadores(2);
-	
-//		System.out.println(sTest1);
-//		System.out.println(sTest2);
-		
-		System.out.println("test resumen Carrito");
-		resumen("Juan", "Garcia", cTest);
-		
-		System.out.println("test vaciar Carrito");
-		cTest.vaciar();
-		System.out.println(cTest);
-	}
-	
-/*	public static void main(String args[]) {
-		test();
-	}*/
-
-// Avatar 10.0 x 3 = 30.0
-// Joker 5.0 x 2 = 10.0
-// Subtotal 30+10 = 40
-// Descuento 20% = 40 * 0.2 = 8
-// Total 40-8 = 32
-
 }
