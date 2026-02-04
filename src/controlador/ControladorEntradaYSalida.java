@@ -9,6 +9,13 @@ public class ControladorEntradaYSalida {
 		this.sc = new Scanner(System.in);
 	}
 
+	/**
+	 * 
+	 * @param minimo el valor minimo que el metodo permiete utilizar 
+	 * @param maximo el valor maximo que el metodo permiete utilizar este metodo sirve para poder controlar la varias seleciones 
+	 * echas por el usuario en el programa
+	 * @return
+	 */
 	public int esValorMenuValido(int minimo, int maximo) {
 
 		while (true) {
@@ -41,6 +48,12 @@ public class ControladorEntradaYSalida {
 		}
 	}
 
+	/**
+	 * 
+	 * @param text metodo para leer cadena, impide al usuario de dejar campos vacios
+	 * @return devuelve el String despouesd e validacion
+	 */
+	
 	public String leerCadena(String text) {
 
 		boolean valido = false;
@@ -61,7 +74,13 @@ public class ControladorEntradaYSalida {
 		}
 		return entradaValida;
 	}
-
+/**
+ * 
+ * @param text metodo para controlar la elecion del usuario cuando tiene opcion de si/no
+ * deja poner solamente estos dos valores
+ * @return devuelve el e String despues de validarlo
+ */
+	
 	public String leerSiNo(String text) {
 
 		boolean valido = false;
@@ -81,28 +100,19 @@ public class ControladorEntradaYSalida {
 		return entradaValida;
 	}
 
+	/**
+	 * metodo para leer enteros
+	 * @return
+	 */
 	public int leerEntero() {
 		return sc.nextInt();
 	}
 
-	public int leerOpciones(String text, ArrayList<Integer> opciones) {
-		boolean valido = false;
-		int entradaValida = 0;
-		while (!valido) {
-			System.out.print(text);
-			int entrada = sc.nextInt();
-
-			if (!opciones.contains(entrada)) {
-				System.out.println("Error: opsion no existe");
-
-			} else {
-				valido = true;
-				entradaValida = entrada;
-			}
-		}
-		return entradaValida;
-	}
-
+/**
+ * 
+ * @param texto metodo que utilizamos en registracion cliente para que guarde nombre y apellidos siempre con maiscuola
+ * @return
+ */
 	public static String letraMalluscula(String texto) {
 		if (texto == null || texto.isEmpty()) {
 			return texto;
@@ -118,6 +128,13 @@ public class ControladorEntradaYSalida {
 		return resultado.toString().trim();
 	}
 
+	/**
+	 * 
+	 * @param asientosDisponibles metodo que recogre los asientos disponibles determindos con el metodo selecionarNumeEspecatodre
+	 * y no me permite añadir mas de lo que son disponibles
+	 * @return
+	 */
+	
 	public int numBilletesComprandos(int asientosDisponibles) {
 		while (true) {
 			System.out.print("\nBilletes disponibles " + asientosDisponibles + "\nQuantos entradas queres comprar:");
@@ -156,6 +173,12 @@ public class ControladorEntradaYSalida {
 		}
 	}
 
+	/**
+	 * 
+	 * @param text metodo que recoge el String del DNi en fase de registracion y averingua que tenga 9 caracteres
+	 * esto sirve como buena pratica y sirve para no tener error a la hora de insertar un nuevo clietne en la DB
+	 * @return
+	 */
 	public String leerDNI(String text) {
 		String nie = "";
 		boolean valido = false;
