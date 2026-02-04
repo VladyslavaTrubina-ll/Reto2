@@ -7,7 +7,7 @@ public class Carrito {
 
 	private ArrayList<Sesion> sesiones;
 	private ArrayList<Integer> cantidadesEntradas;
-	private double precioSubTotal, precioTotal, descuentoAplicado, descuento, cambio;
+	private double precioSubTotal, precioTotal, descuentoAplicado, descuento;
 
 	public Carrito() {
 		this.sesiones = new ArrayList<Sesion>();
@@ -16,7 +16,6 @@ public class Carrito {
 		this.precioTotal = 0.0;
 		this.descuentoAplicado = 0.0;
 		this.descuento = 0.0;
-		this.cambio = 0.0;
 	}
 
 	@Override
@@ -27,7 +26,6 @@ public class Carrito {
 				+  ", precioTotal=" + precioTotal 
 				+ ", descuentoAplicado=" + descuentoAplicado 
 				+ ", descuento=" + descuento 
-				+ ", cambio=" + cambio
 				+ "]";
 	}
 
@@ -55,14 +53,6 @@ public class Carrito {
 		return descuento;
 	}
 	
-	public double getCambio() {
-		return cambio;
-	}
-	
-	public void setCambio(double cambio) {
-		this.cambio = cambio;
-	}
-	
 	public void vaciar() {
 		this.sesiones.clear(); 
 		this.cantidadesEntradas.clear();
@@ -70,12 +60,23 @@ public class Carrito {
 		this.precioTotal = 0.0;
 		this.descuentoAplicado = 0.0;
 		this.descuento = 0.0;
-		this.cambio = 0.0;
 	}
 	
+	public double calcularDescuentoAplicado(int numSesiones) {
+
+		// 2. Determinamos el porcentaje de descuento
+		if (numSesiones >= 3) {
+			return 0.30; // 30%
+		} else if (numSesiones == 2) {
+			return 0.20; // 20%
+		} else if (numSesiones == 1) {
+			return 0.0;
+		} else {
+			throw new IllegalArgumentException("No puede ser " + numSesiones + " numSesiones < 1");
+		}
+	}
 	
 	public void calcularPrecioYDescuento() {
-
 		if (sesiones.isEmpty()) {
 			this.precioSubTotal = 0.0;
 			this.precioTotal = 0.0;
@@ -86,16 +87,7 @@ public class Carrito {
 
 		// 1. Contar cuantos sesiones selecionados
 		int numSesiones = sesiones.size();
-
-		// 2. Determinamos el porcentaje de descuento
-		
-		if (numSesiones >= 3) {
-			this.descuentoAplicado = 0.30; // 30%
-			
-		} else if (numSesiones == 2) {
-			this.descuentoAplicado = 0.20; // 20%
-		}
-		// Si 1 sesion: porcentaje = 0.0
+		this.descuentoAplicado = calcularDescuentoAplicado(numSesiones);
 		
 		this.precioSubTotal = 0.0;
 		
@@ -103,16 +95,21 @@ public class Carrito {
 		for (int i = 0; i < numSesiones; i++) {
 			Sesion sesion = sesiones.get(i);
 			int numEntradas = cantidadesEntradas.get(i);
-			
 			this.precioSubTotal += sesion.getPrecio() * numEntradas;
 		}
-		
+		double[] x = aplicarDescuento(precioSubTotal, descuentoAplicado);
+		this.precioTotal = x[0];
+		this.descuento = x[1];
+	}
+	
+	public double[] aplicarDescuento(double precioSubTotal, double descuentoAplicado) {
 		// 4. Aplicar descuento
-		this.descuento = precioSubTotal * descuentoAplicado;
+		descuento = precioSubTotal * descuentoAplicado;
 		
 		// 5. Calcular precio final
-		this.precioTotal = precioSubTotal - descuento;
-
+		precioTotal = precioSubTotal - descuento;
+		
+		return new double[]{precioTotal, descuento};
 	}
 	
 	public void anadirEntrada(Sesion sesion, int numEntradas) {
@@ -121,9 +118,7 @@ public class Carrito {
 		this.calcularPrecioYDescuento();
 	}	
 	
-	public static void resumen(String nombre, String apellidos, Carrito carrito) {
-		ArrayList<Sesion> sesiones = carrito.getSesiones();
-		ArrayList<Integer> cantidadesEntradas = carrito.getCantidadesEntradas();
+	public void resumen(String nombre, String apellidos) {
 		System.out.println("\n=== RESUMEN COMPRA ===");
 		
 		System.out.println("\nIdentificador" + ": " + nombre + " " + apellidos);
@@ -134,7 +129,7 @@ public class Carrito {
 
 			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getNombre());
 			System.out.println("  Fecha: " + e.getFecha());
-			//System.out.println("  Sala: " + e.getSala().getNombre());
+			System.out.println("  Sala: " + e.getSala().getNombre());
 			System.out.println("  Horario: " + e.getHoraInicio());
 			System.out.println("  Personas: " + numEntradas);
 			System.out.println("  Precio de sesion: " + e.getPrecio() + "€");
@@ -142,12 +137,9 @@ public class Carrito {
 		}
 
 		System.out.println("\n--- TOTAL ---");
-		System.out.println("Subtotal: " + carrito.getPrecioSubTotal() + "€");
-		System.out.println("Descuento (" + carrito.getDescuentoAplicado() * 100 + "%): "+ carrito.getDescuento() +"€");
-		System.out.println("TOTAL: " + carrito.getPrecioTotal() + "€");
-		if (carrito.getCambio() > 0) {
-			System.out.println("Cambio: " + String.format("%.2f", carrito.getCambio()) + "€");
-		}
+		System.out.println("Subtotal: " + precioSubTotal + "€");
+		System.out.println("Descuento (" + descuentoAplicado * 100 + "%): "+ descuento +"€");
+		System.out.println("TOTAL: " + precioTotal + "€");
 	}
 	
 	/*public static void test() {

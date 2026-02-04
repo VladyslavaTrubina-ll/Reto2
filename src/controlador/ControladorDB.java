@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import modelo.Pelicula;
 import modelo.Sala;
 import modelo.ClienteAcesso;
-import modelo.EspectadoresSesion;
 import modelo.Sesion;
 import modelo.dniMailCliente;
 
@@ -43,7 +42,6 @@ public class ControladorDB {
 		} catch (SQLException e) {
 			System.out.println("no se encontró la BD " + this.nombreBD);
 		}
-
 		return conexionRealizada;
 	}
 
@@ -59,7 +57,6 @@ public class ControladorDB {
 		} catch (SQLException e) {
 			System.out.println("No hay conexion con la BD");
 		}
-
 		return Conexioncerrada;
 	}
 
@@ -73,8 +70,7 @@ public class ControladorDB {
 
 			while (resultado.next()) {
 				ClienteAcesso nuevoCliente = new ClienteAcesso(resultado.getString(1), resultado.getString(2),
-						resultado.getString(3), resultado.getString(4), resultado.getString(5));
-				;
+						resultado.getString(3), resultado.getString(4), resultado.getString(5)); ;
 				clientes.add(nuevoCliente);
 			}
 			consulta.close();
@@ -82,7 +78,6 @@ public class ControladorDB {
 
 			e.printStackTrace();
 		}
-
 		return clientes;
 	}
 
@@ -108,7 +103,6 @@ public class ControladorDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return pelis;
 	}
 
@@ -126,7 +120,6 @@ public class ControladorDB {
 			while (resultado.next()) {
 				String fecha = resultado.getString(1);
 				fechas.add(fecha);
-
 			}
 			consulta.close();
 		} catch (SQLException e) {
@@ -147,7 +140,7 @@ public class ControladorDB {
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				Sala sala = new Sala(resultado.getString(5), resultado.getInt(6)); // TODO Anadir a bd sillas en salas !!!!!
+				Sala sala = new Sala(resultado.getString(5), resultado.getInt(6));
 				Sesion sesion = new Sesion(pelicula, fecha, resultado.getString(1), resultado.getString(2), sala,
 						resultado.getInt(3), resultado.getDouble(4));
 				sesiones.add(sesion);
@@ -156,10 +149,9 @@ public class ControladorDB {
 			e.printStackTrace();
 		}
 		return sesiones;
-
 	}
 
-	public void insertarUsuario(String dni, String nombre, String apellidos, String email, String contrasena) {
+	public int insertarUsuario(String dni, String nombre, String apellidos, String email, String contrasena) {
 
 		String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
 
@@ -174,13 +166,15 @@ public class ControladorDB {
 			ps.setString(5, contrasena);
 
 			// Ejecutamos el INSERT
-			ps.executeUpdate();
+			int nRows = ps.executeUpdate();
 
 			System.out.println("Usuario insertado correctamente");
-
+			return nRows;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
 	public int insertarCompra(String dni, int numentradas, double preciototal, double descuentoaplicado) {
@@ -197,6 +191,7 @@ public class ControladorDB {
 			ps.setDouble(4, descuentoaplicado);
 			ps.executeUpdate();
 			ResultSet generatedKeys = ps.getGeneratedKeys();
+			
 			if (generatedKeys.next()) {
 				int idCompraGenerado = generatedKeys.getInt(1);
 				System.out.println("Compra insertada correctamente con ID: " + idCompraGenerado);
@@ -212,17 +207,13 @@ public class ControladorDB {
 
 	
 
-	public void insertarEntrada(int id_compra, String id_sesion, int numentradas, double preciototal,
+	public int insertarEntrada(int id_compra, String id_sesion, int numentradas, double preciototal,
 			double descuentoaplicado) {
-		String url = "jdbc:mysql://localhost:3306/cine_daw"; // cambia según tu BD
-		String user = "root";
-		String password = "";
 
 		String sql = "INSERT INTO Entrada (id_compra, id_sesion, numero_personas, precio, descuento)VALUES(?,?, ?, ?, ?)";
 
-		try (Connection conn = DriverManager.getConnection(url, user, password);
-				PreparedStatement ps = conn.prepareStatement(sql)) {
-
+		try {
+			PreparedStatement ps = conexion.prepareStatement(sql);
 			// Asignamos el parámetro String
 			ps.setInt(1, id_compra);
 			ps.setString(2, id_sesion);
@@ -231,17 +222,19 @@ public class ControladorDB {
 			ps.setDouble(5, descuentoaplicado);
 
 			// Ejecutamos el INSERT
-			ps.executeUpdate();
-
+			int nRows = ps.executeUpdate();
 			System.out.println("Entrada insertada correctamente");
-
+			
+			return nRows;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return -1;
 	}
 
 	public String obtenerIdSesion(String fecha, String hora, String sala) {
-		String sesion = "";
+		String sesionId = "";
 		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '"
 				+ hora + "' AND SA.id_sala = (SELECT id_sala FROM Sala  WHERE nombre = '" + sala + "') "
 				+ "AND fecha = '" + fecha + "'";
@@ -251,25 +244,27 @@ public class ControladorDB {
 			ResultSet resultado = consulta.executeQuery(query);
 
 			while (resultado.next()) {
-				sesion = resultado.getString("id_sesion");
+				sesionId = resultado.getString("id_sesion");
 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return sesion;
+		return sesionId;
 	}
 
-	public void insertarEspectadores(String idSesion, int numespectadores) {
+	public int insertarEspectadores(String idSesion, int numespectadores) {
 		String query = "UPDATE Sesion SET espectadores = espectadores + '" + numespectadores + "' WHERE  id_sesion = '"
 				+ idSesion + "'";
 		try {
 			Statement stmt = conexion.createStatement();
 			int filasActualizadas = stmt.executeUpdate(query);
 			stmt.close();
+			return filasActualizadas;
 		} catch (SQLException e) {
 			System.out.println("Error en update: " + e.getMessage());
 		}
+		return -1;
 	}
 
 	public ArrayList<dniMailCliente> dniEmailCliente() {
@@ -282,7 +277,6 @@ public class ControladorDB {
 			while (resultado.next()) {
 				dniMailCliente newdniEmailCliente = new dniMailCliente(resultado.getString(1), resultado.getString(2));
 				dniEmailCliente.add(newdniEmailCliente);
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

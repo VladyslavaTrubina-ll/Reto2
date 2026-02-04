@@ -1,18 +1,9 @@
 package modelo;
 
-import modelo.Carrito;
-import modelo.Sesion;
-import modelo.ClienteAcesso;
-import modelo.EspectadoresSesion;
-import modelo.Sala;
-import modelo.Pelicula;
-
-import modelo.Ticket;
 import controlador.ControladorEntradaYSalida;
 import controlador.ControladorDB;
 import controlador.Imprimir;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GestorCine {
 
@@ -43,7 +34,6 @@ public class GestorCine {
 	public ClienteAcesso login() {
 
 		boolean encontrado = false;
-		// ClienteAcesso clienteLogueado = null;
 
 		while (!encontrado) {
 			String email = controladorEntrada.leerCadena("Escribe su email: ");
@@ -100,7 +90,7 @@ public class GestorCine {
 		return sesionElegido;
 	}
 
-	public int seleccionarNumEspectadores(Sesion sesion) { // seleccionar
+	public int seleccionarNumEspectadores(Sesion sesion) {
 		int capacidad = sesion.getSala().getSitios();
 		int ocupados = sesion.getNumEspectadores();
 
@@ -118,32 +108,6 @@ public class GestorCine {
 		System.out.println("Total en sala: " + (ocupados + participantes));
 		return participantes;
 	}
-
-	public Sesion generarEntrada(Pelicula pelicula, String fecha, Sala sala, String horaInicio, String horaFin, int numPersonas,
-			double precio) {
-		Sesion nuevaentrada = new Sesion();
-		nuevaentrada.setPelicula(pelicula);
-		nuevaentrada.setFecha(fecha);
-		nuevaentrada.setSala(sala);
-		nuevaentrada.setHoraInicio(horaInicio);
-		nuevaentrada.setHoraFin(horaFin);
-		nuevaentrada.setNumEspectadores(numPersonas);
-		nuevaentrada.setPrecio(precio);
-		return nuevaentrada;
-
-	}
-
-	public boolean confirmarcompra(Carrito carrito) {
-		String confirma = controladorEntrada.leerSiNo("Confirmar compra?");
-
-		if (confirma.equalsIgnoreCase("si")) {
-			System.out.println(" compra confirmada");
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	
 	public ArrayList<String> obtenerIdSesion(Carrito carrito) {
 		ArrayList<String> idSessiones = new ArrayList<>();
@@ -159,11 +123,11 @@ public class GestorCine {
 	public boolean dniOEmailYaRegistrados(String text) {
 	
 		int contador = 0;
+		ArrayList<dniMailCliente> dniEmailClientes = controlador.dniEmailCliente();
+		while (contador < dniEmailClientes.size()) {
 
-		while (contador < controlador.dniEmailCliente().size()) {
-
-			String dato = controlador.dniEmailCliente().get(contador).getDni();
-			String dato2 = controlador.dniEmailCliente().get(contador).getEmail();
+			String dato = dniEmailClientes.get(contador).getDni();
+			String dato2 = dniEmailClientes.get(contador).getEmail();
 			// COMPARAMOS DIRECTAMENTE
 			if (text.equals(dato) || text.equals(dato2)) {
 				System.out.println("Error usuario ya registrado con este dato");

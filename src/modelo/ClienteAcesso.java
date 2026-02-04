@@ -13,8 +13,6 @@ public class ClienteAcesso {
 		this.apellidos = apellidos;
 		this.email = email;
 		this.contraseña = contraseña;
-		
-		
 
 	}
 	
