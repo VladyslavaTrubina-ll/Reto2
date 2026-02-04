@@ -14,7 +14,7 @@ public class GestorTicket {
 		// Obtener fecha y hora actual
 		LocalDateTime ahora = LocalDateTime.now();
 		
-		try (FileWriter fw = new FileWriter(ARCHIVO, true);
+		try (FileWriter fw = new FileWriter(ARCHIVO, false);
 		PrintWriter pw = new PrintWriter(fw)) {
 			// Encabezado
 		    pw.println("\n╔══════════════════════════════════════════════════════════════════════════════╗");
@@ -66,5 +66,6 @@ public class GestorTicket {
 		} catch (IOException e) {
 			System.out.println("Error al guardar ticket: " + e.getMessage());
 		}
+	
 	}
 }
