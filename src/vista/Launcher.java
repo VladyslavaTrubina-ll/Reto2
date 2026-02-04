@@ -49,12 +49,10 @@ public class Launcher {
 			while (eligiendoPeliculas) {
 				ArrayList<Pelicula> pelis = gestorCine.controlador.obtenerPelis();
 				imprimir.imprimirPeliculas(pelis);
-				// 4.1 ¿Quieres elegir película?
-				// System.out.println("----------------------------------");
 				String elegirPeli = gestorCine.controladorEntrada.leerSiNo("\n¿Quieres elegir película?");
 
 				if (elegirPeli.equalsIgnoreCase("si")) {
-					// 4.2 Elegir película
+			
 					Pelicula peliElegida = gestorCine.elegirPelicula(pelis);
 
 	                // 5. Elegir fecha
@@ -70,7 +68,7 @@ public class Launcher {
 	                while (eligiendoSesion) {
 	                	// 6. Elegir horario/sala/precio
 	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
-	                	//TODO imprimir sesiones y mejorar print
+	                
 	                	imprimir.imprimirSesiones(sesiones);
 	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
 	                	if (volverSiNo.equalsIgnoreCase("si")) {
@@ -113,11 +111,11 @@ public class Launcher {
 	            } else if (elegirPeli.equalsIgnoreCase("no")) {
 	                // 12. ¿Hay algo en carrito?
 	                if (carrito.getSesiones().isEmpty()) {
-	                    // 12.1 Carrito vacío
+	                 
 	                    System.out.println("Carrito vacío, no puedes comprar");
 	                    eligiendoPeliculas = false;
 	                } else {
-	                    // 12.2 Carrito con entradas
+	                   
 	                    System.out.println("Tienes entradas en carrito");
 	                    String deseaComprar = gestorCine.controladorEntrada.leerSiNo("¿Quieres comprar?");
 	                    
@@ -126,7 +124,7 @@ public class Launcher {
 	                        procesoPagar();
 	                        eligiendoPeliculas = false;
 	                    } else {
-                    	// Cancelar compra - limpiar carrito
+                    
                     	carrito.vaciar();
                     	System.out.println("Compra cancelada. Carrito vaciado.");
                     	eligiendoPeliculas = false;
@@ -229,4 +227,3 @@ public class Launcher {
 
 }
 
-// 4. breakpoints: volver a 4.1, salir, comprar, pagar, guardar ticket = mesage + input (verificar) + cambiar de estado
