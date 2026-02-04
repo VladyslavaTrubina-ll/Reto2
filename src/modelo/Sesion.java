@@ -2,7 +2,6 @@ package modelo;
 
 public class Sesion {
 	
-	//TODO VERIFICSR set EN CLASSES
 	Pelicula pelicula;
 	private String fecha, horaInicio, horaFin;
 	private Sala sala;
@@ -23,10 +22,6 @@ public class Sesion {
 		
 	}
 
-	public void setPelicula(Pelicula pelicula) {
-		this.pelicula = pelicula;
-	}
-
 	public Pelicula getPelicula() {
 		return pelicula;
 	}
@@ -35,48 +30,24 @@ public class Sesion {
 		return fecha;
 	}
 	
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
-	}
-	
 	public String getHoraInicio() {
 		return horaInicio;
-	}
-
-	public void setHoraInicio(String horaInicio) {
-		this.horaInicio = horaInicio;
 	}
 
 	public String getHoraFin() {
 		return horaFin;
 	}
 
-	public void setHoraFin(String horaFin) {
-		this.horaFin = horaFin;
-	}
-
 	public Sala getSala() {
 		return sala;
-	}
-
-	public void setSala(Sala sala) {
-		this.sala = sala;
 	}
 	
 	public double getPrecio() {
 		return precio;
 	}
-
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
 	
 	public int getNumEspectadores() {
 		return numEspectadores;
-	}
-
-	public void setNumEspectadores(int numEspectadores) {
-		this.numEspectadores = numEspectadores;
 	}
 	
 	@Override
@@ -86,7 +57,7 @@ public class Sesion {
 		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
 	}
 	
-	public void actualizarEspectadores(int numEntradas) {
+	public void actualizarEspectadores(int numEntradas) { //TODO utilisar
 		this.numEspectadores += numEntradas;
 	}
 	

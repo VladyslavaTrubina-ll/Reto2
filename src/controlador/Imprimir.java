@@ -15,7 +15,7 @@ public class Imprimir {
 		System.out.println("=================================");
 	}
 
-	public  void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
+	public void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
 		System.out.println("\nPeliculas disponibles");
 		System.out.println("------------------------------");
 

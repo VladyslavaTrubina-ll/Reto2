@@ -154,10 +154,6 @@ public class Launcher {
 			dni = gestorCine.controladorEntrada.leerDNI(dni);
 		} while (gestorCine.dniOEmailYaRegistrados(dni));
 
-	
-		
-
-
 		String nombre = ControladorEntradaYSalida
 				.letraMalluscula(gestorCine.controladorEntrada.leerCadena("Escribe tu nombre: "));
 
