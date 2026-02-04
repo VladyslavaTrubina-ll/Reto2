@@ -104,9 +104,7 @@ public class ControladorDBTest {
 
 	@Test
 	public void testInsertarUsuario() {
-
-		String timestamp = String.valueOf(System.currentTimeMillis());
-		String dni = "1230000AJ";
+		String dni = "0230000AJ";
 		String nombre = "Ernesto";
 		String apellidos = "Sparalesto";
 		String email = "LAmadonnalala@gmail.com";
