@@ -91,9 +91,9 @@ public class ControladorDB {
 
 		String query = "SELECT DISTINCT Titulo, duracion, genero FROM Pelicula P "
 				+ "JOIN Sesion S ON P.id_Pelicula = S.id_Pelicula " 
-				//"WHERE fecha >= CURDATE() AND hora_inicio > current_time "//
-				+ "GROUP BY titulo, duracion, genero " +
-				//+ "HAVING min(fecha) > CURDATE() OR (min(fecha) = CURDATE() AND min(hora_inicio) > current_time) "//
+				+ "WHERE fecha >= CURDATE() AND hora_inicio > current_time "
+				+ "GROUP BY titulo, duracion, genero " 
+				+ "HAVING min(fecha) > CURDATE() OR (min(fecha) = CURDATE() AND min(hora_inicio) > current_time) " +
 				 "ORDER BY Titulo";
 		
 		try {
@@ -210,19 +210,7 @@ public class ControladorDB {
 		return -1;
 	}
 
-	/*
-	 * public int obtenerEspectadoresSesion(String sesion) { String query =
-	 * "SELECT espectadores,  FROM Sesion WHERE id_sesion = '" + sesion + "' "; int
-	 * obtenerEspectadores = 0; try { Statement consulta =
-	 * conexion.createStatement(); ResultSet resultado =
-	 * consulta.executeQuery(query);
-	 * 
-	 * while (resultado.next()) { obtenerEspectadores =
-	 * resultado.getInt("espectadores");
-	 * 
-	 * } } catch (SQLException e) { e.printStackTrace(); } return
-	 * obtenerEspectadores; }
-	 */
+	
 
 	public void insertarEntrada(int id_compra, String id_sesion, int numentradas, double preciototal,
 			double descuentoaplicado) {
