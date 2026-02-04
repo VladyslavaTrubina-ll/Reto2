@@ -193,7 +193,6 @@ public class Launcher {
 	}
 
 	public static void procesoPagar() {
-		System.out.println("\n=== RESUMEN DE COMPRA ===");
 		carrito.resumen(gestorCine.clienteLogueado.getNombre(), gestorCine.clienteLogueado.getApellidos());
 
 		String confirmar = gestorCine.controladorEntrada.leerSiNo("¿Confirmar compra?");
@@ -210,9 +209,9 @@ public class Launcher {
 				Sesion sesion = carrito.getSesiones().get(i);
 				String idSesion = idsSesiones.get(i);
 				int cantidad = carrito.getCantidadesEntradas().get(i);
-				double precio = carrito.getSesiones().get(i).getPrecio() * cantidad;
-				double descuento = 0.0;
-				// Inserisci nel DB per questa sessione
+				double precio = sesion.getPrecio() * cantidad;
+				double descuento = precio * carrito.getDescuentoAplicado();
+				// Inserisci del DB per questa sessione
 				gestorCine.controlador.insertarEntrada(idCompra, idSesion, cantidad, precio, descuento);
 				gestorCine.controlador.insertarEspectadores(idSesion, cantidad);
 			}
