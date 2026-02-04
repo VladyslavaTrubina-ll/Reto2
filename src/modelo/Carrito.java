@@ -7,7 +7,7 @@ public class Carrito {
 
 	private ArrayList<Sesion> sesiones;
 	private ArrayList<Integer> cantidadesEntradas;
-	private double precioSubTotal, precioTotal, descuentoAplicado, descuento, cambio;
+	private double precioSubTotal, precioTotal, descuentoAplicado, descuento;
 
 	public Carrito() {
 		this.sesiones = new ArrayList<Sesion>();
@@ -16,7 +16,6 @@ public class Carrito {
 		this.precioTotal = 0.0;
 		this.descuentoAplicado = 0.0;
 		this.descuento = 0.0;
-		this.cambio = 0.0;
 	}
 
 	@Override
@@ -27,7 +26,6 @@ public class Carrito {
 				+  ", precioTotal=" + precioTotal 
 				+ ", descuentoAplicado=" + descuentoAplicado 
 				+ ", descuento=" + descuento 
-				+ ", cambio=" + cambio
 				+ "]";
 	}
 
@@ -55,14 +53,6 @@ public class Carrito {
 		return descuento;
 	}
 	
-	public double getCambio() {
-		return cambio;
-	}
-	
-	public void setCambio(double cambio) {
-		this.cambio = cambio;
-	}
-	
 	public void vaciar() {
 		this.sesiones.clear(); 
 		this.cantidadesEntradas.clear();
@@ -70,12 +60,10 @@ public class Carrito {
 		this.precioTotal = 0.0;
 		this.descuentoAplicado = 0.0;
 		this.descuento = 0.0;
-		this.cambio = 0.0;
 	}
 	
 	
 	public void calcularPrecioYDescuento() {
-
 		if (sesiones.isEmpty()) {
 			this.precioSubTotal = 0.0;
 			this.precioTotal = 0.0;
@@ -121,9 +109,7 @@ public class Carrito {
 		this.calcularPrecioYDescuento();
 	}	
 	
-	public static void resumen(String nombre, String apellidos, Carrito carrito) {
-		ArrayList<Sesion> sesiones = carrito.getSesiones();
-		ArrayList<Integer> cantidadesEntradas = carrito.getCantidadesEntradas();
+	public void resumen(String nombre, String apellidos) {
 		System.out.println("\n=== RESUMEN COMPRA ===");
 		
 		System.out.println("\nIdentificador" + ": " + nombre + " " + apellidos);
@@ -134,7 +120,7 @@ public class Carrito {
 
 			System.out.println("\nPelicula " + (i + 1) + ": " + e.getPelicula().getNombre());
 			System.out.println("  Fecha: " + e.getFecha());
-			//System.out.println("  Sala: " + e.getSala().getNombre());
+			System.out.println("  Sala: " + e.getSala().getNombre());
 			System.out.println("  Horario: " + e.getHoraInicio());
 			System.out.println("  Personas: " + numEntradas);
 			System.out.println("  Precio de sesion: " + e.getPrecio() + "€");
@@ -142,12 +128,9 @@ public class Carrito {
 		}
 
 		System.out.println("\n--- TOTAL ---");
-		System.out.println("Subtotal: " + carrito.getPrecioSubTotal() + "€");
-		System.out.println("Descuento (" + carrito.getDescuentoAplicado() * 100 + "%): "+ carrito.getDescuento() +"€");
-		System.out.println("TOTAL: " + carrito.getPrecioTotal() + "€");
-		if (carrito.getCambio() > 0) {
-			System.out.println("Cambio: " + String.format("%.2f", carrito.getCambio()) + "€");
-		}
+		System.out.println("Subtotal: " + precioSubTotal + "€");
+		System.out.println("Descuento (" + descuentoAplicado * 100 + "%): "+ descuento +"€");
+		System.out.println("TOTAL: " + precioTotal + "€");
 	}
 	
 	/*public static void test() {
