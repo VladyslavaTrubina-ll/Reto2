@@ -4,6 +4,10 @@ import modelo.*;
 import controlador.*;
 import java.util.ArrayList;
 
+
+/*g,jgk.ui,tgi.uktgiu.tuitfuy*/
+
+
 public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
