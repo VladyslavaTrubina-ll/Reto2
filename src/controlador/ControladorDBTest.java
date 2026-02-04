@@ -81,56 +81,55 @@ public class ControladorDBTest {
 
 		String tituloTest = "Dune";
 		ArrayList<String> fechas = controlador.obtenerFechasPorPerli(tituloTest);
-		assertNotNull("La lista non dovrebbe essere null", fechas);
+		assertNotNull(fechas);
 		for (String fecha : fechas) {
-			assertNotNull("La data non dovrebbe essere null", fecha);
+			assertNotNull( fecha);
 		}
 	}
 
 	@Test
 	public void testObtenerSesionesPorPerli() {
 
-		Pelicula peliculaTest = new Pelicula("Avatar", 155, "Ciencia Ficción/Aventura");
+		Pelicula peliculaTest = new Pelicula("Dune", 155, "Ciencia Ficción/Aventura");
 		String fechaTest = "2026-02-11";
 		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(fechaTest, peliculaTest);
 		assertNotNull("La lista non dovrebbe essere null", sesiones);
 		for (Sesion sesion : sesiones) {
-			assertNotNull("La sesione non dovrebbe essere null", sesion);
-			assertEquals("La data dovrebbe corrispondere", fechaTest, sesion.getFecha());
-			assertEquals("Il titolo del film dovrebbe corrispondere", peliculaTest.getNombre(),
+			assertNotNull( sesion);
+			assertEquals(fechaTest, sesion.getFecha());
+			assertEquals( peliculaTest.getNombre(),
 					sesion.getPelicula().getNombre());
 		}
 	}
 
 	@Test
 	public void testInsertarUsuario() {
-		String dni = "0230000AJ";
+	    String timestamp = String.valueOf(System.currentTimeMillis());
+		String dni =  timestamp.substring(timestamp.length()-8) + "A";
 		String nombre = "Ernesto";
 		String apellidos = "Sparalesto";
-		String email = "LAmadonnalala@gmail.com";
+		String email =  timestamp + "@gmail.com";
 		String contrasena = "password123";
 
 		int resultado = controlador.insertarUsuario(dni, nombre, apellidos, email, contrasena);
 
-		assertTrue("L'inserimento dovrebbe riuscire, risultato: " + resultado, resultado > 0);
+		assertTrue( resultado > 0);
 	}
 
 	@Test
 	public void testInsertarCompra() {
 		String dniCliente = "00113344F";
-
 		int numentradas = 2;
 		double preciototal = 20.0;
 		double descuentoaplicado = 2.0;
 
 		int idCompra = controlador.insertarCompra(dniCliente, numentradas, preciototal, descuentoaplicado);
 
-		assertTrue("L'ID della compra dovrebbe essere positivo: " + idCompra, idCompra > 0);
+		assertTrue( idCompra > 0);
 	}
 
 	@Test
 	public void testInsertarEntrada() {
-
 		int id_compra = 1;
 		String id_sesion = "SES01";
 		int numentradas = 2;
@@ -150,12 +149,11 @@ public class ControladorDBTest {
 
 		String idSesion = controlador.obtenerIdSesion(fecha, hora, sala);
 
-		assertNotNull("L'ID della sessione non dovrebbe essere null", idSesion);
+		assertNotNull( idSesion);
 	}
 
 	@Test
 	public void testInsertarEspectadores() {
-
 		String idSesion = "SES01";
 		int numespectadores = 10;
 
@@ -169,8 +167,174 @@ public class ControladorDBTest {
 		ArrayList<dniMailCliente> resultados = controlador.dniEmailCliente();
 		assertNotNull("La lista non dovrebbe essere null", resultados);
 		for (dniMailCliente cliente : resultados) {
-			assertNotNull("Il DNI non dovrebbe essere null", cliente.getDni());
-			assertNotNull("L'email non dovrebbe essere null", cliente.getEmail());
+			assertNotNull( cliente.getDni());
+			assertNotNull( cliente.getEmail());
 		}
+	}
+
+	@Test
+	public void testObtenerClienteConEmailNull() {
+		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(null);
+		assertNotNull(clientes);
+		
+	}
+
+	@Test
+	public void testObtenerClienteConEmailVuoto() {
+		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente("");
+		assertNotNull(clientes);
+		
+	}
+
+	@Test
+	public void testObtenerClienteConEmailInesistente() {
+		String emailInesistente = "email.che.non.esiste@gmail.com";
+		System.out.println("Email usata: " + emailInesistente);
+		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(emailInesistente);
+		assertNotNull("La lista non dovrebbe essere null", clientes);
+		assertTrue(clientes.isEmpty());
+		
+	}
+
+	@Test
+	public void testObtenerFechasPorPerliConTitoloNull() {
+		ArrayList<String> fechas = controlador.obtenerFechasPorPerli(null);
+		assertNotNull(fechas);
+		
+	}
+
+	@Test
+	public void testObtenerFechasPorPerliConTitoloVuoto() {
+		System.out.println("=== TEST: Obtener date con titolo vuoto ===");
+		ArrayList<String> fechas = controlador.obtenerFechasPorPerli("");
+		assertNotNull(fechas);
+	
+	}
+
+	@Test
+	public void testObtenerFechasPorPerliConTitoloInesistente() {
+		String titoloInesistente = "TitoloCheNonEsiste";
+		System.out.println("Titolo usato: " + titoloInesistente);
+		ArrayList<String> fechas = controlador.obtenerFechasPorPerli(titoloInesistente);
+		assertNotNull("La lista non dovrebbe essere null", fechas);
+		assertTrue(fechas.isEmpty());
+		;
+	}
+
+	@Test
+	public void testObtenerSesionesPorPerliConFechaNull() {
+		Pelicula peliculaTest = new Pelicula("Dune", 155, "Ciencia Ficción/Aventura");
+		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(null, peliculaTest);
+		assertNotNull("La lista non dovrebbe essere null anche con data null", sesiones);
+		
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testObtenerSesionesPorPerliConPeliculaNull() {
+		String fechaTest = "2026-02-11";
+		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(fechaTest, null);
+		assertNotNull(sesiones);
+	}
+
+	@Test
+	public void testInsertarUsuarioConDniDuplicato() {
+		String dniEsistente = "0230000AJ";
+		String nombre = "Ernesto";
+		String apellidos = "Sparalesto";
+		String email = "email@gmail.com";
+		String contrasena = "password123";
+	
+
+		int resultado = controlador.insertarUsuario(dniEsistente, nombre, apellidos, email, contrasena);
+		assertTrue("Insert con DNI duplicado deberia fallar", resultado <= 0);
+	
+	}
+
+	@Test
+	public void testInsertarUsuarioConEmailDuplicata() {
+		String dniNuovo = "43403291X";
+		String nombre = "Test";
+		String apellidos = "Duplicato";
+		String emailEsistente = "LAmadonnalala@gmail.com";
+		String contrasena = "password123";
+
+		int resultado = controlador.insertarUsuario(dniNuovo, nombre, apellidos, emailEsistente, contrasena);
+		assertTrue("Insert con mail duplicada beberia fallar", resultado <= 0);
+	
+	}
+
+	@Test
+	public void testInsertarCompraConDniClienteInexistente() {
+		String dniInexistente = "DNI_INESISTENTE_999";
+		int numentradas = 2;
+		double preciototal = 20.0;
+		double descuentoaplicado = 2.0;
+		
+		System.out.println("DNI inesistente: " + dniInexistente);
+
+		int idCompra = controlador.insertarCompra(dniInexistente, numentradas, preciototal, descuentoaplicado);
+		assertTrue("Inser compra con dni que no existe deberia fallar", idCompra <= 0);
+		
+	}
+
+	@Test
+	public void testInsertarEntradaConIdCompraInexistente() {
+		int id_compra_inexistente = 999999;
+		String id_sesion = "SES01";
+		int numentradas = 2;
+		double preciototal = 20.0;
+		double descuentoaplicado = 2.0;
+		
+		System.out.println("ID compra inesistente: " + id_compra_inexistente);
+
+		int resultado = controlador.insertarEntrada(id_compra_inexistente, id_sesion, numentradas, preciototal, descuentoaplicado);
+		assertTrue("instert entrada deberia fallar", resultado <= 0);
+		
+	}
+
+	@Test
+	public void testInsertarEspectadoresConSesionInexistente() {
+		String idSesionInexistente = "SES_INEXISTENTE_999";
+		int numespectadores = 10;
+		
+		System.out.println("ID sesion inexistente: " + idSesionInexistente);
+
+		int resultado = controlador.insertarEspectadores(idSesionInexistente, numespectadores);
+		assertTrue("Update especatdores con sesion deberia fallar", resultado <= 0);
+		
+	}
+
+	@Test
+	public void testObtenerIdSesionConParametrosInexistentes() {
+		String fechaInexistente = "2099-01-01";
+		String horaInexistente = "99:99:99";
+		String salaInexistente = "SalaCheNoExiste";
+		System.out.println("Data: " + fechaInexistente);
+		System.out.println("Ora: " + horaInexistente);
+		System.out.println("Sala: " + salaInexistente);
+
+		String idSesion = controlador.obtenerIdSesion(fechaInexistente, horaInexistente, salaInexistente);
+		assertTrue("vacio o null", idSesion == null || idSesion.isEmpty());
+		
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testMetodosConConexionCerrada() {
+		ControladorDB controladorSinConexion = new ControladorDB("cine_daw");
+		System.out.println("Testando obtenerPelis() senza connessione...");
+		ArrayList<Pelicula> pelis = controladorSinConexion.obtenerPelis();
+		assertNotNull("D", pelis);
+		System.out.println("obtenerPelis: OK");
+		System.out.println("Testando dniEmailCliente() senza connessione...");
+		ArrayList<dniMailCliente> clientes = controladorSinConexion.dniEmailCliente();
+		assertNotNull("algo sin conexion", clientes);
+	}
+
+	@Test
+	public void testIniciarConexionConDBInexistente() {
+		ControladorDB controladorDBInesistente = new ControladorDB("cine");
+		System.out.println("DB inesistente: " + controladorDBInesistente);
+		boolean resultado = controladorDBInesistente.iniciarConexion();
+		assertFalse("La conexion a DB deberia fallar", resultado);
 	}
 }
