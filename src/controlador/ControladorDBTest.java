@@ -238,11 +238,11 @@ public class ControladorDBTest {
 
 	@Test
 	public void testInsertarUsuarioConDniDuplicato() {
-		String dniEsistente = "0230000AJ";
-		String nombre = "Ernesto";
-		String apellidos = "Sparalesto";
+		String dniEsistente = "00113344F";
+		String nombre = "Jorge";
+		String apellidos = "Ibáñez Gallardo";
 		String email = "email@gmail.com";
-		String contrasena = "password123";
+		String contrasena = "jorgepass";
 	
 
 		int resultado = controlador.insertarUsuario(dniEsistente, nombre, apellidos, email, contrasena);
@@ -255,7 +255,7 @@ public class ControladorDBTest {
 		String dniNuovo = "43403291X";
 		String nombre = "Test";
 		String apellidos = "Duplicato";
-		String emailEsistente = "LAmadonnalala@gmail.com";
+		String emailEsistente = "jorge.ibanez@email.com";
 		String contrasena = "password123";
 
 		int resultado = controlador.insertarUsuario(dniNuovo, nombre, apellidos, emailEsistente, contrasena);
