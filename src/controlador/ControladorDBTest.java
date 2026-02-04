@@ -81,23 +81,23 @@ public class ControladorDBTest {
 
 		String tituloTest = "Dune";
 		ArrayList<String> fechas = controlador.obtenerFechasPorPerli(tituloTest);
-		assertNotNull("La lista non dovrebbe essere null", fechas);
+		assertNotNull(fechas);
 		for (String fecha : fechas) {
-			assertNotNull("La data non dovrebbe essere null", fecha);
+			assertNotNull( fecha);
 		}
 	}
 
 	@Test
 	public void testObtenerSesionesPorPerli() {
 
-		Pelicula peliculaTest = new Pelicula("Avatar", 155, "Ciencia Ficción/Aventura");
+		Pelicula peliculaTest = new Pelicula("Dune", 155, "Ciencia Ficción/Aventura");
 		String fechaTest = "2026-02-11";
 		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(fechaTest, peliculaTest);
 		assertNotNull("La lista non dovrebbe essere null", sesiones);
 		for (Sesion sesion : sesiones) {
-			assertNotNull("La sesione non dovrebbe essere null", sesion);
-			assertEquals("La data dovrebbe corrispondere", fechaTest, sesion.getFecha());
-			assertEquals("Il titolo del film dovrebbe corrispondere", peliculaTest.getNombre(),
+			assertNotNull( sesion);
+			assertEquals(fechaTest, sesion.getFecha());
+			assertEquals( peliculaTest.getNombre(),
 					sesion.getPelicula().getNombre());
 		}
 	}
@@ -113,7 +113,7 @@ public class ControladorDBTest {
 
 		int resultado = controlador.insertarUsuario(dni, nombre, apellidos, email, contrasena);
 
-		assertTrue("L'inserimento dovrebbe riuscire, risultato: " + resultado, resultado > 0);
+		assertTrue( resultado > 0);
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class ControladorDBTest {
 
 		int idCompra = controlador.insertarCompra(dniCliente, numentradas, preciototal, descuentoaplicado);
 
-		assertTrue("L'ID della compra dovrebbe essere positivo: " + idCompra, idCompra > 0);
+		assertTrue( idCompra > 0);
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class ControladorDBTest {
 
 		String idSesion = controlador.obtenerIdSesion(fecha, hora, sala);
 
-		assertNotNull("L'ID della sessione non dovrebbe essere null", idSesion);
+		assertNotNull( idSesion);
 	}
 
 	@Test
@@ -167,23 +167,23 @@ public class ControladorDBTest {
 		ArrayList<dniMailCliente> resultados = controlador.dniEmailCliente();
 		assertNotNull("La lista non dovrebbe essere null", resultados);
 		for (dniMailCliente cliente : resultados) {
-			assertNotNull("Il DNI non dovrebbe essere null", cliente.getDni());
-			assertNotNull("L'email non dovrebbe essere null", cliente.getEmail());
+			assertNotNull( cliente.getDni());
+			assertNotNull( cliente.getEmail());
 		}
 	}
 
 	@Test
 	public void testObtenerClienteConEmailNull() {
 		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(null);
-		assertNotNull("La lista non dovrebbe essere null anche con email null", clientes);
-		System.out.println("Risultato: OK - Lista non null");
+		assertNotNull(clientes);
+		
 	}
 
 	@Test
 	public void testObtenerClienteConEmailVuoto() {
 		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente("");
-		assertNotNull("La lista non dovrebbe essere null anche con email vuota", clientes);
-		System.out.println("Risultato: OK - Lista non null");
+		assertNotNull(clientes);
+		
 	}
 
 	@Test
@@ -192,23 +192,23 @@ public class ControladorDBTest {
 		System.out.println("Email usata: " + emailInesistente);
 		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(emailInesistente);
 		assertNotNull("La lista non dovrebbe essere null", clientes);
-		assertTrue("La lista dovrebbe essere vuota per email inesistente", clientes.isEmpty());
-		System.out.println("Risultato: OK - Lista vuota");
+		assertTrue(clientes.isEmpty());
+		
 	}
 
 	@Test
 	public void testObtenerFechasPorPerliConTitoloNull() {
 		ArrayList<String> fechas = controlador.obtenerFechasPorPerli(null);
-		assertNotNull("La lista non dovrebbe essere null anche con titolo null", fechas);
-		System.out.println("Risultato: OK - Lista non null");
+		assertNotNull(fechas);
+		
 	}
 
 	@Test
 	public void testObtenerFechasPorPerliConTitoloVuoto() {
 		System.out.println("=== TEST: Obtener date con titolo vuoto ===");
 		ArrayList<String> fechas = controlador.obtenerFechasPorPerli("");
-		assertNotNull("La lista non dovrebbe essere null anche con titolo vuoto", fechas);
-		System.out.println("Risultato: OK - Lista non null");
+		assertNotNull(fechas);
+	
 	}
 
 	@Test
@@ -217,8 +217,8 @@ public class ControladorDBTest {
 		System.out.println("Titolo usato: " + titoloInesistente);
 		ArrayList<String> fechas = controlador.obtenerFechasPorPerli(titoloInesistente);
 		assertNotNull("La lista non dovrebbe essere null", fechas);
-		assertTrue("La lista dovrebbe essere vuota per titolo inesistente", fechas.isEmpty());
-		System.out.println("Risultato: OK - Lista vuota");
+		assertTrue(fechas.isEmpty());
+		;
 	}
 
 	@Test
@@ -226,15 +226,14 @@ public class ControladorDBTest {
 		Pelicula peliculaTest = new Pelicula("Dune", 155, "Ciencia Ficción/Aventura");
 		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(null, peliculaTest);
 		assertNotNull("La lista non dovrebbe essere null anche con data null", sesiones);
-		System.out.println("Risultato: OK - Lista non null");
+		
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testObtenerSesionesPorPerliConPeliculaNull() {
 		String fechaTest = "2026-02-11";
 		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(fechaTest, null);
-		assertNotNull("La lista non dovrebbe essere null anche con pelicula null", sesiones);
-		System.out.println("Risultato: OK - Lista non null");
+		assertNotNull(sesiones);
 	}
 
 	@Test
@@ -244,13 +243,11 @@ public class ControladorDBTest {
 		String apellidos = "Sparalesto";
 		String email = "email@gmail.com";
 		String contrasena = "password123";
-		
-		System.out.println("DNI duplicato: " + dniEsistente);
-		System.out.println("Email unica: " + email);
+	
 
 		int resultado = controlador.insertarUsuario(dniEsistente, nombre, apellidos, email, contrasena);
-		assertTrue("Inserimento con DNI duplicato dovrebbe fallire", resultado <= 0);
-		System.out.println("Risultato: OK - Inserimento fallito (risultato: " + resultado + ")");
+		assertTrue("Insert con DNI duplicado deberia fallar", resultado <= 0);
+	
 	}
 
 	@Test
@@ -260,13 +257,10 @@ public class ControladorDBTest {
 		String apellidos = "Duplicato";
 		String emailEsistente = "LAmadonnalala@gmail.com";
 		String contrasena = "password123";
-		
-		System.out.println("DNI nuovo: " + dniNuovo);
-		System.out.println("Email duplicata: " + emailEsistente);
 
 		int resultado = controlador.insertarUsuario(dniNuovo, nombre, apellidos, emailEsistente, contrasena);
-		assertTrue("Inserimento con email duplicata dovrebbe fallire", resultado <= 0);
-		System.out.println("Risultato: OK - Inserimento fallito (risultato: " + resultado + ")");
+		assertTrue("Insert con mail duplicada beberia fallar", resultado <= 0);
+	
 	}
 
 	@Test
@@ -279,8 +273,8 @@ public class ControladorDBTest {
 		System.out.println("DNI inesistente: " + dniInexistente);
 
 		int idCompra = controlador.insertarCompra(dniInexistente, numentradas, preciototal, descuentoaplicado);
-		assertTrue("Inserimento compra con cliente inesistente dovrebbe fallire", idCompra <= 0);
-		System.out.println("Risultato: OK - Inserimento fallito (risultato: " + idCompra + ")");
+		assertTrue("Inser compra con dni que no existe deberia fallar", idCompra <= 0);
+		
 	}
 
 	@Test
@@ -294,8 +288,8 @@ public class ControladorDBTest {
 		System.out.println("ID compra inesistente: " + id_compra_inexistente);
 
 		int resultado = controlador.insertarEntrada(id_compra_inexistente, id_sesion, numentradas, preciototal, descuentoaplicado);
-		assertTrue("Inserimento entrata con compra inesistente dovrebbe fallire", resultado <= 0);
-		System.out.println("Risultato: OK - Inserimento fallito (risultato: " + resultado + ")");
+		assertTrue("instert entrada deberia fallar", resultado <= 0);
+		
 	}
 
 	@Test
@@ -306,26 +300,26 @@ public class ControladorDBTest {
 		System.out.println("ID sesion inexistente: " + idSesionInexistente);
 
 		int resultado = controlador.insertarEspectadores(idSesionInexistente, numespectadores);
-		assertTrue("Update spettatori con sessione inesistente dovrebbe fallire", resultado <= 0);
-		System.out.println("Risultato: OK - Update fallito (risultato: " + resultado + ")");
+		assertTrue("Update especatdores con sesion deberia fallar", resultado <= 0);
+		
 	}
 
 	@Test
-	public void testObtenerIdSesionConParametriInexistentes() {
+	public void testObtenerIdSesionConParametrosInexistentes() {
 		String fechaInexistente = "2099-01-01";
 		String horaInexistente = "99:99:99";
-		String salaInexistente = "SalaCheNonEsiste";
+		String salaInexistente = "SalaCheNoExiste";
 		System.out.println("Data: " + fechaInexistente);
 		System.out.println("Ora: " + horaInexistente);
 		System.out.println("Sala: " + salaInexistente);
 
 		String idSesion = controlador.obtenerIdSesion(fechaInexistente, horaInexistente, salaInexistente);
-		assertTrue("Con parametri inesistenti dovrebbe restituire stringa vuota o null", idSesion == null || idSesion.isEmpty());
-		System.out.println("Risultato: OK - Stringa vuota/null (risultato: '" + idSesion + "')");
+		assertTrue("vacio o null", idSesion == null || idSesion.isEmpty());
+		
 	}
 
 	@Test(expected = NullPointerException.class)
-	public void testMetodiConConexionCerrada() {
+	public void testMetodosConConexionCerrada() {
 		ControladorDB controladorSinConexion = new ControladorDB("cine_daw");
 		System.out.println("Testando obtenerPelis() senza connessione...");
 		ArrayList<Pelicula> pelis = controladorSinConexion.obtenerPelis();
@@ -334,7 +328,6 @@ public class ControladorDBTest {
 		System.out.println("Testando dniEmailCliente() senza connessione...");
 		ArrayList<dniMailCliente> clientes = controladorSinConexion.dniEmailCliente();
 		assertNotNull("algo sin conexion", clientes);
-		System.out.println("dniEmailCliente: OK");
 	}
 
 	@Test
@@ -342,7 +335,6 @@ public class ControladorDBTest {
 		ControladorDB controladorDBInesistente = new ControladorDB("cine");
 		System.out.println("DB inesistente: " + controladorDBInesistente);
 		boolean resultado = controladorDBInesistente.iniciarConexion();
-		assertFalse("La connessione a DB inesistente dovrebbe fallire", resultado);
-		System.out.println("Risultato: OK - Connessione fallita");
+		assertFalse("La conexion a DB deberia fallar", resultado);
 	}
 }
