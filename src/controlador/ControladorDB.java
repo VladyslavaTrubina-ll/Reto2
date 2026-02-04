@@ -60,6 +60,11 @@ public class ControladorDB {
 		return Conexioncerrada;
 	}
 
+	/*
+	 * @param Metodo para obtener los datos del cliente registrado en la base de datos con el String email selecionado
+	 * 
+	 * @return retorna los datos dni,nombre,apellido,email,contraseña y los guarda en un array
+	 */
 	public ArrayList<ClienteAcesso> obtenerCliente(String email) {
 		ArrayList<ClienteAcesso> clientes = new ArrayList<ClienteAcesso>();
 		String query = "SELECT dni, nombre, apellidos, email, AES_DECRYPT(contraseña,'clave_secreta_cine') FROM Cliente "
@@ -81,6 +86,11 @@ public class ControladorDB {
 		return clientes;
 	}
 
+	/*
+	 * @param Metodo para obtener las peli disponilbes en la fecha mas cercana a la nuestra
+	 * 
+	 * @return retorna los datos dni,nombre,apellido,email,contraseña y los guarda en un array
+	 */
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
 
@@ -89,7 +99,7 @@ public class ControladorDB {
 				+ "WHERE fecha >= CURDATE() AND hora_inicio > current_time "
 				+ "GROUP BY titulo, duracion, genero " 
 				+ "HAVING min(fecha) > CURDATE() OR (min(fecha) = CURDATE() AND min(hora_inicio) > current_time) " +
-				 "ORDER BY Titulo";
+				 "order by min(fecha), min(hora_inicio)";
 		
 		try {
 			Statement consulta = conexion.createStatement();
