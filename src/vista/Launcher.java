@@ -1,6 +1,5 @@
 package vista;
 
-import java.util.Scanner;
 import modelo.*;
 import controlador.*;
 import java.util.ArrayList;
@@ -95,16 +94,6 @@ public class Launcher {
 	                	}
 	                }
 	                if (sesionElegida != null) {
-	                	// 9. Generar entrada(Sesion, numEntadas/numEspectadores) TODO new classe 
-	                	/*	Sesion nuevaEntrada = gestorCine.generarEntrada(
-	                			peliElegida,
-	                			fechaElegida.getFecha(),
-	                			horarioElegido.getSala(),
-	                			horarioElegido.getOrario(),
-	                			numEspectadores,
-	                			horarioElegido.getPrecio()
-	                			);
-	                	 */
 	                	// 10. Añadir al carrito 
 	                	carrito.anadirEntrada(sesionElegida, numEspectadores);
 	                	System.out.println(" Test Entrada añadida al carrito");
@@ -160,7 +149,6 @@ public class Launcher {
 	public static void registrarCliente() {
 		System.out.println("=== Registro para nuevo cliente ===");
 
-		// System.out.print("Escribe tu DNI: ");
 		String dni = "";
 		do {
 			dni = gestorCine.controladorEntrada.leerDNI(dni);
@@ -206,15 +194,12 @@ public class Launcher {
 
 	public static void procesoPagar() {
 		System.out.println("\n=== RESUMEN DE COMPRA ===");
-		carrito.resumen(gestorCine.clienteLogueado.getNombre(), gestorCine.clienteLogueado.getApellidos(), carrito);
+		carrito.resumen(gestorCine.clienteLogueado.getNombre(), gestorCine.clienteLogueado.getApellidos());
 
 		String confirmar = gestorCine.controladorEntrada.leerSiNo("¿Confirmar compra?");
 
 		if (confirmar.equalsIgnoreCase("si")) {
 			// Procesar pago
-			double precioConIva = Math.round(carrito.getPrecioTotal() * 1.21 * 100.0) / 100.0;
-			// double cambio = procesarPagoDinero(precioConIva);
-			// carrito.setCambio(cambio);
 
 			// 15. Insertar compra en BD
 			int idCompra = gestorCine.controlador.insertarCompra(gestorCine.clienteLogueado.getDni(),
@@ -231,19 +216,13 @@ public class Launcher {
 				gestorCine.controlador.insertarEntrada(idCompra, idSesion, cantidad, precio, descuento);
 				gestorCine.controlador.insertarEspectadores(idSesion, cantidad);
 			}
-
-			// 16. Insertar Entrada en DB
-
 			System.out.println("\nCompra realizada con éxito");
-			// TODO guardar a BD update en sesion espectadores con getCantidadesEntradas
-			// (class Entrada)
 
 			// 16. ¿Guardar ticket?
 			String guardarTicket = gestorCine.controladorEntrada.leerSiNo("¿Guardar ticket?");
 			if (guardarTicket.equalsIgnoreCase("si")) {
 				GestorTicket.salvaCompra(gestorCine.clienteLogueado, carrito);
 			}
-
 			// 17. Vaciar carrito
 			carrito.vaciar();
 		} else {

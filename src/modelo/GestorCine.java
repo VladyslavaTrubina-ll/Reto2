@@ -1,18 +1,9 @@
 package modelo;
 
-import modelo.Carrito;
-import modelo.Sesion;
-import modelo.ClienteAcesso;
-import modelo.EspectadoresSesion;
-import modelo.Sala;
-import modelo.Pelicula;
-
-import modelo.Ticket;
 import controlador.ControladorEntradaYSalida;
 import controlador.ControladorDB;
 import controlador.Imprimir;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GestorCine {
 
@@ -43,7 +34,6 @@ public class GestorCine {
 	public ClienteAcesso login() {
 
 		boolean encontrado = false;
-		// ClienteAcesso clienteLogueado = null;
 
 		while (!encontrado) {
 			String email = controladorEntrada.leerCadena("Escribe su email: ");
@@ -100,7 +90,7 @@ public class GestorCine {
 		return sesionElegido;
 	}
 
-	public int seleccionarNumEspectadores(Sesion sesion) { // seleccionar
+	public int seleccionarNumEspectadores(Sesion sesion) {
 		int capacidad = sesion.getSala().getSitios();
 		int ocupados = sesion.getNumEspectadores();
 
