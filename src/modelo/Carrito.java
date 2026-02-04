@@ -62,6 +62,19 @@ public class Carrito {
 		this.descuento = 0.0;
 	}
 	
+	public double calcularDescuentoAplicado(int numSesiones) {
+
+		// 2. Determinamos el porcentaje de descuento
+		if (numSesiones >= 3) {
+			return 0.30; // 30%
+		} else if (numSesiones == 2) {
+			return 0.20; // 20%
+		} else if (numSesiones == 1) {
+			return 0.0;
+		} else {
+			throw new IllegalArgumentException("No puede ser " + numSesiones + " numSesiones < 1");
+		}
+	}
 	
 	public void calcularPrecioYDescuento() {
 		if (sesiones.isEmpty()) {
@@ -74,16 +87,7 @@ public class Carrito {
 
 		// 1. Contar cuantos sesiones selecionados
 		int numSesiones = sesiones.size();
-
-		// 2. Determinamos el porcentaje de descuento
-		
-		if (numSesiones >= 3) {
-			this.descuentoAplicado = 0.30; // 30%
-			
-		} else if (numSesiones == 2) {
-			this.descuentoAplicado = 0.20; // 20%
-		}
-		// Si 1 sesion: porcentaje = 0.0
+		this.descuentoAplicado = calcularDescuentoAplicado(numSesiones);
 		
 		this.precioSubTotal = 0.0;
 		
@@ -91,16 +95,21 @@ public class Carrito {
 		for (int i = 0; i < numSesiones; i++) {
 			Sesion sesion = sesiones.get(i);
 			int numEntradas = cantidadesEntradas.get(i);
-			
 			this.precioSubTotal += sesion.getPrecio() * numEntradas;
 		}
-		
+		double[] x = aplicarDescuento(precioSubTotal, descuentoAplicado);
+		this.precioTotal = x[0];
+		this.descuento = x[1];
+	}
+	
+	public double[] aplicarDescuento(double precioSubTotal, double descuentoAplicado) {
 		// 4. Aplicar descuento
-		this.descuento = precioSubTotal * descuentoAplicado;
+		descuento = precioSubTotal * descuentoAplicado;
 		
 		// 5. Calcular precio final
-		this.precioTotal = precioSubTotal - descuento;
-
+		precioTotal = precioSubTotal - descuento;
+		
+		return new double[]{precioTotal, descuento};
 	}
 	
 	public void anadirEntrada(Sesion sesion, int numEntradas) {
