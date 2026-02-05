@@ -199,7 +199,7 @@ public class ControladorDB {
 			// Ejecutamos el INSERT
 			int nRows = ps.executeUpdate();
 
-			System.out.println("Usuario insertado correctamente");
+			
 			return nRows;
 			
 		} catch (SQLException e) {
@@ -230,7 +230,7 @@ public class ControladorDB {
 			
 			if (generatedKeys.next()) {
 				int idCompraGenerado = generatedKeys.getInt(1);
-				System.out.println("Compra insertada correctamente con ID: " + idCompraGenerado);
+				
 				return idCompraGenerado;
 			}
 		
@@ -265,7 +265,7 @@ public class ControladorDB {
 
 			
 			int nRows = ps.executeUpdate();
-			System.out.println("Entrada insertada correctamente");
+			
 			
 			return nRows;
 			

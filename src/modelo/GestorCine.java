@@ -47,7 +47,7 @@ public class GestorCine {
 			String contraseña = controladorEntrada.leerCadena("Escribe su contraseña: ");
 
 			ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(email);
-			System.out.println(clientes);
+			
 			int contador = 0;
 
 			while (contador < clientes.size() && !encontrado) {
