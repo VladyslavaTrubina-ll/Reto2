@@ -110,7 +110,7 @@ public class GestorCine {
 		int opcion = controladorEntrada.esValorMenuValido(1, sesiones.size());
 
 		Sesion sesionElegido = sesiones.get(opcion - 1);
-		System.out.println("Fecha seleccionada: " + sesionElegido);
+		System.out.println("Fecha seleccionada: " + sesionElegido.getFecha());
 		return sesionElegido;
 	}
 

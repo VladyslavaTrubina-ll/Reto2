@@ -52,9 +52,8 @@ public class Sesion {
 	
 	@Override
 	public String toString() {
-		return "Sesion [pelicula=" + pelicula.getNombre()
-		+ ", fecha=" + fecha + ", horaInicio=" + horaInicio  + ", horaFIn=" + horaFin  + ", sala="+ sala 
-		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
+	    return String.format("Sesión [Pelicula: %s | Fecha: %s | Hora: %s | Sala: %s | Espectadores: %d | Precio: %.2f€]",
+	            pelicula.getNombre(), fecha, horaInicio, sala.getNombre(), numEspectadores, precio);
 	}
 	
 	public void actualizarEspectadores(int numEntradas) { //TODO utilisar
