@@ -230,7 +230,6 @@ public class ControladorDB {
 			
 			if (generatedKeys.next()) {
 				int idCompraGenerado = generatedKeys.getInt(1);
-				
 				return idCompraGenerado;
 			}
 		
@@ -263,12 +262,9 @@ public class ControladorDB {
 			ps.setDouble(4, preciototal);
 			ps.setDouble(5, descuentoaplicado);
 
-			
-			int nRows = ps.executeUpdate();
-			
-			
-			return nRows;
-			
+			// Ejecutamos el INSERT
+			int nRows = ps.executeUpdate();	
+			return nRows;	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

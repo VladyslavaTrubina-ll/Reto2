@@ -1,5 +1,8 @@
 package modelo;
-
+/**
+ * Esta clase gestiona el contador de espectadores (la ocupación) de una sesión.
+ * Permite llevar el registro de cuántas butacas han sido ocupadas.
+ */
 public class EspectadoresSesion {
 	private int espectadores;
 
@@ -23,7 +26,12 @@ public class EspectadoresSesion {
 	public void setEspectadores(int espectadores) {
 		this.espectadores = espectadores;
 	}
-
+/**
+ * Incrementa el número actual de espectadores.Suma la
+ * cantidad de nuevas entradas vendidas al total acumulado.
+ * 
+ * @param nuevoespectadores
+ */
 	public void anadirespectadores(int nuevoespectadores) {
 		this.espectadores = espectadores + nuevoespectadores;
 	}

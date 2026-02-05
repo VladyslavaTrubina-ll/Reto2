@@ -20,16 +20,17 @@ public class Imprimir {
 	 * @param peliculas metodo que recoge el arraylist de peliculas obtenido con la query y lo imprime
 	 */
 	public void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
-		System.out.println("\nPeliculas disponibles");
-		System.out.println("------------------------------");
+		System.out.println("\n	Peliculas disponibles");
+		System.out.println("-------------------------------------------");
 
 		if (peliculas.isEmpty()) {
-			System.out.println("No hay películas disponibles.");
+			System.out.println("	No hay películas disponibles.");
 			return;
     	}
 		for (int i = 0; i < peliculas.size(); i++) {
 			Pelicula p = peliculas.get(i);
-			System.out.printf("[%d] %s - %d min (%s)%n", (i + 1), p.getNombre(), p.getDuracion(), p.getGenero());
+			System.out.printf("[%d] %-20s - %3d min (%s)%n",
+					(i + 1), p.getNombre(), p.getDuracion(), p.getGenero());
 		}
 	}
 	/**
@@ -61,14 +62,9 @@ public class Imprimir {
 	    return fechasUnicos;
 	}
 	
-	/**
-	 * 
-	 * @param sesiones lo mismo de antes, recoge el array con los objetos sesiones obtenido con el metodo del 
-	 * controladorDB
-	 */
-	public void imprimirSesiones(ArrayList<Sesion> sesiones) {
-		System.out.println("\nSesiones disponibles:");
-		System.out.println("------------------------------");
+	public void imprimirSesiones(ArrayList<Sesion> sesiones, String fechaElegida) {
+		System.out.println("\nSesiones disponibles para " + fechaElegida);
+		System.out.println("-------------------------------------------");
 		for (int i = 0; i < sesiones.size(); i++) {
 			Sesion s = sesiones.get(i);
 			System.out.printf("[%d] %s - %s | Sala: %s | Precio: %.2f€ | Disponibles: %d%n", 
@@ -76,5 +72,6 @@ public class Imprimir {
 				s.getSala().getNombre(), s.getPrecio(), 
 				(s.getSala().getSitios() - s.getNumEspectadores()));
 		}
+		System.out.println("-------------------------------------------");
 	}
 }

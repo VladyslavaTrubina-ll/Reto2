@@ -4,6 +4,10 @@ import modelo.*;
 import controlador.*;
 import java.util.ArrayList;
 
+
+/*g,jgk.ui,tgi.uktgiu.tuitfuy*/
+
+
 public class Launcher {
 	static GestorTicket gestorTicket = new GestorTicket();
 	private static GestorCine gestorCine = new GestorCine();
@@ -68,8 +72,8 @@ public class Launcher {
 	                while (eligiendoSesion) {
 	                	// 6. Elegir horario/sala/precio
 	                	ArrayList<Sesion> sesiones = gestorCine.controlador.obtenerSesionesPorPerli(fechaElegida, peliElegida);
-	                
-	                	imprimir.imprimirSesiones(sesiones);
+	                	//TODO imprimir sesiones y mejorar print
+	                	imprimir.imprimirSesiones(sesiones, fechaElegida);
 	                	String volverSiNo = gestorCine.controladorEntrada.leerSiNo("¿Volver?");
 	                	if (volverSiNo.equalsIgnoreCase("si")) {
 	                		eligiendoSesion = false;
@@ -94,7 +98,6 @@ public class Launcher {
 	                if (sesionElegida != null) {
 	                	// 10. Añadir al carrito 
 	                	carrito.anadirEntrada(sesionElegida, numEspectadores);
-	                	
 	                
 	                	// 11. ¿Quieres elegir más películas?
 	                	String masPeliculas = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir más películas?");
@@ -111,12 +114,11 @@ public class Launcher {
 	            } else if (elegirPeli.equalsIgnoreCase("no")) {
 	                // 12. ¿Hay algo en carrito?
 	                if (carrito.getSesiones().isEmpty()) {
-	                 
-	                    System.out.println("Carrito vacío, no puedes comprar");
+	                    // 12.1 Carrito vacío
 	                    eligiendoPeliculas = false;
 	                } else {
-	                   
-	                    System.out.println("Tienes entradas en carrito");
+	                    // 12.2 Carrito con entradas
+	                    System.out.println("\n!Tienes entradas en carrito!");
 	                    String deseaComprar = gestorCine.controladorEntrada.leerSiNo("¿Quieres comprar?");
 	                    
 	                    if (deseaComprar.equalsIgnoreCase("si")) {

@@ -1,5 +1,11 @@
 package modelo;
 
+
+/**
+ * Esta clase almacena la información personal básica y los dcatos de 
+ * autenticación (email y contraseña) necesarios par ainicio de la sesión
+ * del sistema.
+ */
 public class ClienteAcesso {
 	private String dni, nombre, apellidos, email, contraseña;
 
