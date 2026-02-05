@@ -1,5 +1,8 @@
 package modelo;
-
+/**
+ * Esta clse representa la proyección específica de una película.
+ * Combina la película, el lugar sala, en el momento (fecha/hora y el estado de ocupación.
+ */
 public class Sesion {
 	
 	Pelicula pelicula;
@@ -56,7 +59,12 @@ public class Sesion {
 		+ ", fecha=" + fecha + ", horaInicio=" + horaInicio  + ", horaFIn=" + horaFin  + ", sala="+ sala 
 		+ ", numEspectadores=" + numEspectadores + ", precio=" + precio + "]";
 	}
-	
+	/**
+	 * Este método actualiza la ocupación de la sesión tras una venta
+	 * Suma las nuevas entradas vendidas al contador de espectadores.
+	 * Este método debe llamarse al finalizar la compra en el carrito
+	 * @param numEntradas
+	 */
 	public void actualizarEspectadores(int numEntradas) { //TODO utilisar
 		this.numEspectadores += numEntradas;
 	}
