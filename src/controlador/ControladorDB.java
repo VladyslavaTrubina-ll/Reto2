@@ -87,9 +87,9 @@ public class ControladorDB {
 	}
 
 	/*
-	 * @param Metodo para obtener las peli disponilbes en la fecha mas cercana a la nuestra
+	 * @param Metodo para obtener las peli disponilbes en la fecha y hora mas cercana a la actual
 	 * 
-	 * @return retorna los datos dni,nombre,apellido,email,contraseña y los guarda en un array
+	 * @return devuelve un array con objeto peli (nombre,genero,duracion)
 	 */
 	public ArrayList<Pelicula> obtenerPelis() {
 		ArrayList<Pelicula> pelis = new ArrayList<Pelicula>();
@@ -116,6 +116,12 @@ public class ControladorDB {
 		return pelis;
 	}
 
+	/*
+	 * @param Metodo que recoge el String con el titulo elegido y lo usa para que la query nos retorne las fechas donde se puede ver la pelicula
+	 * 
+	 * @return devuelve un array con objeto fechas, las varias fecahs disponibles.
+	 */
+	
 	public ArrayList<String> obtenerFechasPorPerli(String titulo) {
 		ArrayList<String> fechas = new ArrayList<String>();
 
@@ -138,6 +144,15 @@ public class ControladorDB {
 		return fechas;
 	}
 
+	
+	/*
+	 * @param Metodo que recge String de fceha eleida anteriometne y String de pelicula elegida anteriormente para usarla en la query y obtener las sesiones
+	 * disponibles en esta fecha para esta pelicula
+	 * 
+	 * @return devuelve un array con objeto sesion que tiene datos de la sala,hora inicio, precio de la sesion 
+	 *
+	 */
+	
 	public ArrayList<Sesion> obtenerSesionesPorPerli(String fecha, Pelicula pelicula) {
 
 		ArrayList<Sesion> sesiones = new ArrayList<Sesion>();
@@ -161,6 +176,12 @@ public class ControladorDB {
 		return sesiones;
 	}
 
+	/*
+	 * @param Metodo para insertar nuevo cliente al registarse, tiene que recoger los valores que se ponen al registrase y usarlos para generar el insert
+	 * 
+	 * @return devuelve -1 solo en caso de error 
+	 *
+	 */
 	public int insertarUsuario(String dni, String nombre, String apellidos, String email, String contrasena) {
 
 		String sql = "INSERT INTO Cliente (dni, nombre, apellidos, email, contraseña) VALUES(?,?,?,?,AES_ENCRYPT(?, 'clave_secreta_cine'))";
@@ -178,7 +199,7 @@ public class ControladorDB {
 			// Ejecutamos el INSERT
 			int nRows = ps.executeUpdate();
 
-			System.out.println("Usuario insertado correctamente");
+			
 			return nRows;
 			
 		} catch (SQLException e) {
@@ -187,6 +208,12 @@ public class ControladorDB {
 		return -1;
 	}
 
+	/*
+	 * @param Metodo para insertar nuevo compra, como para cliente tiene que recoger los datos generados de la compra confirmada
+	 * y usarlos para generar el isnert en la DB
+	 * @return devuelve -1 solo en caso de error 
+	 *
+	 */
 	public int insertarCompra(String dni, int numentradas, double preciototal, double descuentoaplicado) {
 
 		String sql = "INSERT INTO Compra (dni_cliente, fecha_hora, num_entradas, precio_total, descuento_aplicado)VALUES(?, NOW(), ?, ?,?)";
@@ -194,7 +221,6 @@ public class ControladorDB {
 		try {
 			PreparedStatement ps = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-			// Asignamos el parámetro String
 			ps.setString(1, dni);
 			ps.setInt(2, numentradas);
 			ps.setDouble(3, preciototal);
@@ -206,7 +232,7 @@ public class ControladorDB {
 				int idCompraGenerado = generatedKeys.getInt(1);
 				return idCompraGenerado;
 			}
-			// Ejecutamos el INSERT
+		
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -214,7 +240,13 @@ public class ControladorDB {
 		return -1;
 	}
 
-	
+	/*
+	 * @param Metodo para insertar nueva entrada, como para compra tiene que recoger los datos generados de la compra confirmada
+	 * y usarlos para generar el isnert en la DB
+	 * 
+	 * @return devuelve -1 solo en caso de error 
+	 *
+	 */
 
 	public int insertarEntrada(int id_compra, String id_sesion, int numentradas, double preciototal,
 			double descuentoaplicado) {
@@ -223,7 +255,7 @@ public class ControladorDB {
 
 		try {
 			PreparedStatement ps = conexion.prepareStatement(sql);
-			// Asignamos el parámetro String
+			
 			ps.setInt(1, id_compra);
 			ps.setString(2, id_sesion);
 			ps.setInt(3, numentradas);
@@ -239,6 +271,14 @@ public class ControladorDB {
 		return -1;
 	}
 
+	/*
+	 * @param Metodo para obtener el idsesion, utiliza fecha, hora y sala porque son claves alternativas de sesion
+	 *  se necesita idsesion para actualizar los sitios disponibles despues de cada compra confirmada
+	 * 
+	 * @return devuelve un String con el idSesion
+	 *
+	 */
+	
 	public String obtenerIdSesion(String fecha, String hora, String sala) {
 		String sesionId = "";
 		String query = "SELECT id_sesion  FROM Sesion SE JOIN Sala SA on SA.id_sala = SE.id_sala WHERE hora_inicio = '"
@@ -259,6 +299,15 @@ public class ControladorDB {
 		return sesionId;
 	}
 
+	/*
+	 * @param Metodo para modificar espectadores en la sesion elegida, necesito recoger el idSesion y los sitios selecionados
+	 * por el cliente en la respectiva sesion
+	 *  
+	 * 
+	 * @return -1 en caso de error
+	 *
+	 */
+	
 	public int insertarEspectadores(String idSesion, int numespectadores) {
 		String query = "UPDATE Sesion SET espectadores = espectadores + '" + numespectadores + "' WHERE  id_sesion = '"
 				+ idSesion + "'";
@@ -273,6 +322,10 @@ public class ControladorDB {
 		return -1;
 	}
 
+	/*@param metodo para obtener las mail y los dni de todos los clientes registrado, necesario para comparacioin en fase de registro
+	 * 
+	 * @return array con objeto dniEmailCliente( 2 String)
+	 */
 	public ArrayList<dniMailCliente> dniEmailCliente() {
 		ArrayList<dniMailCliente> dniEmailCliente = new ArrayList<dniMailCliente>();
 		String query = "SELECT dni, email FROM Cliente";

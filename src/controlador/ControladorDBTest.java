@@ -20,7 +20,7 @@ public class ControladorDBTest {
 
 		controlador = new ControladorDB("cine_daw");
 		boolean conectado = controlador.iniciarConexion();
-		System.out.println("Connessione stabilita nel BeforeClass: " + conectado);
+		System.out.println("Conexion conseguida: " + conectado);
 	}
 
 	@AfterClass
@@ -28,13 +28,13 @@ public class ControladorDBTest {
 
 		if (controlador != null) {
 			boolean cerrado = controlador.cerrarConexion();
-			System.out.println("Connessione chiusa nell'AfterClass: " + cerrado);
+			System.out.println("Connessione cerrada: " + cerrado);
 		}
 	}
 
 	@Test
 	public void testIniciarConexion() {
-		assertNotNull("Controlador non dovrebbe essere null", controlador);
+		assertNotNull("Controlador no deberia ser null", controlador);
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class ControladorDBTest {
 
 			System.out.println("Test chiusura connessione (non chiusa realmente)");
 		} catch (Exception e) {
-			fail("Non dovrebbe lanciare eccezioni");
+			fail("No deberia haber");
 		}
 	}
 
@@ -71,8 +71,8 @@ public class ControladorDBTest {
 		ArrayList<Pelicula> pelis = controlador.obtenerPelis();
 		assertNotNull("La lista non dovrebbe essere null", pelis);
 		for (Pelicula peli : pelis) {
-			assertNotNull("Il titolo non dovrebbe essere null", peli.getNombre());
-			assertTrue("La durata dovrebbe essere positiva", peli.getDuracion() > 0);
+			assertNotNull("do deberia ser null", peli.getNombre());
+			assertTrue("numero positivo", peli.getDuracion() > 0);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class ControladorDBTest {
 		Pelicula peliculaTest = new Pelicula("Dune", 155, "Ciencia Ficción/Aventura");
 		String fechaTest = "2026-02-11";
 		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(fechaTest, peliculaTest);
-		assertNotNull("La lista non dovrebbe essere null", sesiones);
+		assertNotNull("no bederia ser null", sesiones);
 		for (Sesion sesion : sesiones) {
 			assertNotNull( sesion);
 			assertEquals(fechaTest, sesion.getFecha());
@@ -138,7 +138,7 @@ public class ControladorDBTest {
 
 		int resultado = controlador.insertarEntrada(id_compra, id_sesion, numentradas, preciototal, descuentoaplicado);
 
-		assertTrue("L'inserimento dovrebbe riuscire: " + resultado, resultado > 0);
+		assertTrue("deberia insertar: " + resultado, resultado > 0);
 	}
 
 	@Test
@@ -159,13 +159,13 @@ public class ControladorDBTest {
 
 		int resultado = controlador.insertarEspectadores(idSesion, numespectadores);
 
-		assertTrue("L'aggiornamento dovrebbe riuscire: " + resultado, resultado >= 0);
+		assertTrue("deberia insertar: " + resultado, resultado >= 0);
 	}
 
 	@Test
 	public void testDniEmailCliente() {
 		ArrayList<dniMailCliente> resultados = controlador.dniEmailCliente();
-		assertNotNull("La lista non dovrebbe essere null", resultados);
+		assertNotNull( resultados);
 		for (dniMailCliente cliente : resultados) {
 			assertNotNull( cliente.getDni());
 			assertNotNull( cliente.getEmail());
@@ -191,7 +191,7 @@ public class ControladorDBTest {
 		String emailInesistente = "email.che.non.esiste@gmail.com";
 		System.out.println("Email usata: " + emailInesistente);
 		ArrayList<ClienteAcesso> clientes = controlador.obtenerCliente(emailInesistente);
-		assertNotNull("La lista non dovrebbe essere null", clientes);
+		assertNotNull(clientes);
 		assertTrue(clientes.isEmpty());
 		
 	}
@@ -225,7 +225,7 @@ public class ControladorDBTest {
 	public void testObtenerSesionesPorPerliConFechaNull() {
 		Pelicula peliculaTest = new Pelicula("Dune", 155, "Ciencia Ficción/Aventura");
 		ArrayList<Sesion> sesiones = controlador.obtenerSesionesPorPerli(null, peliculaTest);
-		assertNotNull("La lista non dovrebbe essere null anche con data null", sesiones);
+		assertNotNull(sesiones);
 		
 	}
 

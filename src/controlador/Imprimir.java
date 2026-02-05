@@ -15,6 +15,10 @@ public class Imprimir {
 		System.out.println("=================================");
 	}
 
+	/**
+	 * 
+	 * @param peliculas metodo que recoge el arraylist de peliculas obtenido con la query y lo imprime
+	 */
 	public void imprimirPeliculas(ArrayList<Pelicula> peliculas) {
 		System.out.println("\n	Peliculas disponibles");
 		System.out.println("-------------------------------------------");
@@ -29,6 +33,12 @@ public class Imprimir {
 					(i + 1), p.getNombre(), p.getDuracion(), p.getGenero());
 		}
 	}
+	/**
+	 * 
+	 * @param fechas
+	 * @param titulo
+	 * @return
+	 */
 	public ArrayList<String> imprimirFechas(ArrayList<String> fechas, String titulo) {
 	    
 	    System.out.println("\nFechas disponibles para: " + titulo);

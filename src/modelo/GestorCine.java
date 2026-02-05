@@ -31,6 +31,13 @@ public class GestorCine {
 		}
 	}
 
+	/**
+	 * @param ClienteAcesso para hacer login, pide mail y contrasena, recoge los datos del cliente corrispodiente al mail
+	 * con el metodo aposito creato en el controladorDB 
+	 * 
+	 * @return si el login es correcto devueve un objeto ClienteAcesso con los datos del cliente sino sale error 
+	 * y pide los datos otra vez
+	 */
 	public ClienteAcesso login() {
 
 		boolean encontrado = false;
@@ -58,6 +65,11 @@ public class GestorCine {
 		return this.clienteLogueado;
 	}
 
+	/**
+	 * @param peliculas metodo para elegir una pelicula en el arraylist peliculas que nos devuelve el metodo imprimir peliculas
+	 * @return retorna un objeto Pelicula con los atributos de la pelicula elegida.
+	 */
+	
 	public Pelicula elegirPelicula(ArrayList<Pelicula> peliculas) {
 		int peliculaIndex = controladorEntrada.esValorMenuValido(1, peliculas.size());
 
@@ -66,6 +78,12 @@ public class GestorCine {
 		return peliElegida;
 	}
 
+	/**
+	 * 
+	 * @param fechas igual a pelicula este metodo sirve para elegir una fecha entre las disponibles en el array generado
+	 * por el metodo imprimir.fechas que utiliza la query del controladorDB
+	 * @return devuelve uno String que corresponde a la fecha elegida
+	 */
 	public String elegirFecha(ArrayList<String> fechas) {
 		if (fechas.isEmpty()) {
 			System.out.println("No hay fechas disponibles para esta película");
@@ -77,16 +95,30 @@ public class GestorCine {
 
 		return fechaElegida;
 	}
-
+/**
+ * 
+ * @param sesiones igual a fecha, metodo para elegir las diferentes sesiones del arraylist sesion generado con la combinacion
+ * de los metodos imprimir y la query en el controladorDB
+ * @return objeto Sesion con atributos de sesion elegida
+ */
+	
 	public Sesion elegirSesion(ArrayList<Sesion> sesiones) {
 
 		int opcion = controladorEntrada.esValorMenuValido(1, sesiones.size());
 
 		Sesion sesionElegido = sesiones.get(opcion - 1);
-		//System.out.println("Fecha seleccionada: " + sesionElegido);
+		System.out.println("Fecha seleccionada: " + sesionElegido.getFecha());
 		return sesionElegido;
 	}
 
+/**
+ * 
+ * @param sesion metodo para selecionar numero de partecipanetes a la sesion, recoge un objeto sesion
+ * compara los sitios ya ocupados con la capacidad de la sala, si hay sitios enseña los sitios disponible y deja elegir
+ * atarves del controlador de entrada no permite selecionar mas sitios de lo disponibles
+ * @return un int con los sitios selecionados
+ */
+	
 	public int seleccionarNumEspectadores(Sesion sesion) {
 		int capacidad = sesion.getSala().getSitios();
 		int ocupados = sesion.getNumEspectadores();
@@ -103,6 +135,14 @@ public class GestorCine {
 		return participantes;
 	}
 	
+	/**
+	 * 
+	 * @param carrito metodo que recoge el carrito para comparar la fecha, horainicio, e sala de cada entrada comprada
+	 * estos dato seran luego utilizados por el metodo en  el controladorDB que obterra el IDSESION que corresponde a cada entrada
+	 * comprada por el cliente
+	 * @return devuelve un arraylist de string con los id de las diferentes sesioens
+	 */
+	
 	public ArrayList<String> obtenerIdSesion(Carrito carrito) {
 		ArrayList<String> idSessiones = new ArrayList<>();
 
@@ -114,6 +154,12 @@ public class GestorCine {
 		return idSessiones;
 	}
 
+/**
+ * 
+ * @param text meotodo que recoge un String (dni o mail) y lo compara con los presentes en la base de datos
+ * si el usuario en fase de registracion ententa poner un dni o un mail que ya estan registrado no podra hacerlo
+ * @return retorna un false si no encuentra corispondencia y un true si la encuentra
+ */
 	public boolean dniOEmailYaRegistrados(String text) {
 	
 		int contador = 0;

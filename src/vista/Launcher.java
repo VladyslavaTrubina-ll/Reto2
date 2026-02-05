@@ -53,12 +53,10 @@ public class Launcher {
 			while (eligiendoPeliculas) {
 				ArrayList<Pelicula> pelis = gestorCine.controlador.obtenerPelis();
 				imprimir.imprimirPeliculas(pelis);
-				// 4.1 ¿Quieres elegir película?
-				// System.out.println("----------------------------------");
 				String elegirPeli = gestorCine.controladorEntrada.leerSiNo("\n¿Quieres elegir película?");
 
 				if (elegirPeli.equalsIgnoreCase("si")) {
-					// 4.2 Elegir película
+			
 					Pelicula peliElegida = gestorCine.elegirPelicula(pelis);
 
 	                // 5. Elegir fecha
@@ -128,7 +126,7 @@ public class Launcher {
 	                        procesoPagar();
 	                        eligiendoPeliculas = false;
 	                    } else {
-                    	// Cancelar compra - limpiar carrito
+                    
                     	carrito.vaciar();
                     	System.out.println("Compra cancelada. Carrito vaciado.");
                     	eligiendoPeliculas = false;
@@ -231,4 +229,3 @@ public class Launcher {
 
 }
 
-// 4. breakpoints: volver a 4.1, salir, comprar, pagar, guardar ticket = mesage + input (verificar) + cambiar de estado
