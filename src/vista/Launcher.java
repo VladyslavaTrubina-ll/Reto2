@@ -94,7 +94,7 @@ public class Launcher {
 	                if (sesionElegida != null) {
 	                	// 10. Añadir al carrito 
 	                	carrito.anadirEntrada(sesionElegida, numEspectadores);
-	                	System.out.println(" Test Entrada añadida al carrito");
+	                	
 	                
 	                	// 11. ¿Quieres elegir más películas?
 	                	String masPeliculas = gestorCine.controladorEntrada.leerSiNo("¿Quieres elegir más películas?");
